@@ -1,5 +1,3 @@
-test content here
-line 2
 """
 Citation Graph Explorer — a tiny interactive demo.
 
