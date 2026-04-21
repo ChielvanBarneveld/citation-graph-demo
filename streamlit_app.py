@@ -42,10 +42,10 @@ def load_data():
 @st.cache_resource(show_spinner="Building graph index …")
 def build_full_graph(papers, edges):
     g = nx.DiGraph()
-    attrs = papers.set_index("openalex_short").to_dict("index")
+    attrs = papers.set_index("pid").to_dict("index")
     for nid, a in attrs.items():
         g.add_node(nid, **a)
-    g.add_edges_from(zip(edges["src"].tolist(), edges["dst"].tolist()))
+    g.add_edges_from(zip(edges["src"].tolist(), edges["tgt"].tolist()))
     return g
 
 
@@ -399,8 +399,8 @@ def main():
             sr_options["label"] = sr_options["title"].fillna("(no title)").str.slice(0, 90)
             seed = st.selectbox(
                 "Seed paper (SR-included)",
-                options=sr_options["openalex_short"].tolist(),
-                format_func=lambda s: sr_options.loc[sr_options["openalex_short"] == s, "label"].iloc[0],
+                options=sr_options["pid"].tolist(),
+                format_func=lambda s: sr_options.loc[sr_options["pid"] == s, "label"].iloc[0],
             )
             hops = st.slider("Hops", 1, 2, 1)
 
