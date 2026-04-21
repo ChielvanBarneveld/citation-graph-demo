@@ -1,166 +1,184 @@
-"""
-Citation Graph Explorer — a tiny interactive demo.
+"""FORAS Citation Graph Explorer — v1 (real data).
 
-Theme: automated systematic reviews / FORAS-style literature discovery.
-Pick a seed paper, traversal depth, and a filter metric; the app renders a
-small citation network built from synthetic sample data.
+First iteration of the citation graph for the ADS thesis on GNN-based
+cold-start literature retrieval (FORAS).
 
-Mobile-friendly: compact layout, Plotly for touch interaction, few widgets.
+Data: the van_de_Schoot_2025 corpus (14,764 papers, 75k+ intra-corpus
+citation edges). Each paper is labeled as included in the systematic
+review (``label_included``) or as passing abstract screening
+(``label_abstract_included``).
+
+What the app shows:
+
+* An **ego graph** around a seed paper (default: most-cited SR-included
+  paper), up to 1–2 citation hops.
+* OR the **"included backbone"** — the induced subgraph over all papers
+  that passed the systematic review, plus their direct neighbors.
+
+Nodes are colored by SR label, sized by intra-corpus in-degree (how often
+they're cited *inside the FORAS corpus*). Plotly makes this pan/pinch
+friendly on a phone.
 """
 
 from __future__ import annotations
 
 import math
-import random
-from dataclasses import dataclass
+from pathlib import Path
 
 import networkx as nx
 import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
+DATA_DIR = Path(__file__).parent / "data"
+PAPERS_PATH = DATA_DIR / "papers.parquet"
+EDGES_PATH = DATA_DIR / "edges.parquet"
+
 # ---------- Page config ----------
 st.set_page_config(
-    page_title="Citation Graph Explorer",
+    page_title="FORAS Citation Graph",
     page_icon="🔗",
-    layout="centered",  # centered layout reads better on phones
+    layout="centered",
     initial_sidebar_state="collapsed",
 )
 
-# ---------- Synthetic data ----------
-@dataclass
-class Paper:
-    pid: str
-    title: str
-    year: int
-    venue: str
-    topic: str
+# ---------- Data loading ----------
+@st.cache_data(show_spinner=False)
+def load_data() -> tuple[pd.DataFrame, pd.DataFrame]:
+    papers = pd.read_parquet(PAPERS_PATH)
+    edges = pd.read_parquet(EDGES_PATH)
+    papers["publication_year"] = (
+        pd.to_numeric(papers["publication_year"], errors="coerce")
+        .fillna(0)
+        .astype(int)
+    )
+    return papers, edges
 
 
-TOPICS = ["GNN", "Systematic Review", "FORAS", "NLP", "Active Learning", "Embeddings"]
-VENUES = ["NeurIPS", "ACL", "JASIST", "SIGIR", "ICML", "EMNLP"]
+@st.cache_resource(show_spinner=False)
+def build_graph(papers: pd.DataFrame, edges: pd.DataFrame) -> nx.DiGraph:
+    """Build a DiGraph: src → tgt means src cites tgt."""
+    g = nx.DiGraph()
+    # Add nodes with attributes.
+    for row in papers.itertuples(index=False):
+        g.add_node(
+            row.pid,
+            title=row.title or "",
+            year=int(row.publication_year or 0),
+            journal=row.journal_name or "",
+            topic=row.primary_topic_name or "",
+            field=row.primary_topic_field or "",
+            authors=row.authors_short or "",
+            cited_by=int(row.cited_by_count or 0),
+            in_deg=int(row.in_degree_corpus or 0),
+            out_deg=int(row.out_degree_corpus or 0),
+            label_included=int(row.label_included or 0),
+            label_abs=int(row.label_abstract_included or 0),
+        )
+    # Edges.
+    g.add_edges_from(edges[["src", "tgt"]].itertuples(index=False, name=None))
+    return g
 
-SEEDS = {
-    "FORAS: GNNs for systematic review screening": "p000",
-    "Semi-supervised relevance ranking for SR": "p001",
-    "Active learning meets citation networks": "p002",
+
+def node_label_kind(g: nx.DiGraph, n: str) -> str:
+    if g.nodes[n].get("label_included") == 1:
+        return "included"
+    if g.nodes[n].get("label_abs") == 1:
+        return "abstract_only"
+    return "excluded"
+
+
+COLORS = {
+    "included": "#22c55e",      # green  — passed full-text SR
+    "abstract_only": "#f59e0b", # amber  — passed abstract screening only
+    "excluded": "#64748b",      # slate  — excluded / unlabeled
+    "seed_ring": "#e11d48",     # rose   — outline for seed node
 }
 
 
-@st.cache_data(show_spinner=False)
-def build_corpus(n: int = 80, seed: int = 42) -> tuple[dict[str, Paper], nx.DiGraph]:
-    """Generate a small synthetic citation graph."""
-    rng = random.Random(seed)
-    papers: dict[str, Paper] = {}
-    for i in range(n):
-        pid = f"p{i:03d}"
-        topic = rng.choice(TOPICS)
-        venue = rng.choice(VENUES)
-        year = rng.randint(2014, 2025)
-        title = f"{topic}-based approach to {rng.choice(['retrieval', 'screening', 'ranking', 'clustering', 'classification'])} (#{i})"
-        papers[pid] = Paper(pid, title, year, venue, topic)
-
-    # Override the titles for known seeds so the dropdown makes sense
-    papers["p000"] = Paper("p000", "FORAS: GNNs for systematic review screening", 2024, "JASIST", "FORAS")
-    papers["p001"] = Paper("p001", "Semi-supervised relevance ranking for SR", 2023, "SIGIR", "Systematic Review")
-    papers["p002"] = Paper("p002", "Active learning meets citation networks", 2022, "ACL", "Active Learning")
-
-    g = nx.DiGraph()
-    for pid, p in papers.items():
-        g.add_node(pid, title=p.title, year=p.year, venue=p.venue, topic=p.topic)
-
-    # Build citations: a paper cites earlier papers, with topic affinity
-    for pid, p in papers.items():
-        candidates = [q for q in papers.values() if q.year < p.year]
-        if not candidates:
-            continue
-        k = rng.randint(1, min(6, len(candidates)))
-        # Bias: prefer same-topic citations
-        same_topic = [q for q in candidates if q.topic == p.topic]
-        others = [q for q in candidates if q.topic != p.topic]
-        weighted = same_topic * 3 + others
-        chosen = rng.sample(weighted, k=min(k, len(weighted))) if weighted else []
-        for q in chosen:
-            g.add_edge(pid, q.pid)
-
-    # Ensure seed papers have non-trivial neighborhoods
-    for seed_pid in ["p000", "p001", "p002"]:
-        if g.out_degree(seed_pid) < 3:
-            older = [q for q in papers.values() if q.year < papers[seed_pid].year]
-            extras = rng.sample(older, k=min(4, len(older)))
-            for q in extras:
-                g.add_edge(seed_pid, q.pid)
-
-    return papers, g
-
-
-def bfs_subgraph(g: nx.DiGraph, seed: str, depth: int) -> nx.DiGraph:
-    """Return the undirected-BFS subgraph around seed up to given depth."""
-    undirected = g.to_undirected()
+# ---------- Subgraph selection ----------
+def ego_subgraph(g: nx.DiGraph, seed: str, depth: int) -> nx.DiGraph:
+    """BFS on the undirected citation network (cites OR cited-by)."""
+    und = g.to_undirected(as_view=True)
     nodes: set[str] = {seed}
     frontier = {seed}
     for _ in range(depth):
-        next_frontier = set()
+        nxt: set[str] = set()
         for n in frontier:
-            next_frontier.update(undirected.neighbors(n))
-        next_frontier -= nodes
-        nodes |= next_frontier
-        frontier = next_frontier
+            nxt.update(und.neighbors(n))
+        nxt -= nodes
+        nodes |= nxt
+        frontier = nxt
         if not frontier:
             break
     return g.subgraph(nodes).copy()
 
 
-def filter_by_year(sg: nx.DiGraph, min_year: int) -> nx.DiGraph:
-    keep = [n for n, d in sg.nodes(data=True) if d["year"] >= min_year]
+def included_backbone(g: nx.DiGraph, include_abstract: bool) -> nx.DiGraph:
+    """Return the induced subgraph of included papers (+ abstract-only optional)."""
+    if include_abstract:
+        core = [n for n, d in g.nodes(data=True) if d["label_included"] == 1 or d["label_abs"] == 1]
+    else:
+        core = [n for n, d in g.nodes(data=True) if d["label_included"] == 1]
+    return g.subgraph(core).copy()
+
+
+def trim_for_display(sg: nx.DiGraph, seed: str | None, max_nodes: int) -> nx.DiGraph:
+    """Cap the subgraph at max_nodes, keeping the seed + highest in-degree nodes."""
+    if sg.number_of_nodes() <= max_nodes:
+        return sg
+    ordered = sorted(sg.nodes(data=True), key=lambda nd: nd[1].get("in_deg", 0), reverse=True)
+    keep: list[str] = []
+    if seed is not None and seed in sg:
+        keep.append(seed)
+    for n, _ in ordered:
+        if n not in keep:
+            keep.append(n)
+        if len(keep) >= max_nodes:
+            break
     return sg.subgraph(keep).copy()
 
 
-def layout_circular_by_year(sg: nx.DiGraph, seed: str) -> dict[str, tuple[float, float]]:
-    """Simple deterministic layout: seed at center, others on rings by BFS distance."""
-    undirected = sg.to_undirected()
-    # BFS distance from seed
-    dist = nx.single_source_shortest_path_length(undirected, seed)
-    rings: dict[int, list[str]] = {}
-    for n, d in dist.items():
-        rings.setdefault(d, []).append(n)
-
-    pos: dict[str, tuple[float, float]] = {}
-    for d, members in rings.items():
-        if d == 0:
-            pos[seed] = (0.0, 0.0)
-            continue
-        members = sorted(members)
-        for i, n in enumerate(members):
-            angle = 2 * math.pi * i / max(1, len(members))
-            r = d * 1.0
-            pos[n] = (r * math.cos(angle), r * math.sin(angle))
-    # Orphans (shouldn't happen in BFS subgraph but be safe)
-    for n in sg.nodes():
-        if n not in pos:
-            pos[n] = (random.random(), random.random())
-    return pos
-
-
-# ---------- Metric selection ----------
-METRICS = {
-    "Degree": lambda sg: dict(sg.degree()),
-    "In-degree (times cited)": lambda sg: dict(sg.in_degree()),
-    "Out-degree (# references)": lambda sg: dict(sg.out_degree()),
-    "PageRank": lambda sg: nx.pagerank(sg, alpha=0.85) if len(sg) else {},
-    "Betweenness": lambda sg: nx.betweenness_centrality(sg) if len(sg) > 2 else {n: 0 for n in sg.nodes()},
-}
+# ---------- Layout ----------
+def compute_layout(sg: nx.DiGraph, seed: str | None) -> dict[str, tuple[float, float]]:
+    """Spring layout, seeded from BFS rings when a seed is set."""
+    if sg.number_of_nodes() == 0:
+        return {}
+    if seed is not None and seed in sg:
+        und = sg.to_undirected(as_view=True)
+        dist = nx.single_source_shortest_path_length(und, seed)
+        rings: dict[int, list[str]] = {}
+        for n, d in dist.items():
+            rings.setdefault(d, []).append(n)
+        init: dict[str, tuple[float, float]] = {}
+        for d, members in rings.items():
+            members = sorted(members)
+            for i, n in enumerate(members):
+                if d == 0:
+                    init[n] = (0.0, 0.0)
+                else:
+                    a = 2 * math.pi * i / max(1, len(members))
+                    init[n] = (d * math.cos(a), d * math.sin(a))
+        for n in sg.nodes():
+            if n not in init:
+                init[n] = (0.0, 0.0)
+        try:
+            return nx.spring_layout(sg, pos=init, seed=42, iterations=40, k=None)
+        except Exception:
+            return init
+    try:
+        return nx.spring_layout(sg, seed=42, iterations=40)
+    except Exception:
+        return {n: (0.0, 0.0) for n in sg.nodes()}
 
 
-def build_figure(sg: nx.DiGraph, seed: str, metric_name: str) -> go.Figure:
-    pos = layout_circular_by_year(sg, seed)
-    metric_values = METRICS[metric_name](sg)
-    if not metric_values:
-        metric_values = {n: 0 for n in sg.nodes()}
-    max_m = max(metric_values.values()) or 1.0
+# ---------- Figure ----------
+def build_figure(sg: nx.DiGraph, seed: str | None, size_metric: str) -> go.Figure:
+    pos = compute_layout(sg, seed)
 
     # Edges
-    edge_x, edge_y = [], []
+    edge_x: list[float] = []
+    edge_y: list[float] = []
     for u, v in sg.edges():
         x0, y0 = pos[u]
         x1, y1 = pos[v]
@@ -171,134 +189,229 @@ def build_figure(sg: nx.DiGraph, seed: str, metric_name: str) -> go.Figure:
         x=edge_x,
         y=edge_y,
         mode="lines",
-        line=dict(width=0.8, color="rgba(140,140,160,0.55)"),
+        line=dict(width=0.6, color="rgba(140,150,170,0.35)"),
         hoverinfo="none",
         showlegend=False,
     )
 
-    # Nodes
-    node_x, node_y, sizes, colors, texts, hover = [], [], [], [], [], []
-    for n in sg.nodes():
-        x, y = pos[n]
-        node_x.append(x)
-        node_y.append(y)
-        m = metric_values.get(n, 0)
-        sizes.append(10 + 30 * (m / max_m) ** 0.6)
-        colors.append(m)
-        d = sg.nodes[n]
-        is_seed = n == seed
-        label = d["title"]
-        if len(label) > 32:
-            label = label[:30] + "…"
-        texts.append("★ " if is_seed else "")
-        hover.append(
-            f"<b>{d['title']}</b><br>"
-            f"{d['venue']} · {d['year']} · {d['topic']}<br>"
-            f"{metric_name}: {m:.3f}" + ("<br><i>seed</i>" if is_seed else "")
+    # Nodes: one trace per label kind so legend works cleanly.
+    traces: list[go.Scatter] = [edge_trace]
+    kinds = ["excluded", "abstract_only", "included"]
+    kind_display = {
+        "included": "SR-included (172)",
+        "abstract_only": "Abstract-only (568)",
+        "excluded": "Excluded / unlabeled",
+    }
+
+    # Size scale setup.
+    if size_metric == "Intra-corpus in-degree":
+        sizes_raw = {n: d.get("in_deg", 0) for n, d in sg.nodes(data=True)}
+    else:
+        sizes_raw = {n: d.get("cited_by", 0) for n, d in sg.nodes(data=True)}
+    max_s = max(sizes_raw.values()) if sizes_raw else 1
+    max_s = max(max_s, 1)
+
+    for kind in kinds:
+        xs, ys, sizes, texts, hovers, line_colors, line_widths = [], [], [], [], [], [], []
+        for n in sg.nodes():
+            if node_label_kind(sg, n) != kind:
+                continue
+            x, y = pos[n]
+            d = sg.nodes[n]
+            xs.append(x)
+            ys.append(y)
+            s_raw = sizes_raw[n]
+            sizes.append(8 + 22 * (s_raw / max_s) ** 0.55)
+            title = d["title"] if len(d["title"]) <= 120 else d["title"][:117] + "…"
+            label = "★" if n == seed else ""
+            texts.append(label)
+            hovers.append(
+                f"<b>{title}</b><br>"
+                f"{d['authors']} · {d['year']} · {d['journal'] or d['topic'] or '—'}<br>"
+                f"cited_by: {d['cited_by']} · in-corpus cites: {d['in_deg']}<br>"
+                f"<a href='https://openalex.org/{n}'>openalex.org/{n}</a>"
+                + ("<br><i>seed paper</i>" if n == seed else "")
+            )
+            if n == seed:
+                line_colors.append(COLORS["seed_ring"])
+                line_widths.append(3.0)
+            else:
+                line_colors.append("rgba(15,23,42,0.85)")
+                line_widths.append(0.8)
+
+        if not xs:
+            continue
+        traces.append(
+            go.Scatter(
+                x=xs,
+                y=ys,
+                mode="markers+text",
+                text=texts,
+                textposition="middle center",
+                textfont=dict(color="#ffffff", size=14),
+                marker=dict(
+                    size=sizes,
+                    color=COLORS[kind],
+                    line=dict(color=line_colors, width=line_widths),
+                    opacity=0.9,
+                ),
+                hoverinfo="text",
+                hovertext=hovers,
+                name=kind_display[kind],
+                showlegend=True,
+            )
         )
 
-    node_trace = go.Scatter(
-        x=node_x,
-        y=node_y,
-        mode="markers+text",
-        text=texts,
-        textposition="middle center",
-        textfont=dict(size=12, color="white"),
-        marker=dict(
-            size=sizes,
-            color=colors,
-            colorscale="Viridis",
-            showscale=True,
-            colorbar=dict(
-                title=dict(text=metric_name, side="right"),
-                thickness=10,
-                len=0.6,
-            ),
-            line=dict(width=1.2, color="rgba(20,20,20,0.9)"),
-        ),
-        hoverinfo="text",
-        hovertext=hover,
-        showlegend=False,
-    )
-
-    fig = go.Figure(data=[edge_trace, node_trace])
+    fig = go.Figure(data=traces)
     fig.update_layout(
-        margin=dict(l=0, r=0, t=10, b=0),
+        margin=dict(l=0, r=0, t=6, b=0),
         xaxis=dict(visible=False, scaleanchor="y"),
         yaxis=dict(visible=False),
-        plot_bgcolor="rgba(14,17,23,1)",
-        paper_bgcolor="rgba(14,17,23,1)",
-        font=dict(color="#e6edf3"),
-        height=520,
+        plot_bgcolor="#0b1220",
+        paper_bgcolor="#0b1220",
+        font=dict(color="#e5e7eb"),
+        height=560,
         dragmode="pan",
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.01,
+            xanchor="left",
+            x=0,
+            bgcolor="rgba(0,0,0,0)",
+        ),
     )
     return fig
 
 
 # ---------- UI ----------
-st.markdown(
-    "<h2 style='margin-bottom:0.2rem'>🔗 Citation Graph Explorer</h2>"
-    "<p style='color:#8b949e;margin-top:0;font-size:0.95rem'>"
-    "Interactive demo for ADS thesis work on automated systematic reviews. "
-    "Synthetic data — proof-of-concept that deployment works."
-    "</p>",
-    unsafe_allow_html=True,
-)
+def main() -> None:
+    st.markdown(
+        "<h2 style='margin-bottom:0.1rem'>🔗 FORAS Citation Graph — v1</h2>"
+        "<p style='color:#94a3b8;margin-top:0;font-size:0.9rem'>"
+        "Real data from the <code>van_de_Schoot_2025</code> corpus "
+        "(14,764 papers, 75k+ intra-corpus citations). Nodes colored by systematic-review label. "
+        "Part of thesis work on GNN-based cold-start literature retrieval."
+        "</p>",
+        unsafe_allow_html=True,
+    )
 
-papers, g = build_corpus()
+    papers, edges = load_data()
+    g = build_graph(papers, edges)
 
-with st.container():
-    col_a, col_b = st.columns(2)
-    with col_a:
-        seed_label = st.selectbox("Seed paper", list(SEEDS.keys()), index=0)
-    with col_b:
-        depth = st.selectbox("Traversal depth", [1, 2, 3], index=1)
+    # Shortlist of seed options: SR-included papers, sorted by in-corpus in-degree.
+    included = papers[papers["label_included"] == 1].sort_values(
+        ["in_degree_corpus", "cited_by_count"], ascending=[False, False]
+    )
+    # Map "short display label" -> pid
+    def seed_label(row: pd.Series) -> str:
+        t = (row["title"] or "").strip()
+        if len(t) > 90:
+            t = t[:88] + "…"
+        year = int(row["publication_year"]) if row["publication_year"] else "?"
+        return f"[{row['in_degree_corpus']}× in-corp, {year}] {t}"
 
-    col_c, col_d = st.columns(2)
-    with col_c:
-        metric_name = st.selectbox("Node metric", list(METRICS.keys()), index=3)
-    with col_d:
-        min_year = st.selectbox("Min. year", [2014, 2018, 2020, 2022, 2024], index=1)
+    seed_options = {seed_label(r): r["pid"] for _, r in included.iterrows()}
+    seed_options = {"— Included backbone (no seed) —": None, **seed_options}
 
-seed_pid = SEEDS[seed_label]
-sg = bfs_subgraph(g, seed_pid, int(depth))
-sg = filter_by_year(sg, int(min_year))
-
-# Guarantee the seed is still there (in case year filter removed it)
-if seed_pid not in sg:
-    sg.add_node(seed_pid, **g.nodes[seed_pid])
-
-colm1, colm2, colm3 = st.columns(3)
-colm1.metric("Nodes", sg.number_of_nodes())
-colm2.metric("Edges", sg.number_of_edges())
-try:
-    density = nx.density(sg)
-except Exception:
-    density = 0.0
-colm3.metric("Density", f"{density:.3f}")
-
-fig = build_figure(sg, seed_pid, metric_name)
-st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
-
-with st.expander("📄 Papers in view", expanded=False):
-    rows = []
-    metric_values = METRICS[metric_name](sg) or {}
-    for n in sg.nodes():
-        d = sg.nodes[n]
-        rows.append(
-            {
-                "id": n,
-                "title": d["title"],
-                "year": d["year"],
-                "venue": d["venue"],
-                "topic": d["topic"],
-                metric_name: round(metric_values.get(n, 0), 4),
-            }
+    # Controls
+    col1, col2 = st.columns([3, 2])
+    with col1:
+        chosen_label = st.selectbox("Seed paper (SR-included)", list(seed_options.keys()), index=1)
+        seed_pid: str | None = seed_options[chosen_label]
+    with col2:
+        view_kind = st.radio(
+            "View",
+            ["Ego graph (BFS)", "Included backbone"],
+            index=(1 if seed_pid is None else 0),
+            horizontal=True,
         )
-    df = pd.DataFrame(rows).sort_values(metric_name, ascending=False).reset_index(drop=True)
-    st.dataframe(df, use_container_width=True, hide_index=True)
 
-st.caption(
-    "Built with Streamlit + NetworkX + Plotly. All data is synthetic. "
-    "Tap a node for details; pinch to zoom."
-)
+    col3, col4, col5 = st.columns(3)
+    with col3:
+        depth = st.selectbox("Hops", [1, 2], index=0, disabled=(view_kind != "Ego graph (BFS)"))
+    with col4:
+        size_metric = st.selectbox("Size by", ["Intra-corpus in-degree", "Total cited_by"], index=0)
+    with col5:
+        include_abstract_backbone = st.toggle(
+            "Include abstract-only", value=False,
+            disabled=(view_kind != "Included backbone"),
+            help="Include the 568 papers that passed abstract screening (but not full-text).",
+        )
+
+    # Optional year filter.
+    min_year_default = 1990
+    min_year = st.slider(
+        "Minimum year",
+        min_value=1950,
+        max_value=2025,
+        value=min_year_default,
+        step=1,
+    )
+
+    # Build subgraph.
+    if view_kind == "Included backbone" or seed_pid is None:
+        sg = included_backbone(g, include_abstract=include_abstract_backbone)
+        # For backbone view, add 1-hop out to show context (only included→* edges inside corpus).
+        active_seed = None
+    else:
+        sg = ego_subgraph(g, seed_pid, int(depth))
+        active_seed = seed_pid
+
+    # Year filter (but always keep seed).
+    kept = [n for n, d in sg.nodes(data=True) if d.get("year", 0) >= min_year]
+    if active_seed is not None and active_seed not in kept and active_seed in sg:
+        kept.append(active_seed)
+    sg = sg.subgraph(kept).copy()
+
+    # Cap for rendering performance.
+    sg = trim_for_display(sg, active_seed, max_nodes=350)
+
+    # Metrics row.
+    m1, m2, m3, m4 = st.columns(4)
+    with m1:
+        st.metric("Nodes", sg.number_of_nodes())
+    with m2:
+        st.metric("Edges", sg.number_of_edges())
+    with m3:
+        n_inc = sum(1 for _, d in sg.nodes(data=True) if d["label_included"] == 1)
+        st.metric("Included", n_inc)
+    with m4:
+        n_abs = sum(1 for _, d in sg.nodes(data=True) if d["label_abs"] == 1)
+        st.metric("Abs-only", n_abs)
+
+    if sg.number_of_nodes() == 0:
+        st.info("No nodes match the current filters.")
+        return
+
+    fig = build_figure(sg, active_seed, size_metric)
+    st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
+
+    with st.expander("📄 Papers in view", expanded=False):
+        rows = []
+        for n, d in sg.nodes(data=True):
+            rows.append(
+                {
+                    "pid": n,
+                    "title": d["title"],
+                    "year": d["year"],
+                    "field": d["field"],
+                    "cited_by": d["cited_by"],
+                    "in_corpus_cites": d["in_deg"],
+                    "SR": "included" if d["label_included"] == 1 else (
+                        "abstract-only" if d["label_abs"] == 1 else "excluded"
+                    ),
+                }
+            )
+        tdf = pd.DataFrame(rows).sort_values("in_corpus_cites", ascending=False).reset_index(drop=True)
+        st.dataframe(tdf, use_container_width=True, hide_index=True)
+
+    st.caption(
+        "Data: `van_de_Schoot_2025` FORAS corpus. Edges = paper A cites paper B (both in corpus). "
+        "Node size = intra-corpus in-degree (or total citations). "
+        "Seed paper outlined in red ★. v1 — iteration; feedback welcome."
+    )
+
+
+if __name__ == "__main__":
+    main()
