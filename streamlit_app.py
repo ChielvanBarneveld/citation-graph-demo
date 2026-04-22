@@ -19,28 +19,28 @@ DATA_DIR = Path(__file__).parent / "data"
 # palette                                                                     #
 # --------------------------------------------------------------------------- #
 COLORS = {
-    "bg":           "#030a0a",          # near-black, slight green hint
-    "bg_panel":     "#071411",
-    "grid":         "#0e2a21",
-    "text":         "#d1fae5",
-    "text_muted":   "#6b8478",
-    "accent":       "#10b981",          # emerald — brand primary
-    "accent_glow":  "#34d399",          # mint — SR-included marker
-    "sr":           "#34d399",          # mint / signature green
-    "abs":          "#2dd4bf",          # teal / abstract-only
-    "other":        "#2b3946",          # muted slate
-    "seed":         "#fbbf24",          # amber — hot contrast vs green
-    "highlight":    "#f472b6",          # hot pink — query match
-    "path":         "#fbbf24",          # amber — shortest-path edges
-    "edge":         "rgba(52, 211, 153, 0.10)",
-    "edge_ego":     "rgba(52, 211, 153, 0.38)",
-    "edge_path":    "rgba(251, 191, 36, 0.85)",
+    "bg":           "#0d1511",          # soft dark forest
+    "bg_panel":     "#111c17",
+    "grid":         "#1a2a22",
+    "text":         "#d4dcd6",
+    "text_muted":   "#7d8e82",
+    "accent":       "#4ade80",          # medium green — brand primary
+    "accent_glow":  "#86efac",          # soft mint — subtle highlight
+    "sr":           "#4ade80",          # medium green (less neon)
+    "abs":          "#86efac",          # soft mint — same family, lighter
+    "other":        "#475569",          # muted slate
+    "seed":         "#fbbf24",          # amber — warm contrast
+    "highlight":    "#f472b6",          # pink — query match
+    "path":         "#fbbf24",          # amber — path edges
+    "edge":         "rgba(134, 239, 172, 0.09)",
+    "edge_ego":     "rgba(134, 239, 172, 0.32)",
+    "edge_path":    "rgba(251, 191, 36, 0.78)",
 }
 
-# 10-colour Louvain palette — greens / teals / cools with one amber
+# Louvain palette — greens + a few muted cools/warms for community distinction
 COMMUNITY_PALETTE = [
-    "#34d399", "#2dd4bf", "#a7f3d0", "#6ee7b7", "#22d3ee",
-    "#0ea5e9", "#818cf8", "#f472b6", "#fbbf24", "#fb7185",
+    "#4ade80", "#86efac", "#a7f3d0", "#5eead4", "#7dd3fc",
+    "#93c5fd", "#c4b5fd", "#f9a8d4", "#fbbf24", "#fca5a5",
 ]
 
 st.set_page_config(
@@ -51,99 +51,74 @@ st.set_page_config(
 )
 
 # --------------------------------------------------------------------------- #
-# css — clean futuristic green skin on top of streamlit                       #
+# css — soft green, flat, minimal                                             #
 # --------------------------------------------------------------------------- #
 CSS = """
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
 
 html, body, [class*="st-"], [class*="css-"] {
-    font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
-code, pre, .stCodeBlock, .stMetric [data-testid="stMetricValue"] {
+[data-testid="stMetricValue"] {
     font-family: 'JetBrains Mono', monospace !important;
+    font-weight: 500;
 }
 
-/* page background — subtle vertical gradient */
-.stApp {
-    background:
-        radial-gradient(1200px 800px at 20% -10%, rgba(16,185,129,0.08), transparent 60%),
-        radial-gradient(1000px 700px at 110% 10%, rgba(34,211,238,0.05), transparent 55%),
-        #030a0a;
-}
+.stApp { background: #0d1511; }
 
-/* title chrome */
 h1.foras-title {
+    color: #86efac;
     font-weight: 600;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.01em;
     margin: 0 0 0.1em 0;
-    background: linear-gradient(90deg, #34d399 0%, #22d3ee 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
 }
 p.foras-sub {
-    color: #6b8478;
+    color: #7d8e82;
     margin-top: 0;
-    font-size: 0.92rem;
-    letter-spacing: 0.01em;
+    font-size: 0.9rem;
 }
 
-/* kpi strip */
-[data-testid="stMetricLabel"] { color: #6b8478 !important; font-size: 0.75rem !important; text-transform: uppercase; letter-spacing: 0.08em; }
-[data-testid="stMetricValue"] { color: #34d399 !important; font-weight: 500; }
-
-/* sidebar */
-section[data-testid="stSidebar"] {
-    background: #040d0b !important;
-    border-right: 1px solid #0e2a21;
-}
-section[data-testid="stSidebar"] h2, section[data-testid="stSidebar"] h3 {
-    color: #34d399 !important;
-    font-weight: 500;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
+[data-testid="stMetricLabel"] {
+    color: #7d8e82 !important;
     font-size: 0.78rem !important;
 }
+[data-testid="stMetricValue"] { color: #4ade80 !important; }
 
-/* sliders — green track */
-[data-testid="stSlider"] [role="slider"] {
-    background-color: #34d399 !important;
-    box-shadow: 0 0 8px rgba(52,211,153,0.6);
+section[data-testid="stSidebar"] {
+    background: #111c17 !important;
+    border-right: 1px solid #1a2a22;
 }
-
-/* radio / checkbox accents handled by primaryColor, but override text colour */
-.stRadio label p, .stCheckbox label p { color: #d1fae5 !important; }
-
-/* expander */
-.streamlit-expanderHeader { color: #6ee7b7 !important; }
-
-/* subtle glow on main plot container */
-[data-testid="stPlotlyChart"] {
-    border: 1px solid rgba(16,185,129,0.18);
-    border-radius: 8px;
-    box-shadow:
-        0 0 24px rgba(16,185,129,0.06),
-        inset 0 0 40px rgba(16,185,129,0.02);
-    background: #030a0a;
-}
-
-/* buttons */
-.stDownloadButton button, .stButton button {
-    background: rgba(16,185,129,0.08) !important;
-    border: 1px solid rgba(52,211,153,0.35) !important;
-    color: #34d399 !important;
+section[data-testid="stSidebar"] h2, section[data-testid="stSidebar"] h3 {
+    color: #86efac !important;
     font-weight: 500;
-    letter-spacing: 0.02em;
-    transition: all 0.18s ease;
+    font-size: 0.92rem !important;
+}
+
+[data-testid="stSlider"] [role="slider"] { background-color: #4ade80 !important; }
+
+.stRadio label p, .stCheckbox label p { color: #d4dcd6 !important; }
+
+.streamlit-expanderHeader { color: #86efac !important; }
+
+[data-testid="stPlotlyChart"] {
+    border: 1px solid #1a2a22;
+    border-radius: 6px;
+    background: #0d1511;
+}
+
+.stDownloadButton button, .stButton button {
+    background: transparent !important;
+    border: 1px solid #2c4238 !important;
+    color: #86efac !important;
+    font-weight: 500;
+    transition: all 0.15s ease;
 }
 .stDownloadButton button:hover, .stButton button:hover {
-    background: rgba(16,185,129,0.18) !important;
-    border-color: #34d399 !important;
-    box-shadow: 0 0 16px rgba(52,211,153,0.35);
+    background: rgba(74, 222, 128, 0.08) !important;
+    border-color: #4ade80 !important;
 }
 
-/* hide streamlit footer / menu bloat */
 footer { visibility: hidden; }
 #MainMenu { visibility: hidden; }
 </style>
@@ -180,6 +155,20 @@ def build_full_graph(papers, edges):
 # --------------------------------------------------------------------------- #
 # helpers                                                                     #
 # --------------------------------------------------------------------------- #
+def _s(v):
+    """Safe string — handles None, NaN floats, non-strings. NaN→'' so
+    downstream `.strip()` / `.replace()` never blow up."""
+    if v is None:
+        return ""
+    if isinstance(v, float):
+        try:
+            if math.isnan(v):
+                return ""
+        except (TypeError, ValueError):
+            pass
+    return str(v)
+
+
 def node_label_class(attr):
     if int(attr.get("label_included", 0) or 0) == 1:
         return "SR-included"
@@ -206,28 +195,28 @@ def _authors_str(raw):
 
 
 def node_hover(nid, attr, in_deg, out_deg):
-    title = (attr.get("title") or "").strip().replace("\n", " ")[:170]
-    year = attr.get("publication_year") or ""
-    journal = (attr.get("journal_name") or "").strip()[:70]
-    topic = attr.get("primary_topic_field") or ""
+    title = _s(attr.get("title")).strip().replace("\n", " ")[:170]
+    year = _s(attr.get("publication_year"))
+    journal = _s(attr.get("journal_name")).strip()[:70]
+    topic = _s(attr.get("primary_topic_field")).strip()
     authors = _authors_str(attr.get("authors_short"))
     cls = node_label_class(attr)
     badge = {
-        "SR-included":  "<span style='color:#34d399'>● SR-included</span>",
-        "Abstract only": "<span style='color:#2dd4bf'>● abstract-only</span>",
-        "Other":        "<span style='color:#6b8478'>● unlabeled</span>",
+        "SR-included":  "<span style='color:#4ade80'>● SR-included</span>",
+        "Abstract only": "<span style='color:#86efac'>● abstract-only</span>",
+        "Other":        "<span style='color:#7d8e82'>● unlabeled</span>",
     }[cls]
     cites = int(attr.get("cited_by_count", 0) or 0)
 
     lines = [f"<b>{title}</b>"]
     if authors:
-        lines.append(f"<span style='color:#6b8478'>{authors}</span>")
+        lines.append(f"<span style='color:#7d8e82'>{authors}</span>")
     meta = " · ".join(str(x) for x in [year, journal, topic] if x)
     if meta:
         lines.append(f"<span style='color:#a7f3d0'>{meta}</span>")
     lines.append(badge)
     lines.append(
-        f"<span style='color:#6b8478'>in {in_deg} · out {out_deg} · OpenAlex {cites}</span>"
+        f"<span style='color:#7d8e82'>in {in_deg} · out {out_deg} · OpenAlex {cites}</span>"
     )
     lines.append(f"<span style='color:#475569'>{nid}</span>")
     return "<br>".join(lines)
@@ -316,8 +305,9 @@ def filter_by_year(g, min_year):
 def filter_by_topic(g, topics):
     if not topics:
         return g
+    topics_set = set(topics)
     keep = [n for n, a in g.nodes(data=True)
-            if (a.get("primary_topic_field") or "") in topics]
+            if _s(a.get("primary_topic_field")) in topics_set]
     return g.subgraph(keep).copy()
 
 
@@ -558,10 +548,10 @@ def node_traces_3d(sg, pos, seed, size_metric, community_colors=None, highlight_
             marker=dict(
                 size=d["size"],
                 color=d["color"],
-                opacity=0.95 if is_seed else 0.88,
+                opacity=0.92 if is_seed else 0.85,
                 line=dict(
-                    color=COLORS["accent_glow"] if name == "SR-included" else "rgba(3,10,10,0.7)",
-                    width=1.1 if name == "SR-included" else 0.4,
+                    color="rgba(134,239,172,0.55)" if name == "SR-included" else "rgba(13,21,17,0.7)",
+                    width=0.6 if name == "SR-included" else 0.3,
                 ),
             ),
             hovertemplate="%{text}<extra></extra>",
@@ -893,7 +883,7 @@ def main():
     highlight_nodes = set()
     if query:
         for nid, a in sg.nodes(data=True):
-            title = (a.get("title") or "").lower()
+            title = _s(a.get("title")).lower()
             if query in title:
                 highlight_nodes.add(nid)
 
