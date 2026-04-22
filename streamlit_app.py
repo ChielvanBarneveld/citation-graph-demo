@@ -1,163 +1,81 @@
-"""FORAS Citation Graph — v3 (clean futuristic green)."""
+"""FORAS citation graph — v4.
+
+Focused on what makes FORAS unique:
+1. Core-vs-periphery: 172 FT-included (cyan LED glow) -> 395 TI/AB-included
+   (navy) -> 7.6k screened (muted) -> 3.7k external periphery (faint).
+2. Funnel replay: retrieved -> TI/AB-included -> FT-included, dimming non-stage
+   nodes progressively.
+3. Search-channel facet: colour/filter by the 7 FORAS retrieval strategies,
+   making retrieval-channel complementarity visible.
+
+Design: light cream background, deep navy text, cyan LED-accent for the
+FT-included core. Smooth/sculptural, not futuristic-dark.
+"""
 from __future__ import annotations
 
-import ast
 import math
-from collections import defaultdict
 from pathlib import Path
 
 import networkx as nx
 import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
-from networkx.algorithms.community import louvain_communities
 
+DATA = Path(__file__).parent / "data"
 
-DATA_DIR = Path(__file__).parent / "data"
-
-# --------------------------------------------------------------------------- #
-# palette                                                                     #
-# --------------------------------------------------------------------------- #
-COLORS = {
-    "bg":           "#0d1511",          # soft dark forest
-    "bg_panel":     "#111c17",
-    "grid":         "#1a2a22",
-    "text":         "#d4dcd6",
-    "text_muted":   "#7d8e82",
-    "accent":       "#4ade80",          # medium green — brand primary
-    "accent_glow":  "#86efac",          # soft mint — subtle highlight
-    "sr":           "#4ade80",          # medium green (less neon)
-    "abs":          "#86efac",          # soft mint — same family, lighter
-    "other":        "#475569",          # muted slate
-    "seed":         "#fbbf24",          # amber — warm contrast
-    "highlight":    "#f472b6",          # pink — query match
-    "path":         "#fbbf24",          # amber — path edges
-    "edge":         "rgba(134, 239, 172, 0.09)",
-    "edge_ego":     "rgba(134, 239, 172, 0.32)",
-    "edge_path":    "rgba(251, 191, 36, 0.78)",
+# ---------- palette ----------
+PALETTE = {
+    "bg": "#f6f4ef",          # cream off-white
+    "bg_soft": "#eef1f4",     # soft slate
+    "navy": "#1e2a44",        # deep navy (primary text + edges)
+    "navy_mid": "#3b5475",    # mid navy
+    "cyan": "#22d3ee",        # LED cyan
+    "cyan_soft": "#a5f3fc",   # cyan halo
+    "slate": "#94a3b8",       # muted slate (screened nodes)
+    "mist": "#cbd5e1",        # very light slate (external)
+    "edge": "rgba(30,42,68,0.10)",
+    "accent_warm": "#f59e0b",
 }
 
-# Louvain palette — greens + a few muted cools/warms for community distinction
-COMMUNITY_PALETTE = [
-    "#4ade80", "#86efac", "#a7f3d0", "#5eead4", "#7dd3fc",
-    "#93c5fd", "#c4b5fd", "#f9a8d4", "#fbbf24", "#fca5a5",
+STAGE_COLORS = {
+    "ft_included":    PALETTE["cyan"],
+    "tiab_included":  PALETTE["navy"],
+    "screened":       PALETTE["slate"],
+    "external":       PALETTE["mist"],
+}
+STAGE_SIZES = {
+    "ft_included":    9.0,
+    "tiab_included":  5.5,
+    "screened":       3.0,
+    "external":       2.2,
+}
+STAGE_OPACITY = {
+    "ft_included":    1.0,
+    "tiab_included":  0.95,
+    "screened":       0.55,
+    "external":       0.35,
+}
+STAGE_LABEL = {
+    "ft_included":   "FT-included (172)",
+    "tiab_included": "TI/AB-included (395)",
+    "screened":      "Screened, excluded",
+    "external":      "External periphery",
+}
+
+CHANNELS = [
+    ("ch_replication",   "Replication search",         "#0e7490"),
+    ("ch_comprehensive", "Comprehensive search",       "#7c3aed"),
+    ("ch_snowballing",   "Snowballing",                "#f97316"),
+    ("ch_fulltext",      "Full-text search",           "#059669"),
+    ("ch_oa_ic",         "OpenAlex (inclusion crit.)", "#e11d48"),
+    ("ch_oa_logistic",   "OpenAlex (logistic)",        "#eab308"),
+    ("ch_oa_all",        "OpenAlex (all abstracts)",   "#64748b"),
 ]
 
-st.set_page_config(
-    page_title="FORAS Citation Graph",
-    page_icon="◉",
-    layout="wide",
-    initial_sidebar_state="expanded",
-)
 
-# --------------------------------------------------------------------------- #
-# css — soft green, flat, minimal                                             #
-# --------------------------------------------------------------------------- #
-CSS = """
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
-
-html, body, [class*="st-"], [class*="css-"] {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-}
-[data-testid="stMetricValue"] {
-    font-family: 'JetBrains Mono', monospace !important;
-    font-weight: 500;
-}
-
-.stApp { background: #0d1511; }
-
-h1.foras-title {
-    color: #86efac;
-    font-weight: 600;
-    letter-spacing: -0.01em;
-    margin: 0 0 0.1em 0;
-}
-p.foras-sub {
-    color: #7d8e82;
-    margin-top: 0;
-    font-size: 0.9rem;
-}
-
-[data-testid="stMetricLabel"] {
-    color: #7d8e82 !important;
-    font-size: 0.78rem !important;
-}
-[data-testid="stMetricValue"] { color: #4ade80 !important; }
-
-section[data-testid="stSidebar"] {
-    background: #111c17 !important;
-    border-right: 1px solid #1a2a22;
-}
-section[data-testid="stSidebar"] h2, section[data-testid="stSidebar"] h3 {
-    color: #86efac !important;
-    font-weight: 500;
-    font-size: 0.92rem !important;
-}
-
-[data-testid="stSlider"] [role="slider"] { background-color: #4ade80 !important; }
-
-.stRadio label p, .stCheckbox label p { color: #d4dcd6 !important; }
-
-.streamlit-expanderHeader { color: #86efac !important; }
-
-[data-testid="stPlotlyChart"] {
-    border: 1px solid #1a2a22;
-    border-radius: 6px;
-    background: #0d1511;
-}
-
-.stDownloadButton button, .stButton button {
-    background: transparent !important;
-    border: 1px solid #2c4238 !important;
-    color: #86efac !important;
-    font-weight: 500;
-    transition: all 0.15s ease;
-}
-.stDownloadButton button:hover, .stButton button:hover {
-    background: rgba(74, 222, 128, 0.08) !important;
-    border-color: #4ade80 !important;
-}
-
-footer { visibility: hidden; }
-#MainMenu { visibility: hidden; }
-</style>
-"""
-
-
-# --------------------------------------------------------------------------- #
-# data                                                                        #
-# --------------------------------------------------------------------------- #
-@st.cache_data(show_spinner="Loading FORAS corpus …")
-def load_data():
-    papers = pd.read_parquet(DATA_DIR / "papers.parquet")
-    edges = pd.read_parquet(DATA_DIR / "edges.parquet")
-    papers["publication_year"] = pd.to_numeric(
-        papers["publication_year"], errors="coerce"
-    ).fillna(0).astype(int)
-    for col in ("cited_by_count", "in_degree_corpus", "out_degree_corpus",
-                "label_included", "label_abstract_included"):
-        if col in papers.columns:
-            papers[col] = pd.to_numeric(papers[col], errors="coerce").fillna(0).astype(int)
-    return papers, edges
-
-
-@st.cache_resource(show_spinner="Building graph index …")
-def build_full_graph(papers, edges):
-    g = nx.DiGraph()
-    attrs = papers.set_index("pid").to_dict("index")
-    for nid, a in attrs.items():
-        g.add_node(nid, **a)
-    g.add_edges_from(zip(edges["src"].tolist(), edges["tgt"].tolist()))
-    return g
-
-
-# --------------------------------------------------------------------------- #
-# helpers                                                                     #
-# --------------------------------------------------------------------------- #
-def _s(v):
-    """Safe string — handles None, NaN floats, non-strings. NaN→'' so
-    downstream `.strip()` / `.replace()` never blow up."""
+# ---------- helpers ----------
+def _s(v) -> str:
+    """Safe string: survives NaN floats, None, and anything else."""
     if v is None:
         return ""
     if isinstance(v, float):
@@ -169,818 +87,419 @@ def _s(v):
     return str(v)
 
 
-def node_label_class(attr):
-    if int(attr.get("label_included", 0) or 0) == 1:
-        return "SR-included"
-    if int(attr.get("label_abstract_included", 0) or 0) == 1:
-        return "Abstract only"
-    return "Other"
+def _hex_to_rgba(hex_colour: str, opacity: float) -> str:
+    if not isinstance(hex_colour, str) or not hex_colour.startswith("#"):
+        return hex_colour
+    h = hex_colour.lstrip("#")
+    r, g, b = int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16)
+    return f"rgba({r},{g},{b},{opacity:.3f})"
 
 
-def _authors_str(raw):
-    if raw is None or (isinstance(raw, float) and math.isnan(raw)):
-        return ""
-    if isinstance(raw, str):
-        try:
-            lst = ast.literal_eval(raw)
-        except Exception:
-            return raw[:90]
+# ---------- data ----------
+@st.cache_data(show_spinner=False)
+def load_data():
+    papers = pd.read_parquet(DATA / "papers.parquet")
+    edges = pd.read_parquet(DATA / "edges.parquet")
+    return papers, edges
+
+
+@st.cache_resource(show_spinner=False)
+def build_graph(_papers_n: int, _edges_n: int):
+    papers, edges = load_data()
+    G = nx.DiGraph()
+    for _, r in papers.iterrows():
+        G.add_node(
+            r["pid"],
+            stage=r["stage"],
+            title=_s(r["title"])[:180],
+            year=int(r["publication_year"]) if pd.notna(r["publication_year"]) else 0,
+            journal=_s(r["journal_name"])[:80],
+            authors=_s(r["author_names"]),
+            topic=_s(r["primary_topic_name"]),
+            field=_s(r["primary_topic_field"]),
+            cites=int(r["cited_by_count"]) if pd.notna(r["cited_by_count"]) else 0,
+            channels=[c for c, _, _ in CHANNELS if int(r[c]) == 1],
+            disagreement=int(r["disagreement_hh"]) if pd.notna(r["disagreement_hh"]) else 0,
+        )
+    G.add_edges_from(edges.itertuples(index=False, name=None))
+    return G
+
+
+@st.cache_resource(show_spinner="Computing 3D layout ...")
+def compute_layout(_nodes: tuple, _edges: tuple, seed: int = 7):
+    g = nx.Graph()
+    g.add_nodes_from(_nodes)
+    g.add_edges_from(_edges)
+    if g.number_of_nodes() == 0:
+        return {}
+    return nx.spring_layout(g, dim=3, seed=seed, iterations=30)
+
+
+# ---------- node rendering ----------
+def node_hover(pid: str, attr: dict) -> str:
+    title = _s(attr.get("title"))[:160]
+    journal = _s(attr.get("journal"))[:70]
+    topic = _s(attr.get("topic"))[:60]
+    year = attr.get("year") or ""
+    authors = _s(attr.get("authors"))[:80]
+    cites = attr.get("cites", 0)
+    stage = attr.get("stage", "")
+    ch = attr.get("channels", [])
+    ch_names = ", ".join([n for k, n, _ in CHANNELS if k in ch])
+    if stage == "ft_included":
+        badge = "<span style='color:#22d3ee'>#</span> FT-included"
+    elif stage == "tiab_included":
+        badge = "<span style='color:#1e2a44'>#</span> TI/AB-included"
+    elif stage == "screened":
+        badge = "<span style='color:#94a3b8'>#</span> Screened"
     else:
-        lst = list(raw)
-    if not lst:
-        return ""
-    if len(lst) > 3:
-        return ", ".join(lst[:3]) + f" +{len(lst) - 3}"
-    return ", ".join(lst)
+        badge = "<span style='color:#cbd5e1'>#</span> External"
+    dis = "<br><b>Human-human disagreement</b>" if attr.get("disagreement", 0) == 1 else ""
+    lines = [
+        f"<b>{title}</b>",
+        f"<i>{authors}</i>" if authors else "",
+        f"{journal} . {year}" if (journal or year) else "",
+        f"{topic}" if topic else "",
+        f"{badge} . {cites:,} cites" + dis,
+        f"<span style='color:#64748b'>{ch_names}</span>" if ch_names else "",
+    ]
+    return "<br>".join([ln for ln in lines if ln])
 
 
-def node_hover(nid, attr, in_deg, out_deg):
-    title = _s(attr.get("title")).strip().replace("\n", " ")[:170]
-    year = _s(attr.get("publication_year"))
-    journal = _s(attr.get("journal_name")).strip()[:70]
-    topic = _s(attr.get("primary_topic_field")).strip()
-    authors = _authors_str(attr.get("authors_short"))
-    cls = node_label_class(attr)
-    badge = {
-        "SR-included":  "<span style='color:#4ade80'>● SR-included</span>",
-        "Abstract only": "<span style='color:#86efac'>● abstract-only</span>",
-        "Other":        "<span style='color:#7d8e82'>● unlabeled</span>",
-    }[cls]
-    cites = int(attr.get("cited_by_count", 0) or 0)
-
-    lines = [f"<b>{title}</b>"]
-    if authors:
-        lines.append(f"<span style='color:#7d8e82'>{authors}</span>")
-    meta = " · ".join(str(x) for x in [year, journal, topic] if x)
-    if meta:
-        lines.append(f"<span style='color:#a7f3d0'>{meta}</span>")
-    lines.append(badge)
-    lines.append(
-        f"<span style='color:#7d8e82'>in {in_deg} · out {out_deg} · OpenAlex {cites}</span>"
-    )
-    lines.append(f"<span style='color:#475569'>{nid}</span>")
-    return "<br>".join(lines)
+def colour_by_stage(attr: dict):
+    stage = attr.get("stage", "external")
+    return STAGE_COLORS[stage], STAGE_SIZES[stage], STAGE_OPACITY[stage]
 
 
-def included_nodes(g, include_abstract):
-    out = []
-    for nid, a in g.nodes(data=True):
-        if int(a.get("label_included", 0) or 0) == 1:
-            out.append(nid)
-        elif include_abstract and int(a.get("label_abstract_included", 0) or 0) == 1:
-            out.append(nid)
-    return out
+def colour_by_channel(attr: dict, chosen_channel):
+    ch = attr.get("channels", [])
+    stage = attr.get("stage", "external")
+    size = STAGE_SIZES[stage]
+    colour_map = {k: c for k, _, c in CHANNELS}
+    if chosen_channel is None:
+        if not ch:
+            return PALETTE["mist"], size, 0.35
+        return colour_map[ch[0]], size, STAGE_OPACITY[stage]
+    if chosen_channel in ch:
+        return colour_map[chosen_channel], size * 1.2, 1.0
+    if not ch:
+        return PALETTE["mist"], size * 0.8, 0.20
+    return PALETTE["navy_mid"], size * 0.8, 0.22
 
 
-# --------------------------------------------------------------------------- #
-# subgraph selectors                                                          #
-# --------------------------------------------------------------------------- #
-def smart_subgraph(g, cap, include_abstract):
-    core = set(included_nodes(g, include_abstract))
-    candidates = {}
-    for n in core:
-        for nbr in list(g.successors(n)) + list(g.predecessors(n)):
-            if nbr in core:
-                continue
-            candidates[nbr] = max(candidates.get(nbr, 0), g.in_degree(nbr))
-    remaining = cap - len(core)
-    if remaining > 0 and candidates:
-        extra = sorted(candidates.items(), key=lambda kv: -kv[1])[:remaining]
-        core.update(nid for nid, _ in extra)
-    if len(core) > cap:
-        ranked = sorted(
-            core,
-            key=lambda n: (
-                -int(g.nodes[n].get("label_included", 0) or 0),
-                -int(g.nodes[n].get("label_abstract_included", 0) or 0),
-                -g.in_degree(n),
-            ),
-        )
-        core = set(ranked[:cap])
-    return g.subgraph(core).copy()
+def colour_by_disagreement(attr: dict):
+    stage = attr.get("stage", "external")
+    size = STAGE_SIZES[stage]
+    if attr.get("disagreement", 0) == 1:
+        return PALETTE["accent_warm"], size * 1.25, 1.0
+    base, _, op = colour_by_stage(attr)
+    return base, size, op * 0.45
 
 
-def ego_subgraph(g, seed, hops, cap):
-    if seed not in g:
-        return g.subgraph([]).copy()
-    und = g.to_undirected(as_view=True)
-    nodes = {seed}
-    frontier = {seed}
-    for _ in range(hops):
-        nf = set()
-        for n in frontier:
-            nf.update(und.neighbors(n))
-        frontier = nf - nodes
-        nodes.update(frontier)
-        if len(nodes) >= cap:
-            break
-    if len(nodes) > cap:
-        ranked = sorted((n for n in nodes if n != seed), key=lambda n: -g.in_degree(n))
-        nodes = {seed, *ranked[: cap - 1]}
-    return g.subgraph(nodes).copy()
-
-
-def topn_subgraph(g, cap, include_abstract):
-    core = set(included_nodes(g, include_abstract))
-    remaining = cap - len(core)
-    if remaining > 0:
-        ranked = sorted(g.nodes(), key=lambda n: -g.in_degree(n))
-        for n in ranked:
-            if n in core:
-                continue
-            core.add(n)
-            if len(core) >= cap:
-                break
-    return g.subgraph(core).copy()
-
-
-def filter_by_year(g, min_year):
-    if min_year <= 0:
-        return g
-    keep = [n for n, a in g.nodes(data=True)
-            if int(a.get("publication_year", 0) or 0) >= min_year]
-    return g.subgraph(keep).copy()
-
-
-def filter_by_topic(g, topics):
-    if not topics:
-        return g
-    topics_set = set(topics)
-    keep = [n for n, a in g.nodes(data=True)
-            if _s(a.get("primary_topic_field")) in topics_set]
-    return g.subgraph(keep).copy()
-
-
-# --------------------------------------------------------------------------- #
-# layouts                                                                     #
-# --------------------------------------------------------------------------- #
-def subgraph_key(sg):
-    return tuple(sorted(sg.nodes())), tuple(sorted(sg.edges()))
-
-
-@st.cache_data(show_spinner="Computing layout …")
-def compute_layout(node_key, edge_key, mode, seeds_key=None, hops_hint=1):
-    h = nx.DiGraph()
-    h.add_nodes_from(node_key)
-    h.add_edges_from(edge_key)
-    und = h.to_undirected()
-    n = len(node_key)
-    if n == 0:
-        return {}
-
-    if mode == "BFS ring" and seeds_key:
-        return _bfs_ring_layout(und, list(node_key), list(seeds_key))
-
-    if mode == "Ego smooth" and seeds_key:
-        return _ego_smooth_layout(und, list(node_key), list(seeds_key), hops_hint)
-
-    # default spring 3D
-    iters = 130 if n < 400 else (70 if n < 1200 else 45)
-    pos = nx.spring_layout(
-        und, dim=3, seed=7, iterations=iters,
-        k=1.2 / math.sqrt(max(n, 1)),
-    )
-    return {nid: tuple(map(float, p)) for nid, p in pos.items()}
-
-
-def _bfs_ring_layout(und, nodes, seeds):
-    """Concentric Fibonacci-sphere shells by BFS depth from seed set."""
-    depths = {}
-    for s in seeds:
-        if s not in und:
+# ---------- plot ----------
+def build_plot(G, pos, colour_mode, chosen_channel, year_range,
+               show_edges, funnel_stage_visible) -> go.Figure:
+    xs, ys, zs, colours, sizes, opacities, hovers = [], [], [], [], [], [], []
+    for n in G.nodes():
+        attr = G.nodes[n]
+        y = attr.get("year", 0)
+        if y and (y < year_range[0] or y > year_range[1]):
             continue
-        for n, d in nx.single_source_shortest_path_length(und, s).items():
-            if d < depths.get(n, 10 ** 9):
-                depths[n] = d
-    if not depths:
-        # no seeds reachable — fall back to spring
-        pos = nx.spring_layout(und, dim=3, seed=7)
-        return {n: tuple(map(float, p)) for n, p in pos.items()}
-    max_d = max(depths.values())
-    unreachable_d = max_d + 2
-    shells = defaultdict(list)
-    for n in nodes:
-        shells[depths.get(n, unreachable_d)].append(n)
-    pos = {}
-    phi_golden = math.pi * (1 + math.sqrt(5))
-    for d, bucket in shells.items():
-        bucket.sort()  # stable ordering
-        r = 0.9 + d * 1.3
-        k = len(bucket)
-        for i, nid in enumerate(bucket):
-            t = (i + 0.5) / max(k, 1)
-            phi = math.acos(1 - 2 * t)
-            theta = phi_golden * i
-            x = r * math.sin(phi) * math.cos(theta)
-            y = r * math.sin(phi) * math.sin(theta)
-            z = r * math.cos(phi)
-            pos[nid] = (x, y, z)
-    return pos
-
-
-def _ego_smooth_layout(und, nodes, seeds, hops):
-    """Spring layout with seed pinned to origin — smoother 2-hop result."""
-    seed = seeds[0] if seeds else None
-    n = len(nodes)
-    if n == 0 or seed is None or seed not in und:
-        pos = nx.spring_layout(und, dim=3, seed=7)
-        return {m: tuple(map(float, p)) for m, p in pos.items()}
-    # initial positions: seed at origin, rest on unit sphere by BFS depth
-    init = {seed: (0.0, 0.0, 0.0)}
-    phi_golden = math.pi * (1 + math.sqrt(5))
-    depth_map = nx.single_source_shortest_path_length(und, seed, cutoff=hops + 1)
-    bucket = [m for m in nodes if m != seed]
-    for i, m in enumerate(sorted(bucket)):
-        d = depth_map.get(m, hops + 2)
-        r = 0.6 + (d - 1) * 1.1
-        t = (i + 0.5) / max(len(bucket), 1)
-        phi = math.acos(1 - 2 * t)
-        theta = phi_golden * i
-        init[m] = (
-            r * math.sin(phi) * math.cos(theta),
-            r * math.sin(phi) * math.sin(theta),
-            r * math.cos(phi),
-        )
-    iters = 140 if n < 400 else 90
-    pos = nx.spring_layout(
-        und, pos=init, fixed=[seed], dim=3, seed=7,
-        iterations=iters, k=1.0 / math.sqrt(max(n, 1)),
-    )
-    return {m: tuple(map(float, p)) for m, p in pos.items()}
-
-
-# --------------------------------------------------------------------------- #
-# community detection (for backbone coloring)                                 #
-# --------------------------------------------------------------------------- #
-@st.cache_data(show_spinner="Detecting communities …")
-def community_map(node_key, edge_key):
-    h = nx.DiGraph()
-    h.add_nodes_from(node_key)
-    h.add_edges_from(edge_key)
-    und = h.to_undirected()
-    try:
-        comms = louvain_communities(und, seed=7, resolution=1.0)
-    except Exception:
-        return {}
-    out = {}
-    for idx, c in enumerate(sorted(comms, key=len, reverse=True)):
-        colour = COMMUNITY_PALETTE[idx % len(COMMUNITY_PALETTE)]
-        for n in c:
-            out[n] = colour
-    return out
-
-
-# --------------------------------------------------------------------------- #
-# trace builders                                                              #
-# --------------------------------------------------------------------------- #
-def edge_trace_3d(sg, pos, seed):
-    xs, ys, zs = [], [], []
-    for u, v in sg.edges():
-        if u not in pos or v not in pos:
+        stage = attr.get("stage", "external")
+        if stage not in funnel_stage_visible:
             continue
-        x0, y0, z0 = pos[u]; x1, y1, z1 = pos[v]
-        xs.extend([x0, x1, None])
-        ys.extend([y0, y1, None])
-        zs.extend([z0, z1, None])
-    color = COLORS["edge_ego"] if seed else COLORS["edge"]
-    return go.Scatter3d(
-        x=xs, y=ys, z=zs,
-        mode="lines",
-        line=dict(color=color, width=1.2),
-        hoverinfo="skip",
-        name="citations",
-        showlegend=False,
-    )
-
-
-def path_trace_3d(path_nodes, pos):
-    xs, ys, zs = [], [], []
-    for u, v in zip(path_nodes[:-1], path_nodes[1:]):
-        if u not in pos or v not in pos:
+        if n not in pos:
             continue
-        x0, y0, z0 = pos[u]; x1, y1, z1 = pos[v]
-        xs.extend([x0, x1, None])
-        ys.extend([y0, y1, None])
-        zs.extend([z0, z1, None])
-    return go.Scatter3d(
-        x=xs, y=ys, z=zs,
-        mode="lines",
-        line=dict(color=COLORS["edge_path"], width=4.5),
-        hoverinfo="skip",
-        name="path",
-        showlegend=True,
-    )
-
-
-def node_traces_3d(sg, pos, seed, size_metric, community_colors=None, highlight_nodes=None,
-                   path_endpoints=None):
-    groups = {
-        "SR-included":  dict(x=[], y=[], z=[], text=[], size=[], color=COLORS["sr"]),
-        "Abstract only": dict(x=[], y=[], z=[], text=[], size=[], color=COLORS["abs"]),
-        "Other":        dict(x=[], y=[], z=[], text=[], size=[], color=COLORS["other"]),
-        "Seed":         dict(x=[], y=[], z=[], text=[], size=[], color=COLORS["seed"]),
-    }
-    # community mode — one trace per community colour
-    community_groups = defaultdict(lambda: dict(x=[], y=[], z=[], text=[], size=[], color=None))
-    highlight = dict(x=[], y=[], z=[], text=[], size=[])
-    path_markers = dict(x=[], y=[], z=[], text=[], size=[])
-
-    highlight_nodes = highlight_nodes or set()
-    path_endpoints = set(path_endpoints or [])
-
-    for nid, attr in sg.nodes(data=True):
-        if nid not in pos:
-            continue
-        cls = "Seed" if nid == seed else node_label_class(attr)
-        in_deg = sg.in_degree(nid); out_deg = sg.out_degree(nid)
-        if size_metric == "OpenAlex cites":
-            base = int(attr.get("cited_by_count", 0) or 0)
-            size = 4 + min(18, math.log1p(base) * 1.6)
+        x, yp, z = pos[n]
+        xs.append(x); ys.append(yp); zs.append(z)
+        if colour_mode == "channel":
+            c, s, o = colour_by_channel(attr, chosen_channel)
+        elif colour_mode == "disagreement":
+            c, s, o = colour_by_disagreement(attr)
         else:
-            size = 4 + min(18, math.sqrt(in_deg) * 2.2)
-        x, y, z = pos[nid]
-        hover = node_hover(nid, attr, in_deg, out_deg)
+            c, s, o = colour_by_stage(attr)
+        colours.append(c); sizes.append(s); opacities.append(o)
+        hovers.append(node_hover(n, attr))
 
-        if community_colors and nid in community_colors and cls != "Seed":
-            d = community_groups[community_colors[nid]]
-            d["color"] = community_colors[nid]
-        else:
-            d = groups[cls]
-
-        d["x"].append(x); d["y"].append(y); d["z"].append(z)
-        d["text"].append(hover); d["size"].append(size)
-
-        if nid in highlight_nodes:
-            highlight["x"].append(x); highlight["y"].append(y); highlight["z"].append(z)
-            highlight["text"].append(hover); highlight["size"].append(size + 6)
-        if nid in path_endpoints:
-            path_markers["x"].append(x); path_markers["y"].append(y); path_markers["z"].append(z)
-            path_markers["text"].append(hover); path_markers["size"].append(size + 8)
+    rgba = [_hex_to_rgba(c, o) for c, o in zip(colours, opacities)]
 
     traces = []
-    if community_colors:
-        # hide legend for communities (too many)
-        for colour, d in community_groups.items():
-            if not d["x"]:
+
+    # edges first (muted)
+    if show_edges:
+        ex, ey, ez = [], [], []
+        for u, v in G.edges():
+            if u not in pos or v not in pos:
                 continue
-            traces.append(go.Scatter3d(
-                x=d["x"], y=d["y"], z=d["z"],
-                mode="markers",
-                marker=dict(
-                    size=d["size"],
-                    color=colour,
-                    opacity=0.88,
-                    line=dict(color="rgba(3,10,10,0.7)", width=0.4),
-                ),
-                hovertemplate="%{text}<extra></extra>",
-                text=d["text"],
-                name=f"community",
-                showlegend=False,
-            ))
+            if G.nodes[u].get("stage", "external") not in funnel_stage_visible:
+                continue
+            if G.nodes[v].get("stage", "external") not in funnel_stage_visible:
+                continue
+            yu = G.nodes[u].get("year", 0)
+            if yu and (yu < year_range[0] or yu > year_range[1]):
+                continue
+            ex += [pos[u][0], pos[v][0], None]
+            ey += [pos[u][1], pos[v][1], None]
+            ez += [pos[u][2], pos[v][2], None]
+        traces.append(go.Scatter3d(
+            x=ex, y=ey, z=ez, mode="lines",
+            line=dict(color=PALETTE["edge"], width=1),
+            hoverinfo="none", showlegend=False, name="edges",
+        ))
 
-    for name, d in groups.items():
-        if not d["x"]:
+    # halo behind FT-included
+    h_x, h_y, h_z = [], [], []
+    for n in G.nodes():
+        attr = G.nodes[n]
+        if attr.get("stage") != "ft_included":
             continue
-        is_seed = name == "Seed"
+        if "ft_included" not in funnel_stage_visible:
+            continue
+        y = attr.get("year", 0)
+        if y and (y < year_range[0] or y > year_range[1]):
+            continue
+        if n not in pos:
+            continue
+        h_x.append(pos[n][0]); h_y.append(pos[n][1]); h_z.append(pos[n][2])
+    traces.append(go.Scatter3d(
+        x=h_x, y=h_y, z=h_z, mode="markers",
+        marker=dict(size=20, color=PALETTE["cyan_soft"],
+                    opacity=0.18, line=dict(width=0)),
+        hoverinfo="none", showlegend=False, name="halo",
+    ))
+
+    # main nodes
+    traces.append(go.Scatter3d(
+        x=xs, y=ys, z=zs, mode="markers",
+        marker=dict(size=sizes, color=rgba,
+                    line=dict(width=0.35, color=PALETTE["navy"])),
+        text=hovers, hovertemplate="%{text}<extra></extra>",
+        showlegend=False, name="papers",
+    ))
+
+    # stage-legend proxies (only in stage mode)
+    for stage, label in STAGE_LABEL.items():
         traces.append(go.Scatter3d(
-            x=d["x"], y=d["y"], z=d["z"],
-            mode="markers",
-            marker=dict(
-                size=d["size"],
-                color=d["color"],
-                opacity=0.92 if is_seed else 0.85,
-                line=dict(
-                    color="rgba(134,239,172,0.55)" if name == "SR-included" else "rgba(13,21,17,0.7)",
-                    width=0.6 if name == "SR-included" else 0.3,
-                ),
-            ),
-            hovertemplate="%{text}<extra></extra>",
-            text=d["text"],
-            name=name,
+            x=[None], y=[None], z=[None], mode="markers",
+            marker=dict(size=10, color=STAGE_COLORS[stage],
+                        line=dict(width=0.35, color=PALETTE["navy"])),
+            name=label, showlegend=(colour_mode == "stage"),
         ))
 
-    if highlight["x"]:
-        traces.append(go.Scatter3d(
-            x=highlight["x"], y=highlight["y"], z=highlight["z"],
-            mode="markers",
-            marker=dict(
-                size=highlight["size"],
-                color="rgba(244,114,182,0.0)",  # transparent fill — rely on line
-                line=dict(color=COLORS["highlight"], width=2.2),
-                opacity=1.0,
-            ),
-            hovertemplate="%{text}<extra></extra>",
-            text=highlight["text"],
-            name="query match",
-        ))
-
-    if path_markers["x"]:
-        traces.append(go.Scatter3d(
-            x=path_markers["x"], y=path_markers["y"], z=path_markers["z"],
-            mode="markers",
-            marker=dict(
-                size=path_markers["size"],
-                color="rgba(251,191,36,0.0)",
-                line=dict(color=COLORS["path"], width=2.4),
-                opacity=1.0,
-            ),
-            hovertemplate="%{text}<extra></extra>",
-            text=path_markers["text"],
-            name="path endpoint",
-        ))
-
-    return traces
-
-
-# --------------------------------------------------------------------------- #
-# figure assembly                                                             #
-# --------------------------------------------------------------------------- #
-def _apply_scene(fig):
-    axis_style = dict(
-        visible=False, showbackground=False,
-        gridcolor=COLORS["grid"], zerolinecolor=COLORS["grid"],
-    )
+    fig = go.Figure(data=traces)
     fig.update_layout(
-        paper_bgcolor=COLORS["bg"],
-        plot_bgcolor=COLORS["bg"],
-        font=dict(color=COLORS["text"], family="Space Grotesk, Inter, sans-serif"),
-        margin=dict(l=0, r=0, t=4, b=4),
-        height=680,
+        height=720,
+        margin=dict(l=0, r=0, t=0, b=0),
+        paper_bgcolor=PALETTE["bg"],
+        plot_bgcolor=PALETTE["bg"],
+        font=dict(family="Inter, -apple-system, Segoe UI, sans-serif",
+                  size=13, color=PALETTE["navy"]),
         scene=dict(
-            xaxis=axis_style, yaxis=axis_style, zaxis=axis_style,
-            bgcolor=COLORS["bg"],
-            camera=dict(eye=dict(x=1.8, y=1.8, z=1.0)),
-            dragmode="orbit",
+            xaxis=dict(visible=False, showbackground=False),
+            yaxis=dict(visible=False, showbackground=False),
+            zaxis=dict(visible=False, showbackground=False),
+            bgcolor=PALETTE["bg"],
+            camera=dict(eye=dict(x=1.35, y=1.35, z=0.9)),
         ),
         legend=dict(
-            orientation="h",
-            y=1.02, x=0.5,
-            xanchor="center",
-            bgcolor="rgba(7,20,17,0.7)",
-            bordercolor="rgba(52,211,153,0.25)",
-            borderwidth=1,
-            font=dict(color=COLORS["text"]),
+            x=0.01, y=0.98, xanchor="left", yanchor="top",
+            bgcolor="rgba(246,244,239,0.85)",
+            bordercolor=PALETTE["navy"], borderwidth=1,
+            font=dict(size=12, color=PALETTE["navy"]),
         ),
+        hoverlabel=dict(bgcolor=PALETTE["bg"], bordercolor=PALETTE["navy"],
+                        font=dict(family="Inter", color=PALETTE["navy"])),
     )
-
-
-def build_static_3d(sg, pos, seed, size_metric, community_colors=None,
-                     highlight_nodes=None, path=None):
-    data = [edge_trace_3d(sg, pos, seed)]
-    if path and len(path) > 1:
-        data.append(path_trace_3d(path, pos))
-    data.extend(node_traces_3d(
-        sg, pos, seed, size_metric,
-        community_colors=community_colors,
-        highlight_nodes=highlight_nodes,
-        path_endpoints=(path[0], path[-1]) if path else None,
-    ))
-    fig = go.Figure(data=data)
-    _apply_scene(fig)
     return fig
 
 
-def build_animated_3d(sg, pos, seed, size_metric, year_step, rotation_amount,
-                      community_colors=None, highlight_nodes=None, path=None):
-    years = [int(a.get("publication_year", 0) or 0) for _, a in sg.nodes(data=True)]
-    years = [y for y in years if y > 0]
-    if not years:
-        return build_static_3d(sg, pos, seed, size_metric, community_colors,
-                               highlight_nodes, path)
+# ---------- funnel ----------
+FUNNEL_FRAMES = [
+    ("All retrieved",          {"external", "screened", "tiab_included", "ft_included"}),
+    ("Screened (FORAS corpus)", {"screened", "tiab_included", "ft_included"}),
+    ("TI/AB-included",          {"tiab_included", "ft_included"}),
+    ("FT-included (SR core)",   {"ft_included"}),
+]
 
-    y_min = max(1950, min(years))
-    y_max = min(2026, max(years))
-    if y_max - y_min < year_step:
-        return build_static_3d(sg, pos, seed, size_metric, community_colors,
-                               highlight_nodes, path)
-    frame_years = list(range(y_min, y_max + 1, max(year_step, 1)))
-    if frame_years[-1] != y_max:
-        frame_years.append(y_max)
 
-    path_endpoints = (path[0], path[-1]) if path else None
+# ---------- app ----------
+def inject_css():
+    st.markdown(f"""
+    <style>
+      html, body, [class*="css"] {{
+        font-family: 'Inter', -apple-system, 'Segoe UI', sans-serif !important;
+        color: {PALETTE['navy']};
+      }}
+      .stApp {{ background: {PALETTE['bg']}; }}
+      section[data-testid="stSidebar"] {{
+        background: {PALETTE['bg_soft']};
+        border-right: 1px solid rgba(30,42,68,0.08);
+      }}
+      h1, h2, h3, h4 {{
+        color: {PALETTE['navy']};
+        font-weight: 600;
+        letter-spacing: -0.01em;
+      }}
+      .foras-title {{
+        font-weight: 700; font-size: 1.6rem;
+        color: {PALETTE['navy']}; margin: 0 0 0.1rem 0;
+      }}
+      .foras-sub {{
+        color: {PALETTE['navy_mid']};
+        font-size: 0.92rem; margin-bottom: 0.9rem;
+      }}
+      .foras-kpi {{
+        background: {PALETTE['bg']};
+        border: 1px solid rgba(30,42,68,0.08);
+        border-radius: 14px;
+        padding: 0.7rem 0.9rem;
+        box-shadow: 0 1px 2px rgba(30,42,68,0.04);
+      }}
+      .foras-kpi .num {{
+        font-family: 'JetBrains Mono', ui-monospace, monospace;
+        font-size: 1.35rem; font-weight: 600; color: {PALETTE['navy']};
+      }}
+      .foras-kpi .num-cyan {{
+        color: {PALETTE['cyan']};
+        text-shadow: 0 0 8px rgba(34,211,238,0.35);
+      }}
+      .foras-kpi .lab {{
+        color: {PALETTE['navy_mid']};
+        font-size: 0.72rem; text-transform: uppercase;
+        letter-spacing: 0.06em; margin-top: 0.05rem;
+      }}
+      .stButton > button {{
+        background: {PALETTE['navy']};
+        color: {PALETTE['bg']}; border: 0;
+        border-radius: 999px; padding: 0.35rem 1.1rem; font-weight: 500;
+      }}
+      .stButton > button:hover {{
+        background: {PALETTE['cyan']}; color: {PALETTE['navy']};
+      }}
+    </style>
+    """, unsafe_allow_html=True)
 
-    def frame_traces(cutoff):
-        keep = {n for n, a in sg.nodes(data=True)
-                if 0 < int(a.get("publication_year", 0) or 0) <= cutoff}
-        if seed:
-            keep.add(seed)
-        if path:
-            keep.update(path)
-        sub = sg.subgraph(keep)
-        data = [edge_trace_3d(sub, pos, seed)]
-        if path and len(path) > 1:
-            data.append(path_trace_3d(path, pos))
-        data.extend(node_traces_3d(
-            sub, pos, seed, size_metric,
-            community_colors=community_colors,
-            highlight_nodes=highlight_nodes,
-            path_endpoints=path_endpoints,
-        ))
-        return data
 
-    def cam_for(i, total):
-        theta = 2 * math.pi * (i / max(total - 1, 1)) * rotation_amount
-        r = 1.9
-        return dict(
-            eye=dict(x=r * math.cos(theta), y=r * math.sin(theta), z=0.9),
-            up=dict(x=0, y=0, z=1),
-            center=dict(x=0, y=0, z=0),
-        )
-
-    n_frames = len(frame_years)
-    frames = [
-        go.Frame(
-            data=frame_traces(y),
-            name=str(y),
-            layout=go.Layout(scene_camera=cam_for(i, n_frames)),
-        )
-        for i, y in enumerate(frame_years)
+def kpi_strip(papers: pd.DataFrame):
+    n_ft = int((papers["stage"] == "ft_included").sum())
+    n_tiab = int((papers["stage"] == "tiab_included").sum())
+    n_screened = int((papers["stage"] == "screened").sum())
+    n_external = int((papers["stage"] == "external").sum())
+    total = len(papers)
+    base_rate = n_ft / max(total, 1)
+    cols = st.columns(5)
+    items = [
+        (f"{total:,}", "Papers in graph", False),
+        (f"{n_ft:,}", "FT-included (core)", True),
+        (f"{n_tiab:,}", "TI/AB-included", False),
+        (f"{n_screened + n_external:,}", "Screened + periphery", False),
+        (f"{base_rate*100:.2f}%", "Base rate (FT)", True),
     ]
-    fig = go.Figure(data=frame_traces(frame_years[0]), frames=frames)
-
-    fig.update_layout(
-        updatemenus=[dict(
-            type="buttons",
-            direction="left",
-            showactive=False,
-            x=0.02, y=0.08, xanchor="left", yanchor="bottom",
-            pad=dict(r=8, t=4),
-            bgcolor="rgba(7,20,17,0.8)",
-            bordercolor="rgba(52,211,153,0.35)",
-            font=dict(color=COLORS["text"]),
-            buttons=[
-                dict(label="▶ Play", method="animate",
-                     args=[None, {
-                         "frame": {"duration": 520, "redraw": True},
-                         "fromcurrent": True,
-                         "transition": {"duration": 380, "easing": "cubic-in-out"},
-                         "mode": "immediate",
-                     }]),
-                dict(label="⏸ Pause", method="animate",
-                     args=[[None], {
-                         "frame": {"duration": 0, "redraw": False},
-                         "mode": "immediate",
-                         "transition": {"duration": 0},
-                     }]),
-            ],
-        )],
-        sliders=[dict(
-            active=0, x=0.14, y=0.06, len=0.82,
-            currentvalue=dict(prefix="year ", font=dict(color=COLORS["text"])),
-            font=dict(color=COLORS["text_muted"]),
-            bgcolor="rgba(7,20,17,0.5)",
-            activebgcolor="#34d399",
-            bordercolor="rgba(52,211,153,0.25)",
-            steps=[dict(method="animate", label=str(y),
-                         args=[[str(y)], {
-                             "mode": "immediate",
-                             "frame": {"duration": 0, "redraw": True},
-                             "transition": {"duration": 260, "easing": "cubic-in-out"},
-                         }])
-                   for y in frame_years],
-        )],
-    )
-    _apply_scene(fig)
-    return fig
+    for col, (num, lab, cyan) in zip(cols, items):
+        klass = "num num-cyan" if cyan else "num"
+        col.markdown(
+            f"<div class='foras-kpi'><div class='{klass}'>{num}</div>"
+            f"<div class='lab'>{lab}</div></div>",
+            unsafe_allow_html=True,
+        )
 
 
-# --------------------------------------------------------------------------- #
-# main                                                                        #
-# --------------------------------------------------------------------------- #
 def main():
-    st.markdown(CSS, unsafe_allow_html=True)
+    st.set_page_config(page_title="FORAS citation graph . v4",
+                       page_icon=":sparkles:", layout="wide")
+    inject_css()
     papers, edges = load_data()
-    g = build_full_graph(papers, edges)
+    G = build_graph(len(papers), len(edges))
 
-    # ------ header ---------------------------------------------------------- #
     st.markdown(
-        "<h1 class='foras-title'>FORAS · Citation Graph</h1>"
-        "<p class='foras-sub'>"
-        "cold-start exploration for GNN-based systematic review retrieval · "
-        f"{g.number_of_nodes():,} papers · {g.number_of_edges():,} intra-corpus citations"
-        "</p>",
+        "<div class='foras-title'>FORAS . citation graph</div>"
+        "<div class='foras-sub'>The 172 systematic-review-included papers "
+        "as a cyan core inside the FORAS corpus . v4</div>",
         unsafe_allow_html=True,
     )
+    kpi_strip(papers)
 
-    # ------ sidebar --------------------------------------------------------- #
     with st.sidebar:
-        st.header("View")
-        view = st.radio(
-            "Mode",
-            ["Smart (labeled + neighbors)", "Included backbone",
-             "Ego of seed", "Top-N by degree"],
-            index=0, label_visibility="collapsed",
-        )
-        include_abs = st.checkbox("Include abstract-only in 'labeled'", value=True)
-        max_nodes = st.slider("Max nodes", 300, 3500, 800, step=100,
-                              help="Density. 3D stays smooth up to ~1500 in Chrome.")
-        size_metric = st.radio(
-            "Node size",
-            ["Intra-corpus in-degree", "OpenAlex cites"],
+        st.markdown("### View")
+        colour_mode = st.radio(
+            "Colour by",
+            options=["stage", "channel", "disagreement"],
+            format_func=lambda k: {
+                "stage": "Screening stage",
+                "channel": "Retrieval channel",
+                "disagreement": "Human-human disagreement",
+            }[k],
             index=0,
         )
 
-        seed = None
-        hops = 1
-        if view == "Ego of seed":
-            sr_options = papers[papers["label_included"] == 1].copy()
-            sr_options["label"] = sr_options["title"].fillna("(no title)").str.slice(0, 90)
-            seed = st.selectbox(
-                "Seed paper (SR-included)",
-                options=sr_options["pid"].tolist(),
-                format_func=lambda s: sr_options.loc[sr_options["pid"] == s, "label"].iloc[0],
+        chosen_channel = None
+        if colour_mode == "channel":
+            channel_labels = {k: lab for k, lab, _ in CHANNELS}
+            choice = st.selectbox(
+                "Highlight which channel?",
+                options=["(rainbow)"] + [k for k, _, _ in CHANNELS],
+                format_func=lambda k: "All channels (rainbow)"
+                if k == "(rainbow)" else channel_labels[k],
             )
-            hops = st.slider("Hops", 1, 2, 1)
+            chosen_channel = None if choice == "(rainbow)" else choice
 
-        st.header("Filter")
-        min_year = st.slider("Min publication year", 1990, 2025, 2000, step=1)
-        topic_options = sorted([t for t in papers["primary_topic_field"].dropna().unique() if t])
-        topic_filter = st.multiselect(
-            "Topic field", options=topic_options, default=[],
-            help="Leave empty to include all fields.",
+        st.markdown("### Funnel replay")
+        funnel_idx = st.select_slider(
+            "Stage",
+            options=list(range(len(FUNNEL_FRAMES))),
+            format_func=lambda i: FUNNEL_FRAMES[i][0],
+            value=0,
         )
-        query = st.text_input(
-            "Highlight (title contains …)",
-            value="",
-            placeholder="e.g. trauma, veteran, meta-analysis",
-        ).strip().lower()
+        funnel_visible = FUNNEL_FRAMES[funnel_idx][1]
 
-        st.header("Layout")
-        layout_mode = st.radio(
-            "Algorithm",
-            ["Spring 3D", "BFS ring"],
-            index=0,
-            help="Spring = force-directed. BFS ring = concentric shells by distance "
-                 "from SR-core (or seed in Ego mode).",
+        st.markdown("### Filters")
+        years = [int(y) for y in papers["publication_year"].dropna().unique()]
+        y_min = min(years) if years else 2000
+        y_max = max(years) if years else 2025
+        year_range = st.slider(
+            "Publication year",
+            min_value=y_min, max_value=y_max, value=(y_min, y_max),
         )
-        color_by_community = False
-        if view == "Included backbone":
-            color_by_community = st.checkbox(
-                "Colour by community (Louvain)", value=False,
-                help="Detects communities inside the backbone and colours nodes accordingly.",
+        show_edges = st.checkbox("Show citation edges", value=True)
+
+        st.markdown("---")
+        with st.expander("About v4"):
+            n_ft = int((papers['stage'] == 'ft_included').sum())
+            n_tiab = int((papers['stage'] == 'tiab_included').sum())
+            st.markdown(
+                f"- **{n_ft}** papers passed full-text screening and made it "
+                f"into the systematic review (cyan core).\n"
+                f"- **{n_tiab}** passed title/abstract screening but were "
+                f"excluded at full-text.\n"
+                f"- Edges are intra-corpus OpenAlex `referenced_works`.\n"
+                f"- 7 retrieval channels from the FORAS screening trajectory "
+                f"-- try *Colour by -> Retrieval channel* to see complementarity."
             )
 
-        st.header("Animation")
-        animate = st.checkbox("Animate chronologically", value=True)
-        if animate:
-            year_step = st.slider("Year step", 1, 5, 2)
-            rotation_amount = st.slider(
-                "Camera orbit", 0.0, 1.5, 0.45, step=0.05,
-                help="How much the camera rotates across the animation. 0 = static.",
-            )
-        else:
-            year_step, rotation_amount = 2, 0.0
+    pids_tuple = tuple(G.nodes())
+    edges_tuple = tuple(G.edges())
+    pos = compute_layout(pids_tuple, edges_tuple)
 
-        st.header("Path")
-        path_mode = st.checkbox("Shortest path between two papers", value=False)
-        path_nodes_selected = None
-        if path_mode:
-            sr_pool = papers[(papers["label_included"] == 1) |
-                             (papers["label_abstract_included"] == 1)].copy()
-            sr_pool["label"] = sr_pool["title"].fillna("(no title)").str.slice(0, 80)
-            pa = st.selectbox("From", options=sr_pool["pid"].tolist(),
-                              format_func=lambda s: sr_pool.loc[sr_pool["pid"] == s, "label"].iloc[0],
-                              key="path_a")
-            pb = st.selectbox("To", options=sr_pool["pid"].tolist(), index=1,
-                              format_func=lambda s: sr_pool.loc[sr_pool["pid"] == s, "label"].iloc[0],
-                              key="path_b")
-            path_nodes_selected = (pa, pb)
-
-        st.divider()
-        st.caption("Drag to orbit · scroll to zoom · double-click to reset view")
-
-    # ------ subgraph selection --------------------------------------------- #
-    if view == "Smart (labeled + neighbors)":
-        sg = smart_subgraph(g, max_nodes, include_abs)
-    elif view == "Included backbone":
-        nodes = included_nodes(g, include_abs)
-        sg = g.subgraph(nodes).copy()
-    elif view == "Ego of seed":
-        sg = ego_subgraph(g, seed, hops, max_nodes)
-    else:
-        sg = topn_subgraph(g, max_nodes, include_abs)
-
-    sg = filter_by_year(sg, min_year)
-    sg = filter_by_topic(sg, topic_filter)
-
-    # ensure path endpoints stay in graph if path mode is on
-    path = None
-    if path_mode and path_nodes_selected:
-        pa, pb = path_nodes_selected
-        if pa in g and pb in g:
-            try:
-                p = nx.shortest_path(g.to_undirected(as_view=True), source=pa, target=pb)
-                # overlay path nodes onto current subgraph
-                extra = [n for n in p if n not in sg]
-                if extra:
-                    union = set(sg.nodes()) | set(p)
-                    sg = g.subgraph(union).copy()
-                path = p
-            except nx.NetworkXNoPath:
-                path = None
-
-    # resolve highlight nodes (query)
-    highlight_nodes = set()
-    if query:
-        for nid, a in sg.nodes(data=True):
-            title = _s(a.get("title")).lower()
-            if query in title:
-                highlight_nodes.add(nid)
-
-    # ------ KPI strip ------------------------------------------------------ #
-    total_sr = int((papers["label_included"] == 1).sum())
-    visible_sr = sum(1 for n, a in sg.nodes(data=True)
-                     if int(a.get("label_included", 0) or 0) == 1)
-    years_visible = [int(a.get("publication_year", 0) or 0) for _, a in sg.nodes(data=True)]
-    years_visible = [y for y in years_visible if y > 0]
-    avg_year = f"{sum(years_visible) / len(years_visible):.0f}" if years_visible else "—"
-    coverage = f"{visible_sr}/{total_sr} ({100 * visible_sr / total_sr:.0f}%)" if total_sr else "—"
-
-    k1, k2, k3, k4 = st.columns(4)
-    k1.metric("Nodes", f"{sg.number_of_nodes():,}")
-    k2.metric("Edges", f"{sg.number_of_edges():,}")
-    k3.metric("SR coverage", coverage)
-    k4.metric("Avg year", avg_year)
-
-    n_nodes = sg.number_of_nodes()
-    if n_nodes == 0:
-        st.warning("No nodes match the current filters. Lower the min year, clear topic filter, or switch view.")
-        return
-
-    # ------ layout --------------------------------------------------------- #
-    if layout_mode == "BFS ring":
-        if view == "Ego of seed" and seed:
-            seeds_for_layout = (seed,)
-        else:
-            seeds_for_layout = tuple(sorted(included_nodes(sg, include_abs))[:1] or [])
-        mode = "BFS ring"
-    elif view == "Ego of seed" and seed and hops >= 2:
-        mode = "Ego smooth"
-        seeds_for_layout = (seed,)
-    else:
-        mode = "Spring 3D"
-        seeds_for_layout = None
-
-    nkey, ekey = subgraph_key(sg)
-    pos = compute_layout(nkey, ekey, mode, seeds_for_layout, hops)
-
-    # ------ community coloring (backbone only) ----------------------------- #
-    community_colors = None
-    if color_by_community and view == "Included backbone":
-        community_colors = community_map(nkey, ekey)
-
-    # ------ figure --------------------------------------------------------- #
-    if animate and n_nodes > 12:
-        fig = build_animated_3d(
-            sg, pos, seed, size_metric, year_step, rotation_amount,
-            community_colors=community_colors,
-            highlight_nodes=highlight_nodes,
-            path=path,
-        )
-    else:
-        fig = build_static_3d(
-            sg, pos, seed, size_metric,
-            community_colors=community_colors,
-            highlight_nodes=highlight_nodes,
-            path=path,
-        )
-
-    st.plotly_chart(
-        fig, width="stretch",
-        config={"displaylogo": False, "scrollZoom": True},
+    fig = build_plot(
+        G, pos,
+        colour_mode=colour_mode,
+        chosen_channel=chosen_channel,
+        year_range=year_range,
+        show_edges=show_edges,
+        funnel_stage_visible=funnel_visible,
     )
+    st.plotly_chart(fig, width="stretch", config={"displaylogo": False})
 
-    # ------ action row ----------------------------------------------------- #
-    col_a, col_b = st.columns([1, 3])
-    with col_a:
-        snapshot = fig.to_html(include_plotlyjs="cdn", full_html=True)
-        st.download_button(
-            "Download snapshot (HTML)",
-            data=snapshot,
-            file_name=f"foras_graph_{view.split()[0].lower()}.html",
-            mime="text/html",
-            width="stretch",
-        )
-    with col_b:
-        if query and highlight_nodes:
-            st.caption(f"**{len(highlight_nodes)}** node(s) match `{query}` — outlined in pink")
-        if path:
-            st.caption(f"**Path** ({len(path)} hops): highlighted in amber")
-
-    with st.expander("About this view"):
-        st.markdown(
-            "- **Nodes** — papers from the FORAS corpus (`van_de_Schoot_2025`).\n"
-            "- **Edges** — intra-corpus citations (`referenced_works`, both endpoints in corpus).\n"
-            "- **Smart** = all labeled (SR + abstract) plus their highest-degree 1-hop neighbors. "
-            "**Backbone** = induced subgraph over labeled set. **Ego** = neighborhood of one SR paper. "
-            "**Top-N** = SR core + highest-degree papers corpus-wide.\n"
-            "- **Layout — Spring 3D** is force-directed. "
-            "**BFS ring** places nodes on Fibonacci spheres by BFS distance from the SR core (or seed).\n"
-            "- **Community color** on backbone uses Louvain to reveal clusters.\n"
-            "- **Path** finds the shortest undirected citation path between two labeled papers.\n"
-            "- **Hover** for authors, journal, topic, in/out-degree, OpenAlex cites.\n"
-            "- **v3** — clean futuristic pass. Built for cold-start GNN thesis work."
-        )
+    if colour_mode == "channel":
+        st.markdown("##### Retrieval channels -- how many included papers each channel found")
+        rows = []
+        for k, lab, _ in CHANNELS:
+            n_ft = int(((papers["stage"] == "ft_included") & (papers[k] == 1)).sum())
+            n_tiab = int(((papers["stage"] == "tiab_included") & (papers[k] == 1)).sum())
+            n_any = int((papers[k] == 1).sum())
+            rows.append(dict(Channel=lab, FT_included=n_ft,
+                             TIAB_included=n_tiab, Total=n_any))
+        st.dataframe(pd.DataFrame(rows), hide_index=True, width="stretch")
 
 
 if __name__ == "__main__":

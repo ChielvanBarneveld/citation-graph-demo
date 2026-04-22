@@ -1,52 +1,52 @@
-# FORAS Citation Graph — v3
+# FORAS Citation Graph — v4
 
 Interactive 3D citation-graph explorer for the **FORAS** systematic-review
-dataset (`van_de_Schoot_2025`). Part of the thesis work on GNN-based cold-start
-literature retrieval.
+dataset (`van_de_Schoot_2025` + PTSS screening trajectory). Part of the thesis
+work on GNN-based cold-start literature retrieval.
 
 Live demo: https://chielvanbarneveld-citation-graph-demo-streamlit-app-wfx5qe.streamlit.app/
 
-## What's in the graph
+## The FORAS story, at a glance
 
-- **14,764 papers** from the FORAS corpus.
-- **75,617 intra-corpus citation edges** (paper → paper, both in corpus).
-- Every paper is labeled:
-  - `label_included` (172 papers) — included after full-text screening.
-  - `label_abstract_included` (568 papers) — passed abstract screening.
-  - others — excluded / unlabeled.
+- **11,873 papers** in the graph (FORAS corpus + near periphery).
+- **172 FT-included** — passed full-text screening, core of the systematic
+  review (cyan LED core).
+- **395 TI/AB-included** — passed title/abstract screening, excluded at
+  full-text (navy mid-layer).
+- **7,620 screened + excluded** · **3,686 external periphery** (muted).
+- **~1.4 %** base-rate — the extreme class-imbalance cold-start problem this
+  thesis is about.
 
 ## Views
 
-- **Smart** — all labeled papers plus their highest-degree 1-hop neighbours.
-- **Included backbone** — induced subgraph over the labeled set. Optional
-  Louvain community colouring.
-- **Ego of seed** — 1 or 2 hops around a chosen SR-included paper. A dedicated
-  *Ego smooth* layout makes 2-hop neighborhoods readable.
-- **Top-N by degree** — SR core plus the highest-degree papers corpus-wide.
+- **Colour by screening stage** (default) — core-vs-periphery. The cyan core
+  with its halo makes the "which papers made it into the review" question
+  immediately visible.
+- **Colour by retrieval channel** — 7 FORAS search strategies (replication,
+  comprehensive, snowballing, full-text, three OpenAlex strategies). Pick one
+  to see which included papers that channel alone would have caught — the
+  direct ablation question from the van de Schoot 2025 paper.
+- **Colour by human-human disagreement** — the 78 "last relevant paper"
+  judgements highlighted, the hardest cases in the screening trajectory.
 
-## Layouts
+## Funnel replay
 
-- **Spring 3D** — force-directed.
-- **BFS ring** — concentric Fibonacci-sphere shells by BFS distance from the
-  SR core (or from the ego seed).
+A sidebar slider steps through the four-stage funnel: `All retrieved →
+Screened → TI/AB-included → FT-included`. Non-stage nodes fade out of view.
+Visualises the 1.4 % base rate in four clicks.
 
-## Filters & interactions
+## Data & edges
 
-- Year slider, **topic-field multi-select**, and a **highlight-by-title** box
-  that outlines matching nodes in pink.
-- **Shortest citation path** between any two labeled papers, rendered as an
-  amber overlay.
-- **Camera orbit** and **year step** sliders control the chronological
-  animation (Play/Pause + year slider, cubic-in-out easing).
-- Hover for title, authors, journal, topic, in/out-degree, and OpenAlex
-  citation count.
-- **Download snapshot** button exports the current view as a standalone HTML.
+Intra-corpus OpenAlex `referenced_works` edges only — no API calls required.
+Labels merged from two FORAS sources: `van_de_Schoot_2025.csv` (OpenAlex
+metadata + 172 `label_included`) and `PTSS_Data_Foras_2025-02-05.csv` (7
+search channels, per-screener labels, 4 inclusion criteria,
+human-human/human-LLM disagreement).
 
 ## Styling
 
-Clean futuristic green theme: near-black background with mint/emerald accents,
-JetBrains Mono for numeric metrics, Space Grotesk for everything else.
-`.streamlit/config.toml` pins the palette so widgets match.
+Light cream background, deep navy text, cyan LED accent for the FT-included
+core. Inter + JetBrains Mono. `.streamlit/config.toml` pins the palette.
 
 ## Run locally
 
@@ -55,11 +55,12 @@ pip install -r requirements.txt
 streamlit run streamlit_app.py
 ```
 
-Data is bundled in `data/` as compact parquet files (~3 MB total). Rebuild from
-the thesis folder via `python code/build_citation_graph.py`.
+Data is bundled in `data/` as compact parquet files (~1.8 MB total). Rebuild
+from the thesis folder via `python code/build_citation_graph.py` (or the v4
+build script `build_v4.py`).
 
 ## Status
 
-**v3** — clean futuristic pass. v1 was the initial 2D wire-up; v2 added 3D +
-chronological animation; v3 adds topic/highlight/path/community/BFS-ring and a
-top-to-bottom restyle.
+**v4** — FORAS-focused pivot. v1/v2/v3 were general citation-graph explorers
+with many interaction modes; v4 strips that down to what makes FORAS unique:
+the included core, the four-stage funnel, and the seven retrieval channels.
