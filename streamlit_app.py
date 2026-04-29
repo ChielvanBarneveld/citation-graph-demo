@@ -1,15 +1,16 @@
-"""FORAS citation graph — v4.
+"""FORAS citation graph - v5.
 
-Focused on what makes FORAS unique:
-1. Core-vs-periphery: 172 FT-included (cyan LED glow) -> 395 TI/AB-included
-   (navy) -> 7.6k screened (muted) -> 3.7k external periphery (faint).
-2. Funnel replay: retrieved -> TI/AB-included -> FT-included, dimming non-stage
-   nodes progressively.
-3. Search-channel facet: colour/filter by the 7 FORAS retrieval strategies,
-   making retrieval-channel complementarity visible.
+v5 adds two new tabs on top of the v4 graph view:
 
-Design: light cream background, deep navy text, cyan LED-accent for the
-FT-included core. Smooth/sculptural, not futuristic-dark.
+  Tab 1 - "Citation graph"      (unchanged: 11.873 nodes, FT/TIAB/screened/external)
+  Tab 2 - "Candidate explorer"  (new: 2.288 historical-terminology candidates,
+                                 their cross-edges to FORAS, filters to build a
+                                 test set for GNN evaluation)
+  Tab 3 - "Method & metrics"    (new: compact FORAS pipeline explainer,
+                                 candidate-injection logic, GNN role,
+                                 ASReview-insights metrics)
+
+Design unchanged: cream + navy + cyan LED accent.
 """
 from __future__ import annotations
 
@@ -19,41 +20,47 @@ from pathlib import Path
 import networkx as nx
 import pandas as pd
 import plotly.graph_objects as go
+import plotly.express as px
 import streamlit as st
 
 DATA = Path(__file__).parent / "data"
 
 # ---------- palette ----------
 PALETTE = {
-    "bg": "#f6f4ef",          # cream off-white
-    "bg_soft": "#eef1f4",     # soft slate
-    "navy": "#1e2a44",        # deep navy (primary text + edges)
-    "navy_mid": "#3b5475",    # mid navy
-    "cyan": "#22d3ee",        # LED cyan
-    "cyan_soft": "#a5f3fc",   # cyan halo
-    "slate": "#94a3b8",       # muted slate (screened nodes)
-    "mist": "#cbd5e1",        # very light slate (external)
+    "bg": "#f6f4ef",
+    "bg_soft": "#eef1f4",
+    "navy": "#1e2a44",
+    "navy_mid": "#3b5475",
+    "cyan": "#22d3ee",
+    "cyan_soft": "#a5f3fc",
+    "slate": "#94a3b8",
+    "mist": "#cbd5e1",
     "edge": "rgba(30,42,68,0.10)",
     "accent_warm": "#f59e0b",
+    "rose": "#f43f5e",
+    "amber_soft": "#fde68a",
 }
 
 STAGE_COLORS = {
-    "ft_included":    PALETTE["cyan"],
-    "tiab_included":  PALETTE["navy"],
-    "screened":       PALETTE["slate"],
-    "external":       PALETTE["mist"],
+    "ft_included":        PALETTE["cyan"],
+    "tiab_included":      PALETTE["navy"],
+    "screened":           PALETTE["slate"],
+    "external":           PALETTE["mist"],
+    "candidate_external": PALETTE["rose"],
 }
 STAGE_SIZES = {
-    "ft_included":    9.0,
-    "tiab_included":  5.5,
-    "screened":       3.0,
-    "external":       2.2,
+    "ft_included":        9.0,
+    "tiab_included":      5.5,
+    "screened":           3.0,
+    "external":           2.2,
+    "candidate_external": 2.5,
 }
 STAGE_OPACITY = {
-    "ft_included":    1.0,
-    "tiab_included":  0.95,
-    "screened":       0.55,
-    "external":       0.35,
+    "ft_included":        1.0,
+    "tiab_included":      0.95,
+    "screened":           0.55,
+    "external":           0.35,
+    "candidate_external": 0.55,
 }
 STAGE_LABEL = {
     "ft_included":   "FT-included (172)",
@@ -75,7 +82,6 @@ CHANNELS = [
 
 # ---------- helpers ----------
 def _s(v) -> str:
-    """Safe string: survives NaN floats, None, and anything else."""
     if v is None:
         return ""
     if isinstance(v, float):
@@ -101,6 +107,13 @@ def load_data():
     papers = pd.read_parquet(DATA / "papers.parquet")
     edges = pd.read_parquet(DATA / "edges.parquet")
     return papers, edges
+
+
+@st.cache_data(show_spinner=False)
+def load_candidates():
+    cand = pd.read_parquet(DATA / "candidates.parquet")
+    cross = pd.read_parquet(DATA / "candidate_foras_edges.parquet")
+    return cand, cross
 
 
 @st.cache_resource(show_spinner=False)
@@ -135,7 +148,7 @@ def compute_layout(_nodes: tuple, _edges: tuple, seed: int = 7):
     return nx.spring_layout(g, dim=3, seed=seed, iterations=30)
 
 
-# ---------- node rendering ----------
+# ---------- node rendering (UNCHANGED from v4) ----------
 def node_hover(pid: str, attr: dict) -> str:
     title = _s(attr.get("title"))[:160]
     journal = _s(attr.get("journal"))[:70]
@@ -196,7 +209,7 @@ def colour_by_disagreement(attr: dict):
     return base, size, op * 0.45
 
 
-# ---------- plot ----------
+# ---------- plot (UNCHANGED) ----------
 def build_plot(G, pos, colour_mode, chosen_channel, year_range,
                show_edges, funnel_stage_visible) -> go.Figure:
     xs, ys, zs, colours, sizes, opacities, hovers = [], [], [], [], [], [], []
@@ -222,10 +235,8 @@ def build_plot(G, pos, colour_mode, chosen_channel, year_range,
         hovers.append(node_hover(n, attr))
 
     rgba = [_hex_to_rgba(c, o) for c, o in zip(colours, opacities)]
-
     traces = []
 
-    # edges first (muted)
     if show_edges:
         ex, ey, ez = [], [], []
         for u, v in G.edges():
@@ -247,7 +258,6 @@ def build_plot(G, pos, colour_mode, chosen_channel, year_range,
             hoverinfo="none", showlegend=False, name="edges",
         ))
 
-    # halo behind FT-included
     h_x, h_y, h_z = [], [], []
     for n in G.nodes():
         attr = G.nodes[n]
@@ -268,7 +278,6 @@ def build_plot(G, pos, colour_mode, chosen_channel, year_range,
         hoverinfo="none", showlegend=False, name="halo",
     ))
 
-    # main nodes
     traces.append(go.Scatter3d(
         x=xs, y=ys, z=zs, mode="markers",
         marker=dict(size=sizes, color=rgba,
@@ -277,7 +286,6 @@ def build_plot(G, pos, colour_mode, chosen_channel, year_range,
         showlegend=False, name="papers",
     ))
 
-    # stage-legend proxies (only in stage mode)
     for stage, label in STAGE_LABEL.items():
         traces.append(go.Scatter3d(
             x=[None], y=[None], z=[None], mode="markers",
@@ -288,10 +296,8 @@ def build_plot(G, pos, colour_mode, chosen_channel, year_range,
 
     fig = go.Figure(data=traces)
     fig.update_layout(
-        height=720,
-        margin=dict(l=0, r=0, t=0, b=0),
-        paper_bgcolor=PALETTE["bg"],
-        plot_bgcolor=PALETTE["bg"],
+        height=720, margin=dict(l=0, r=0, t=0, b=0),
+        paper_bgcolor=PALETTE["bg"], plot_bgcolor=PALETTE["bg"],
         font=dict(family="Inter, -apple-system, Segoe UI, sans-serif",
                   size=13, color=PALETTE["navy"]),
         scene=dict(
@@ -313,7 +319,6 @@ def build_plot(G, pos, colour_mode, chosen_channel, year_range,
     return fig
 
 
-# ---------- funnel ----------
 FUNNEL_FRAMES = [
     ("All retrieved",          {"external", "screened", "tiab_included", "ft_included"}),
     ("Screened (FORAS corpus)", {"screened", "tiab_included", "ft_included"}),
@@ -322,7 +327,7 @@ FUNNEL_FRAMES = [
 ]
 
 
-# ---------- app ----------
+# ---------- CSS ----------
 def inject_css():
     st.markdown(f"""
     <style>
@@ -337,8 +342,7 @@ def inject_css():
       }}
       h1, h2, h3, h4 {{
         color: {PALETTE['navy']};
-        font-weight: 600;
-        letter-spacing: -0.01em;
+        font-weight: 600; letter-spacing: -0.01em;
       }}
       .foras-title {{
         font-weight: 700; font-size: 1.6rem;
@@ -363,6 +367,7 @@ def inject_css():
         color: {PALETTE['cyan']};
         text-shadow: 0 0 8px rgba(34,211,238,0.35);
       }}
+      .foras-kpi .num-rose {{ color: {PALETTE['rose']}; }}
       .foras-kpi .lab {{
         color: {PALETTE['navy_mid']};
         font-size: 0.72rem; text-transform: uppercase;
@@ -376,6 +381,14 @@ def inject_css():
       .stButton > button:hover {{
         background: {PALETTE['cyan']}; color: {PALETTE['navy']};
       }}
+      .explainer {{
+        background: {PALETTE['bg_soft']};
+        border-left: 3px solid {PALETTE['cyan']};
+        padding: 0.8rem 1.1rem;
+        border-radius: 0 8px 8px 0;
+        margin: 0.6rem 0 1rem 0;
+      }}
+      .explainer h4 {{ margin-top: 0; }}
     </style>
     """, unsafe_allow_html=True)
 
@@ -404,19 +417,10 @@ def kpi_strip(papers: pd.DataFrame):
         )
 
 
-def main():
-    st.set_page_config(page_title="FORAS citation graph . v4",
-                       page_icon=":sparkles:", layout="wide")
-    inject_css()
-    papers, edges = load_data()
-    G = build_graph(len(papers), len(edges))
-
-    st.markdown(
-        "<div class='foras-title'>FORAS . citation graph</div>"
-        "<div class='foras-sub'>The 172 systematic-review-included papers "
-        "as a cyan core inside the FORAS corpus . v4</div>",
-        unsafe_allow_html=True,
-    )
+# ============================================================
+# TAB 1 - Citation graph (existing v4 view)
+# ============================================================
+def render_citation_graph_tab(papers, G):
     kpi_strip(papers)
 
     with st.sidebar:
@@ -428,10 +432,8 @@ def main():
                 "stage": "Screening stage",
                 "channel": "Retrieval channel",
                 "disagreement": "Human-human disagreement",
-            }[k],
-            index=0,
+            }[k], index=0,
         )
-
         chosen_channel = None
         if colour_mode == "channel":
             channel_labels = {k: lab for k, lab, _ in CHANNELS}
@@ -456,42 +458,19 @@ def main():
         years = [int(y) for y in papers["publication_year"].dropna().unique()]
         y_min = min(years) if years else 2000
         y_max = max(years) if years else 2025
-        year_range = st.slider(
-            "Publication year",
-            min_value=y_min, max_value=y_max, value=(y_min, y_max),
-        )
+        year_range = st.slider("Publication year", y_min, y_max, (y_min, y_max))
         show_edges = st.checkbox("Show citation edges", value=True)
-
-        st.markdown("---")
-        with st.expander("About v4"):
-            n_ft = int((papers['stage'] == 'ft_included').sum())
-            n_tiab = int((papers['stage'] == 'tiab_included').sum())
-            st.markdown(
-                f"- **{n_ft}** papers passed full-text screening and made it "
-                f"into the systematic review (cyan core).\n"
-                f"- **{n_tiab}** passed title/abstract screening but were "
-                f"excluded at full-text.\n"
-                f"- Edges are intra-corpus OpenAlex `referenced_works`.\n"
-                f"- 7 retrieval channels from the FORAS screening trajectory "
-                f"-- try *Colour by -> Retrieval channel* to see complementarity."
-            )
 
     pids_tuple = tuple(G.nodes())
     edges_tuple = tuple(G.edges())
     pos = compute_layout(pids_tuple, edges_tuple)
 
-    fig = build_plot(
-        G, pos,
-        colour_mode=colour_mode,
-        chosen_channel=chosen_channel,
-        year_range=year_range,
-        show_edges=show_edges,
-        funnel_stage_visible=funnel_visible,
-    )
+    fig = build_plot(G, pos, colour_mode, chosen_channel, year_range,
+                     show_edges, funnel_visible)
     st.plotly_chart(fig, width="stretch", config={"displaylogo": False})
 
     if colour_mode == "channel":
-        st.markdown("##### Retrieval channels -- how many included papers each channel found")
+        st.markdown("##### Retrieval channels - how many included papers each channel found")
         rows = []
         for k, lab, _ in CHANNELS:
             n_ft = int(((papers["stage"] == "ft_included") & (papers[k] == 1)).sum())
@@ -500,6 +479,482 @@ def main():
             rows.append(dict(Channel=lab, FT_included=n_ft,
                              TIAB_included=n_tiab, Total=n_any))
         st.dataframe(pd.DataFrame(rows), hide_index=True, width="stretch")
+
+
+# ============================================================
+# TAB 2 - Candidate explorer (NEW)
+# ============================================================
+def render_candidate_tab(cand: pd.DataFrame, cross: pd.DataFrame):
+    st.markdown(
+        "<div class='foras-title'>Historical-terminology candidates</div>"
+        "<div class='foras-sub'>2.288 papers found via 29 historical PTSD-terms "
+        "in OpenAlex - explore them, then build a test set for GNN evaluation.</div>",
+        unsafe_allow_html=True,
+    )
+
+    st.markdown(
+        "<div class='explainer'>"
+        "<b>What you're looking at.</b> Each row is a paper that uses one of "
+        "29 historical names for PTSD (<i>shell shock, traumatic neurosis, war "
+        "neurosis, soldier's heart, effort syndrome, ...</i>) according to OpenAlex. "
+        "We ran two queries per term: (1) full-text search restricted to pre-1980 "
+        "publications, (2) title-only search for post-1980 publications. The 9 "
+        "candidates that already appear in FORAS were all <b>screened-and-excluded</b> "
+        "by FORAS - none of them passed TI/AB. That's a strong signal: FORAS "
+        "screening tends to drop these historical-term papers."
+        "</div>",
+        unsafe_allow_html=True,
+    )
+
+    # KPIs
+    n_total = len(cand)
+    n_in_foras = int(cand["in_foras"].sum())
+    n_with_edge = int((cand["edges_total"] > 0).sum())
+    n_with_ft_edge = int(((cand["edges_to_foras_ft"] > 0) | (cand["edges_from_foras_ft"] > 0)).sum())
+    n_with_tiab_edge = int(((cand["edges_to_foras_tiab"] > 0) | (cand["edges_from_foras_tiab"] > 0)).sum())
+    total_edges = int(cand["edges_total"].sum())
+
+    cols = st.columns(6)
+    items = [
+        (f"{n_total:,}", "Candidates total", False, False),
+        (f"{n_in_foras}", "Already in FORAS", False, True),
+        (f"{n_with_edge:,}", "with >=1 FORAS edge", False, False),
+        (f"{n_with_tiab_edge}", "edge to TIAB-incl", True, False),
+        (f"{n_with_ft_edge}", "edge to FT-incl", True, False),
+        (f"{total_edges}", "Total cross-edges", False, False),
+    ]
+    for col, (num, lab, cyan, rose) in zip(cols, items):
+        klass = "num"
+        if cyan: klass = "num num-cyan"
+        if rose: klass = "num num-rose"
+        col.markdown(
+            f"<div class='foras-kpi'><div class='{klass}'>{num}</div>"
+            f"<div class='lab'>{lab}</div></div>",
+            unsafe_allow_html=True,
+        )
+    st.markdown("")
+
+    # Filters in sidebar (when this tab is active)
+    with st.sidebar:
+        st.markdown("---")
+        st.markdown("### Candidate filters")
+
+        # Pool filter
+        all_pools = ["pre1980", "post1980_title", "pre1980;post1980_title"]
+        pool_sel = st.multiselect(
+            "Pool", options=all_pools, default=all_pools,
+            help="pre1980 = full-text search restricted to <1980. "
+                 "post1980_title = title-only search for >=1980. "
+                 "pre1980;post1980_title = found in both."
+        )
+        # Era
+        era_options = ["<1920", "1920-44", "1945-79", "1980-99", "2000+", "nan"]
+        era_sel = st.multiselect("Era", options=era_options, default=era_options)
+        # Language
+        all_langs = sorted([x for x in cand["language"].dropna().astype(str).unique()])
+        if not all_langs:
+            all_langs = ["en"]
+        lang_sel = st.multiselect("Language", options=all_langs, default=all_langs)
+        # Edge requirement
+        edge_filter = st.radio(
+            "Edge-density requirement",
+            options=["any", "edge to any FORAS", "edge to TIAB-incl",
+                     "edge to FT-incl", "no edges (pure isolates)"],
+            index=0,
+        )
+        # In-FORAS toggle
+        in_foras_filter = st.radio(
+            "FORAS overlap",
+            options=["any", "only in-FORAS (n=9)", "exclude in-FORAS"],
+            index=0,
+        )
+        # Term filter (top-N)
+        all_terms = set()
+        for s in cand["found_via_terms"].fillna(""):
+            for t in str(s).split(";"):
+                if t:
+                    all_terms.add(t)
+        term_options = sorted(all_terms)
+        term_sel = st.multiselect(
+            "Found via term (any of)", options=term_options,
+            default=[],
+            help="Empty = include all terms. Pick one or more to subset."
+        )
+
+    # Apply filters
+    f = cand.copy()
+    if pool_sel:
+        f = f[f["pools"].isin(pool_sel)]
+    if era_sel:
+        f = f[f["era"].astype(str).isin(era_sel)]
+    if lang_sel:
+        f = f[f["language"].astype(str).isin(lang_sel)]
+    if edge_filter == "edge to any FORAS":
+        f = f[f["edges_total"] > 0]
+    elif edge_filter == "edge to TIAB-incl":
+        f = f[(f["edges_to_foras_tiab"] > 0) | (f["edges_from_foras_tiab"] > 0)]
+    elif edge_filter == "edge to FT-incl":
+        f = f[(f["edges_to_foras_ft"] > 0) | (f["edges_from_foras_ft"] > 0)]
+    elif edge_filter == "no edges (pure isolates)":
+        f = f[f["edges_total"] == 0]
+    if in_foras_filter == "only in-FORAS (n=9)":
+        f = f[f["in_foras"]]
+    elif in_foras_filter == "exclude in-FORAS":
+        f = f[~f["in_foras"]]
+    if term_sel:
+        mask = f["found_via_terms"].fillna("").apply(
+            lambda s: any(t in str(s).split(";") for t in term_sel)
+        )
+        f = f[mask]
+
+    st.markdown(f"##### Filtered set: **{len(f):,} candidates**")
+
+    # Summary plots
+    c1, c2 = st.columns(2)
+
+    with c1:
+        # Era distribution stacked by FORAS-overlap
+        era_df = f.copy()
+        era_df["FORAS overlap"] = era_df["in_foras"].map(
+            {True: "in FORAS", False: "external"}
+        )
+        era_counts = (era_df.groupby(["era", "FORAS overlap"])
+                            .size().reset_index(name="count"))
+        fig_era = px.bar(
+            era_counts, x="era", y="count", color="FORAS overlap",
+            color_discrete_map={"in FORAS": PALETTE["cyan"],
+                                "external": PALETTE["rose"]},
+            category_orders={"era": ["<1920", "1920-44", "1945-79",
+                                      "1980-99", "2000+", "nan"]},
+            title="By era (stacked: in FORAS vs external)",
+        )
+        fig_era.update_layout(
+            paper_bgcolor=PALETTE["bg"], plot_bgcolor=PALETTE["bg"],
+            font=dict(family="Inter", color=PALETTE["navy"]),
+            height=320, margin=dict(l=10, r=10, t=40, b=10),
+        )
+        st.plotly_chart(fig_era, width="stretch", config={"displaylogo": False})
+
+    with c2:
+        # Per-term breakdown (top 15)
+        term_counts = {}
+        for s in f["found_via_terms"].fillna(""):
+            for t in str(s).split(";"):
+                if t:
+                    term_counts[t] = term_counts.get(t, 0) + 1
+        if term_counts:
+            tdf = (pd.DataFrame(list(term_counts.items()),
+                                columns=["term", "count"])
+                     .sort_values("count", ascending=True).tail(15))
+            fig_term = px.bar(
+                tdf, x="count", y="term", orientation="h",
+                color_discrete_sequence=[PALETTE["navy"]],
+                title="Top 15 productive terms (in current filter)",
+            )
+            fig_term.update_layout(
+                paper_bgcolor=PALETTE["bg"], plot_bgcolor=PALETTE["bg"],
+                font=dict(family="Inter", color=PALETTE["navy"]),
+                height=320, margin=dict(l=10, r=10, t=40, b=10),
+            )
+            st.plotly_chart(fig_term, width="stretch",
+                            config={"displaylogo": False})
+
+    # Edge-density summary table
+    st.markdown("##### Edge density of current filter (citation links to FORAS)")
+    edge_summary = pd.DataFrame([
+        {"Direction": "Candidate -> FORAS-FT-included",
+         "Edges": int(f["edges_to_foras_ft"].sum()),
+         "Candidates with >=1": int((f["edges_to_foras_ft"] > 0).sum())},
+        {"Direction": "Candidate -> FORAS-TIAB-broad",
+         "Edges": int(f["edges_to_foras_tiab"].sum()),
+         "Candidates with >=1": int((f["edges_to_foras_tiab"] > 0).sum())},
+        {"Direction": "Candidate -> any FORAS",
+         "Edges": int(f["edges_to_foras_all"].sum()),
+         "Candidates with >=1": int((f["edges_to_foras_all"] > 0).sum())},
+        {"Direction": "FORAS-FT-included -> Candidate",
+         "Edges": int(f["edges_from_foras_ft"].sum()),
+         "Candidates with >=1": int((f["edges_from_foras_ft"] > 0).sum())},
+        {"Direction": "FORAS-TIAB-broad -> Candidate",
+         "Edges": int(f["edges_from_foras_tiab"].sum()),
+         "Candidates with >=1": int((f["edges_from_foras_tiab"] > 0).sum())},
+        {"Direction": "Any FORAS -> Candidate",
+         "Edges": int(f["edges_from_foras_all"].sum()),
+         "Candidates with >=1": int((f["edges_from_foras_all"] > 0).sum())},
+    ])
+    st.dataframe(edge_summary, hide_index=True, width="stretch")
+
+    # In-FORAS overlap detail
+    if int(f["in_foras"].sum()) > 0:
+        st.markdown("##### In-FORAS overlap (these 9 are FORAS-screened-and-excluded)")
+        cols_show = ["openalex_id", "title", "year", "language", "foras_stage",
+                      "foras_label_FT", "foras_label_TIAB", "found_via_terms",
+                      "edges_total"]
+        st.dataframe(
+            f[f["in_foras"]][cols_show].sort_values("year", ascending=False),
+            hide_index=True, width="stretch",
+        )
+
+    # Candidate browsing table
+    st.markdown("##### Browse candidates (sortable, top 200)")
+    cols_show = ["openalex_id", "title", "year", "language", "found_via_terms",
+                 "edges_to_foras_ft", "edges_from_foras_ft",
+                 "edges_to_foras_tiab", "edges_from_foras_tiab",
+                 "edges_total", "in_foras"]
+    st.dataframe(
+        f[cols_show].sort_values(["edges_total", "year"], ascending=[False, False]).head(200),
+        hide_index=True, width="stretch",
+    )
+
+    # Export current filter as test set
+    st.markdown("##### Export current filter as a test set")
+    st.write(
+        "Pick a name for this candidate-subset and download as CSV. "
+        "This is the file you can later inject into the FORAS graph for GNN training/eval."
+    )
+    csv = f.to_csv(index=False).encode("utf-8")
+    label = st.text_input("Filename (without .csv)",
+                           value="candidates_testset_v1")
+    st.download_button(
+        label=f"Download {len(f):,}-row test set as CSV",
+        data=csv,
+        file_name=f"{label}.csv",
+        mime="text/csv",
+    )
+
+
+# ============================================================
+# TAB 3 - Method & metrics (NEW)
+# ============================================================
+def render_method_tab(papers: pd.DataFrame, cand: pd.DataFrame, cross: pd.DataFrame):
+    st.markdown(
+        "<div class='foras-title'>Method & metrics</div>"
+        "<div class='foras-sub'>How FORAS works, how we plan to inject candidates, "
+        "what role the GNN plays, and how we'll measure it with ASReview-insights.</div>",
+        unsafe_allow_html=True,
+    )
+
+    # ---- 1. FORAS pipeline ----
+    st.markdown("### 1 - The FORAS pipeline (\"the hunt for the last relevant paper\")")
+    st.markdown(
+        f"FORAS is van de Schoot et al. (2025), *European Journal of "
+        f"Psychotraumatology*, [DOI 10.1080/20008066.2025.2546214]"
+        f"(https://doi.org/10.1080/20008066.2025.2546214). The headline framing: "
+        f"how do you keep searching until you've found the **last relevant paper** "
+        f"on a systematic-review topic? Their answer is a hybrid pipeline where "
+        f"AI acts as a 'super-assistant' alongside human reviewers, not a "
+        f"replacement."
+    )
+    st.markdown(
+        f"**Important to know about scope.** FORAS-included does NOT mean "
+        f"'about PTSD' in general. The review is specifically about **latent "
+        f"growth mixture modelling (LGMM) of PTSS trajectories after traumatic "
+        f"events** (sec. 2.1 of the paper). A paper only ends up FT-included "
+        f"if it applies LGMM (or equivalent trajectory-classification methods) "
+        f"to PTSS data. That has a direct consequence for our T-012 historical-"
+        f"terminology candidates: a pre-1980 paper on *shell shock* could never "
+        f"satisfy the LGMM criterion because the method didn't exist yet. The "
+        f"9 in-FORAS overlap candidates being all `screened`-and-excluded is "
+        f"therefore not a bug - it's the criterion working as designed."
+    )
+    st.markdown(
+        f"The published dataset (`van_de_Schoot_2025.csv`, {len(papers):,} "
+        f"papers in this graph after pid-validation) merges **8 search "
+        f"strategies** (paper sec. 2.2):"
+    )
+    st.markdown(
+        "1. **SYNERGY** re-labelled initial set (4.544 records, 47 relevant after re-labelling).\n"
+        "2. **Exact replication** of the 2017 search in PubMed/Embase/PsycINFO/Scopus (6.701 dedupe'd, 202 TI/AB-included).\n"
+        "3. **Comprehensive search** (+1.120 to screen).\n"
+        "4. **Snowballing** (forward + backward citations from the relevant set).\n"
+        "5. **Full-text search via Dimensions** (586 records, 511 new beyond other methods).\n"
+        "6. **OpenAlex - nearest to inclusion criteria** (vectorised, top 5.000, k=900 added after dedupe).\n"
+        "7. **OpenAlex - nearest to relevant abstracts** (170k -> 57.232 dedupe -> top 935 added).\n"
+        "8. **OpenAlex + ASReview logistic** active-learning ranking (k=930 after dedupe)."
+    )
+    st.markdown(
+        "Plus a 9th *quality-check* layer that is screening, not search: an "
+        "**LLM (ChatGPT-3.5-v0301)** scored every record against the 4 inclusion "
+        "criteria and was used to flag potential reviewer mistakes (sec. 2.3.5.3). "
+        "1 of 126 final-included papers came from this LLM-rescue path."
+    )
+    st.markdown(
+        "**Two-stage human screening:**\n"
+        "- **TI/AB screening** - 568 records pass (`label_abstract_included = 1`).\n"
+        "- **Full-text screening** - 172 records pass (`label_included = 1`). "
+        "126 unique studies in the final review (130 incl. duplicates per paper sec. 2.3.6)."
+    )
+    st.markdown(
+        "78 of the included papers carry `disagreement_hh = 1` (the two human "
+        "reviewers initially disagreed). 8 of the 126 final-included would have "
+        "been missed without the second screener (sec. 3.2). Those are the hardest "
+        "cases and the most informative supervision signal for any model that "
+        "wants to imitate the screening decision."
+    )
+    st.markdown(
+        "The dataset also contains a `referenced_works` column with parsed "
+        "OpenAlex citation lists (99.5% non-null) - that's what makes the "
+        "intra-corpus citation graph (75.617 edges) buildable without extra "
+        "API calls. That's the 3D plot in tab 1."
+    )
+
+    # ---- 2. Candidate injection ----
+    st.markdown("### 2 - Injecting historical-terminology candidates")
+    n_in_foras = int(cand["in_foras"].sum())
+    n_external = len(cand) - n_in_foras
+    n_cross = len(cross)
+    st.markdown(
+        f"In OpenAlex we ran 29 historical names for PTSD (*shell shock, "
+        f"traumatic neurosis, war neurosis, soldier's heart, effort syndrome, "
+        f"battle fatigue,* DE/FR variants such as *Kriegsneurose, obusite, "
+        f"nevrose traumatique*) against two pools - pre-1980 "
+        f"full-text search and post-1980 title-only search. That returned "
+        f"**{len(cand):,} unique candidate papers** after deduplication."
+    )
+    st.markdown(
+        f"Of these, **{n_in_foras} already appear in the FORAS dataset** - "
+        f"all 9 in the `screened`-and-excluded stage (none passed TI/AB). "
+        f"The remaining **{n_external:,} are new papers** that FORAS never "
+        f"considered. Across both directions there are **{n_cross} cross-edges** "
+        f"(citations between candidates and FORAS papers). That number is the "
+        f"raw material a citation-based GNN would have to learn from."
+    )
+    st.markdown(
+        "**The plan**: pick a candidate subset in tab 2 (e.g. only candidates "
+        "with >=1 edge to FORAS, or only post-1980 papers, or only those found "
+        "via specific terms), download as CSV, merge into the FORAS graph as "
+        "a 5th stage `candidate_external`, including the relevant cross-edges. "
+        "The combined graph becomes the input to the GNN."
+    )
+    st.markdown(
+        "**Re-frame the GNN target.** Because FORAS-included means *LGMM-of-"
+        "PTSS-trajectories*, we should not naively train the GNN to predict "
+        "FORAS-included for our candidates - they are mostly historical case "
+        "studies, never trajectory-modelling work. A more honest target is "
+        "**broader PTSD-relevance**: would a clinician/historian classify this "
+        "paper as 'about PTSD-as-a-condition'? The 9 in-FORAS overlap "
+        "candidates can serve as silver-standard *negatives* (FORAS retrieved "
+        "and excluded), and we'll need a small handful of human-labelled "
+        "*positives* on the candidate set to anchor training. This is closer "
+        "to a label-propagation than a label-replication problem."
+    )
+
+    # ---- 3. GNN role ----
+    st.markdown("### 3 - What the GNN actually does")
+    st.markdown(
+        "The GNN is a **supervised, semi-supervised node-classifier** - "
+        "not reinforcement learning. We train it on the labeled subset "
+        "(172 FT-included as `1`, the screened-but-excluded as `0`, plus "
+        "optionally the TIAB-included as a soft positive) and let it propagate "
+        "those labels through the citation graph via message passing. Each "
+        "node's embedding is updated by averaging or attention-weighting its "
+        "neighbours' embeddings, and after a few layers every candidate node "
+        "has a learned vector. A small classifier head turns that into a "
+        "probability that the candidate is PTSD-relevant."
+    )
+    st.markdown(
+        "Concretely, the architectures we'll try first are **PPR (personalized "
+        "PageRank baseline)**, **Node2Vec + MLP**, **GCN**, then **GraphSAGE** "
+        "or **GAT** if the simpler ones leave headroom. Library: PyTorch "
+        "Geometric. The features per node will be a mix of (a) text features "
+        "from title + abstract (TF-IDF or sentence-BERT), (b) metadata "
+        "(publication year, language, journal field), and (c) topology features "
+        "(in/out degree, era one-hot)."
+    )
+    st.markdown(
+        "Reinforcement learning could come in only at a different layer: if "
+        "we wrap the GNN as the scoring function inside an **active-learning** "
+        "loop (which paper should a human label next?) - that's what ASReview "
+        "does with classical models, and the GNN could slot in there. But "
+        "the GNN itself is plain supervised."
+    )
+
+    # ---- 4. Metrics ----
+    st.markdown("### 4 - Evaluation - ASReview-insights metrics")
+    st.markdown(
+        "We evaluate the GNN with the same screening-simulation framework that "
+        "FORAS itself uses. The paper (sec. 2.3.6 / Results) runs simulations "
+        "via the **Makita workflow generator** on top of **ASReview LAB**, "
+        "with `mxbai-embed-large-v1` as feature extractor and Random Forest as "
+        "classifier; the headline metric is **time-to-discover** relevant "
+        "records (Ferdinands et al., 2023). For our GNN we use the matching "
+        "`asreview-insights` toolkit "
+        "([github.com/asreview/asreview-insights](https://github.com/asreview/asreview-insights))."
+    )
+    st.markdown(
+        "- **Loss** (normalized cumulative loss) - the area between the perfect "
+        "retrieval curve and the model's actual retrieval curve, normalized "
+        "to [0, 1]. 0 = perfect, ~0.5 = random. This is the headline metric "
+        "in modern ASReview benchmarks.\n"
+        "- **Recall @ k** - what fraction of the relevant papers does the model "
+        "rank in its top *k* (e.g. top 10%)? Higher = better.\n"
+        "- **WSS @ recall=R** (Work Saved over Sampling) - how much screening "
+        "time does the model save vs random review while still achieving "
+        "recall R? Standard cutoff is WSS@95%.\n"
+        "- **ATD / Time-to-Discovery** - the average rank at which relevant "
+        "papers are discovered. Lower = better. This is the metric the FORAS "
+        "paper explicitly chose for its own simulation."
+    )
+    st.markdown(
+        "**Our test setup** will be: (a) the candidate subset chosen in tab 2 "
+        "as the unlabelled pool, (b) the 9 in-FORAS overlap candidates as "
+        "silver-standard negatives, (c) a small human-labelled positive set on "
+        "the candidates (to anchor the broader PTSD-relevance target), and "
+        "(d) optionally a held-out portion of FORAS-FT-included as synthetic "
+        "positives - keeping in mind these have a different definition (LGMM-"
+        "trajectory) than what we want to measure. We report the four metrics "
+        "for the GNN, a PPR (personalized PageRank) baseline, and a TF-IDF / "
+        "sentence-BERT text-similarity baseline."
+    )
+    st.markdown(
+        "**Reality check from T-012.** The cross-edge density (~3 edges to "
+        "FT-included across all 2.288 candidates) means the GNN will lean "
+        "heavily on text features - the citation signal alone is too thin to "
+        "drive label propagation. A pragmatic baseline is the FORAS-paper "
+        "stack itself (`mxbai-embed-large-v1` + Random Forest); if our GNN "
+        "doesn't beat that on the candidate subset, the answer is text-only "
+        "is sufficient and the citation graph is decoration."
+    )
+
+    st.markdown("---")
+    st.caption(
+        "Reference: van de Schoot et al. (2025), *European Journal of "
+        "Psychotraumatology*, 16:1, 2546214 - "
+        "[10.1080/20008066.2025.2546214](https://doi.org/10.1080/20008066.2025.2546214). "
+        "PROSPERO pre-registration CRD42023494027. Materials, datasets, scripts: "
+        "see paper Table 1 (OSF / DataverseNL / GitHub repositories of "
+        "Coimbra, Lombaers, Bron, de Bruin, van de Schoot)."
+    )
+
+
+# ============================================================
+# main
+# ============================================================
+def main():
+    st.set_page_config(page_title="FORAS citation graph . v5",
+                       page_icon=":sparkles:", layout="wide")
+    inject_css()
+    papers, edges = load_data()
+    cand, cross = load_candidates()
+    G = build_graph(len(papers), len(edges))
+
+    st.markdown(
+        "<div class='foras-title'>FORAS . citation graph</div>"
+        "<div class='foras-sub'>The 172 systematic-review-included papers "
+        "as a cyan core inside the FORAS corpus . v5 with candidate explorer</div>",
+        unsafe_allow_html=True,
+    )
+
+    tab1, tab2, tab3 = st.tabs([
+        "Citation graph",
+        "Candidate explorer",
+        "Method & metrics",
+    ])
+    with tab1:
+        render_citation_graph_tab(papers, G)
+    with tab2:
+        render_candidate_tab(cand, cross)
+    with tab3:
+        render_method_tab(papers, cand, cross)
 
 
 if __name__ == "__main__":
