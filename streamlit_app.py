@@ -853,6 +853,113 @@ def _section_4_4_seventy_thirty():
             "om die kolom te vullen."
         )
 
+    # ----- 4.4b - Sentinel discovery timeline (improvement #1) -----
+    st.markdown("#### 4.4b - Sentinel discovery-timeline")
+    st.caption(
+        "Bij welk percentage gescreend / gerangschikt verschijnt elke sentinel? "
+        "Lager = sneller gevonden. P1 (recall-gain) voorspelt: GCN-lijntjes "
+        "links van AsReview-lijntjes voor Solomon en Kardiner; voor Southard "
+        "(0 cites) verwachten we geen verschil."
+    )
+    n_cands = 2289  # candidates pool size (incl. sentinel injection)
+    fig_t = go.Figure()
+    sentinel_colors = {
+        "solomon_1993": PALETTE["cyan"],
+        "kardiner_1941": PALETTE["accent_warm"],
+        "southard_1920": PALETTE["rose"],
+    }
+    for sid, color in sentinel_colors.items():
+        sub = df[df["sentinel_id"] == sid]
+        for _, row in sub.iterrows():
+            mode = row["split_mode"]
+            tag = "A" if mode == "modus_a_asreview_order" else "B"
+            for method, col, dash in (("AsReview", "asreview_rank", "dash"),
+                                       ("GCN", "gnn_rank", "solid")):
+                rank = row.get(col)
+                if pd.isna(rank):
+                    continue
+                pct = float(rank) / n_cands * 100
+                fig_t.add_trace(go.Scatter(
+                    x=[pct, pct], y=[0, 1],
+                    mode="lines",
+                    line=dict(color=color, width=2.5, dash=dash),
+                    name=f"{sid[:8]}.{tag} - {method}",
+                    hovertemplate=(
+                        f"{sid}<br>{method}<br>rank={int(rank)} / {n_cands}"
+                        f"<br>= {pct:.1f}% gescreend<extra></extra>"
+                    ),
+                ))
+    fig_t.update_layout(
+        title="Discovery-timeline: % candidates gerangschikt vóór sentinel",
+        xaxis_title="% candidates gerangschikt (lager = sneller)",
+        yaxis_title="",
+        yaxis=dict(visible=False, range=[0, 1]),
+        xaxis=dict(range=[0, 100]),
+        height=320, margin=dict(l=10, r=10, t=40, b=10),
+        paper_bgcolor=PALETTE["bg"], plot_bgcolor=PALETTE["bg"],
+        font=dict(family="Inter", color=PALETTE["navy"]),
+        legend=dict(orientation="h", yanchor="bottom", y=-0.3),
+    )
+    st.plotly_chart(fig_t, width="stretch", config={"displaylogo": False})
+    st.caption(
+        "Solid = GCN, dashed = AsReview. Cyan = Solomon (EASY, 22 cites), "
+        "amber = Kardiner (MEDIUM, 17 cites), rose = Southard (HARD, 0 cites)."
+    )
+
+    # ----- 4.4c - Edge-density vs rank scatter (improvement #2) -----
+    st.markdown("#### 4.4c - Edge-density × rank")
+    st.caption(
+        "Per sentinel: hoe scherper correleert rank met edge-count voor GCN "
+        "(graph-aware) versus AsReview (tekst-only)? P2 voorspelt: GCN-rank "
+        "↓ als edge-count ↑; AsReview-rank onafhankelijk."
+    )
+    edge_counts = {
+        "solomon_1993": 22,
+        "kardiner_1941": 17,
+        "southard_1920": 0,
+    }
+    rows_sc = []
+    # Use modus_b (random stratified) by default — both rows are duplicates of
+    # the same rank in our current stand-in fill.
+    sub_b = df[df["split_mode"] == "modus_b_random_stratified"]
+    for _, r in sub_b.iterrows():
+        sid = r["sentinel_id"]
+        for method, col in (("AsReview", "asreview_rank"),
+                             ("GCN", "gnn_rank")):
+            rank = r.get(col)
+            if pd.isna(rank):
+                continue
+            rows_sc.append({
+                "sentinel": sid, "method": method,
+                "edges": edge_counts.get(sid, 0),
+                "rank": int(rank),
+                "rank_pct": float(rank) / n_cands * 100,
+            })
+    if rows_sc:
+        sc_df = pd.DataFrame(rows_sc)
+        fig_s = px.scatter(
+            sc_df, x="edges", y="rank", color="method", text="sentinel",
+            color_discrete_map={"AsReview": PALETTE["navy_mid"],
+                                "GCN": PALETTE["cyan"]},
+            title="Edge-density vs rank (lager rank = sneller gevonden)",
+        )
+        fig_s.update_traces(textposition="top center", marker=dict(size=14))
+        fig_s.update_layout(
+            xaxis_title="cited_by_foras_any (citation-edges naar FORAS)",
+            yaxis_title=f"rank (1 = top, {n_cands} = bottom)",
+            height=380, margin=dict(l=10, r=10, t=40, b=10),
+            paper_bgcolor=PALETTE["bg"], plot_bgcolor=PALETTE["bg"],
+            font=dict(family="Inter", color=PALETTE["navy"]),
+        )
+        st.plotly_chart(fig_s, width="stretch", config={"displaylogo": False})
+        st.caption(
+            "Een neerwaartse lijn voor GCN = méér edges → lagere rank "
+            "(P2-bevestiging). Een vlakke lijn voor AsReview = tekst alleen, "
+            "edges niet benut."
+        )
+    else:
+        st.info("Geen data; rank-tabel is leeg.")
+
 
 def _section_4_5_explorer(cand: pd.DataFrame, cross: pd.DataFrame):
     """The legacy candidate-explorer view (filters + plots + tables + export)."""
@@ -2798,81 +2905,60 @@ def _section_2_9_glossary():
         return
     with st.expander("Glossary"):
         st.markdown(
-            "- **ASReview** - Active learning for Systematic Reviews; "
-            "open-source tool die menselijk screeningwerk versnelt.\n"
-            "- **Active learning** - iteratief proces waarin het model zelf "
-            "vraagt welk record het volgende gelabeld wil zien.\n"
-            "- **Simulation** - actieve-leer-loop met al-gelabelde data.\n"
-            "- **Prior records** - de paar records die je vooraf labelt om "
-            "de classifier te initialiseren.\n"
-            "- **Recall** - fractie van echte includes gevonden.\n"
+            "- **ASReview** - Active learning for Systematic Reviews.\n"
+            "- **Active learning** - iteratief proces waarin model vraagt welk record als volgende.\n"
+            "- **Simulation** - actieve-leer-loop op gelabelde data.\n"
+            "- **Prior records** - vooraf gelabelde records.\n"
+            "- **Recall** - fractie echte includes gevonden.\n"
             "- **WSS** - Work Saved over Sampling.\n"
             "- **ATD** - Average Time-to-Discovery.\n"
             "- **ERF** - Extra Relevant Found.\n"
-            "- **TF-IDF** - klassieke woord-frequentie-vectorizatie.\n"
+            "- **TF-IDF** - woord-frequentie-vectorizatie.\n"
             "- **SVM / NB** - Support Vector Machine / Naive Bayes.\n"
-            "- **ELAS-bundle** - vaste preset-combinatie.\n"
-            "- **Querier** - kiest welke record als volgende beoordeeld.\n"
+            "- **ELAS-bundle** - preset feature+classifier+querier combo.\n"
+            "- **Querier** - kiest volgende record (max, uncertainty, random).\n"
             "- **Balancer** - houdt class-balance in train-set.\n"
-            "- **Candidate** - paper uit de 2.288-pool.\n"
+            "- **Candidate** - paper uit 2.288-pool.\n"
             "- **Injection** - candidates toevoegen aan FORAS-CSV.\n"
             "- **Sentinel** - Solomon 1993 / Kardiner 1941 / Southard 1920.\n"
-            "- **Hold-out** - de 30% test-set.\n"
+            "- **Hold-out** - 30% test-set."
         )
 
 
 # ============================================================
-# Global control panel (view mode + sentinel focus + bookmarks)
+# Global control panel
 # ============================================================
 
 VIEW_MODES = {
-    "Leerlab": "All expanders, glossaries, methodology notes - read & learn.",
-    "Demo":    "Strakke kale view voor supervisor - geen glossaries, expanders default-collapsed.",
+    "Leerlab": "All expanders + glossaries.",
+    "Demo":    "Strakke kale view; geen glossaries.",
 }
-
 SENTINEL_CHOICES = ("All", "solomon_1993", "kardiner_1941", "southard_1920")
 
 
 def _in_demo_mode() -> bool:
-    """True when the user has switched the global view-mode to 'Demo'."""
     return st.session_state.get("view_mode", "Leerlab") == "Demo"
 
 
 def _focused_sentinel():
-    """Currently focused sentinel id, or None for 'All'."""
     s = st.session_state.get("focus_sentinel", "All")
     return None if s == "All" else s
 
 
 def _render_global_sidebar():
-    """Sidebar block shown regardless of active tab.
-
-    Three controls: view mode, focus sentinel, bookmarks.
-    """
     with st.sidebar:
         st.markdown("### Control panel")
         st.session_state.setdefault("view_mode", "Leerlab")
         st.session_state.setdefault("focus_sentinel", "All")
         st.session_state.setdefault("bookmarks", {})
-
-        st.radio(
-            "View mode",
-            options=list(VIEW_MODES.keys()),
-            help=" / ".join(f"{k}: {v}" for k, v in VIEW_MODES.items()),
-            key="view_mode",
-        )
-        st.selectbox(
-            "Focus sentinel",
-            options=SENTINEL_CHOICES,
-            help="Tabs filteren / highlighten op dit sentinel.",
-            key="focus_sentinel",
-        )
-
+        st.radio("View mode", options=list(VIEW_MODES.keys()),
+                 help=" / ".join(f"{k}: {v}" for k, v in VIEW_MODES.items()),
+                 key="view_mode")
+        st.selectbox("Focus sentinel", options=SENTINEL_CHOICES,
+                     key="focus_sentinel")
         with st.expander("Bookmarks"):
-            new_name = st.text_input(
-                "Bookmark name", placeholder="bv. demo-solomon",
-                key="bookmark_name",
-            )
+            new_name = st.text_input("Bookmark name", placeholder="bv. demo-solomon",
+                                     key="bookmark_name")
             cols_bm = st.columns(2)
             with cols_bm[0]:
                 if st.button("Save", key="bookmark_save"):
@@ -2885,10 +2971,8 @@ def _render_global_sidebar():
             with cols_bm[1]:
                 names = list(st.session_state["bookmarks"].keys())
                 if names:
-                    pick = st.selectbox(
-                        "Load", options=["-"] + names,
-                        key="bookmark_load_pick",
-                    )
+                    pick = st.selectbox("Load", options=["-"] + names,
+                                        key="bookmark_load_pick")
                     if pick != "-":
                         if st.button("Apply", key="bookmark_apply"):
                             bm = st.session_state["bookmarks"][pick]
@@ -2902,11 +2986,167 @@ def _render_global_sidebar():
 
 
 # ============================================================
+# TAB 5 - Compare (NEW; cross-experiment dashboard, improvement #8)
+# ============================================================
+def render_compare_tab(papers: pd.DataFrame, cand: pd.DataFrame,
+                      cross: pd.DataFrame):
+    st.markdown(
+        "<div class='foras-title'>Compare - one screen, three options</div>"
+        "<div class='foras-sub'>Optie 1 (sentinel) / Optie 2 (drift, backlog) "
+        "/ Optie 3 (Jones canon) op gelijke metrics.</div>",
+        unsafe_allow_html=True,
+    )
+    if not _in_demo_mode():
+        st.markdown(
+            "<div class='explainer'><h4>Wat zie je hier?</h4>"
+            "Een compacte tabel + KPI-strip met de drie experimentele "
+            "richtingen naast elkaar. Echte cijfers waar beschikbaar; '-' "
+            "met tooltip als een run nog moet draaien.</div>",
+            unsafe_allow_html=True,
+        )
+
+    # Aggregate metrics from leerlab + sentinel-ranks + asreview-runs
+    rows = []
+    LEERLAB_LOCAL = ROOT / "outputs" / "gnn_leerlab"
+    metrics_path = LEERLAB_LOCAL / "metrics.json"
+    config_path = LEERLAB_LOCAL / "config.json"
+    metrics = {}
+    config = {}
+    try:
+        if metrics_path.exists():
+            metrics = json.loads(metrics_path.read_text(encoding="utf-8"))
+        if config_path.exists():
+            config = json.loads(config_path.read_text(encoding="utf-8"))
+    except Exception:
+        pass
+    two_layer = metrics.get("two_layer", {})
+
+    # Sentinel ranks parquet
+    ranks = None
+    if SENTINEL_RANKS.exists():
+        try:
+            ranks = pd.read_parquet(SENTINEL_RANKS)
+        except Exception:
+            ranks = None
+
+    # ASReview runs count
+    n_ar_runs = 0
+    if ASREVIEW_RUNS.exists():
+        n_ar_runs = sum(1 for _ in ASREVIEW_RUNS.glob("*.asreview"))
+
+    def _fmt(v, suffix=""):
+        if v is None or (isinstance(v, float) and pd.isna(v)):
+            return "-"
+        if isinstance(v, float):
+            return f"{v:.3f}{suffix}"
+        return f"{v}{suffix}"
+
+    sentinels_with_data = (ranks["gnn_rank"].notna().sum() if ranks is not None else 0)
+
+    # Optie 1 row (sentinel-experiment)
+    best_rank = None
+    if ranks is not None:
+        gnn = ranks["gnn_rank"].dropna()
+        if len(gnn):
+            best_rank = int(gnn.min())
+    rows.append({
+        "Experiment": "Optie 1 - sentinel (FORAS+candidates)",
+        "N": "14k + 2.3k + 3 sentinels",
+        "Headline metric": "best GCN-rank op 3 sentinels",
+        "Value": _fmt(best_rank),
+        "AsReview equivalent": _fmt(int(ranks["asreview_rank"].dropna().min())
+                                    if ranks is not None and ranks["asreview_rank"].notna().any() else None),
+        "Status": ("data partial" if sentinels_with_data < 6 else "complete"),
+    })
+
+    # Optie 2 row (drift-ablation, backlog T-026)
+    rows.append({
+        "Experiment": "Optie 2 - synthetic drift (N=50)",
+        "N": "50 (planned)",
+        "Headline metric": "DeltaRecall(AsReview) - DeltaRecall(GCN)",
+        "Value": "-",
+        "AsReview equivalent": "-",
+        "Status": "backlog (T-026; needs Anthropic API-key)",
+    })
+
+    # Optie 3 row (Jones canon)
+    jones_path = ROOT / "outputs" / "optie3_jones_book" / "jones_classification.json"
+    jones_summary = {}
+    if jones_path.exists():
+        try:
+            jones_summary = json.loads(jones_path.read_text(encoding="utf-8"))
+        except Exception:
+            pass
+    rows.append({
+        "Experiment": "Optie 3 - Jones-canon 70/30",
+        "N": jones_summary.get("n_total_refs", 576),
+        "Headline metric": "Recall@k op Jones hold-out",
+        "Value": "-",
+        "AsReview equivalent": "-",
+        "Status": ("data ready (88 bridge-edges); 70/30 split nog niet "
+                   "gedraaid"),
+    })
+
+    # GCN baseline row (FORAS-only, from leerlab metrics)
+    rows.append({
+        "Experiment": "GCN baseline (FORAS, no candidates)",
+        "N": config.get("n_nodes", "-"),
+        "Headline metric": "recall@10% screened (TIAB labels)",
+        "Value": _fmt(two_layer.get("test_recall_at_10pct")
+                       or two_layer.get("headline_recall_at_10pct_screened")),
+        "AsReview equivalent": "-",
+        "Status": ("PPR + LR stand-in" if "stand_in" in str(config.get("model_kind","")).lower()
+                   or "NOT" in str(config.get("model_kind","")) else "real GCN"),
+    })
+
+    df_compare = pd.DataFrame(rows)
+    for c in df_compare.columns:
+        df_compare[c] = df_compare[c].astype(str)
+    st.markdown("### 5.1 - Side-by-side")
+    st.dataframe(df_compare, width="stretch", hide_index=True)
+
+    # KPI strip
+    st.markdown("### 5.2 - Snel-overzicht")
+    cols_kpi = st.columns(4)
+    with cols_kpi[0]:
+        st.metric("ASReview-runs op disk", f"{n_ar_runs}",
+                  help="Aantal .asreview-bestanden in outputs/asreview_runs/")
+    with cols_kpi[1]:
+        st.metric("Sentinels met GCN-rang", f"{sentinels_with_data}/6",
+                  help="3 sentinels x 2 split-modi = 6 rijen")
+    with cols_kpi[2]:
+        st.metric("Sentinels met ASReview-rang",
+                  f"{int(ranks['asreview_rank'].notna().sum()) if ranks is not None else 0}/6")
+    with cols_kpi[3]:
+        # Jones bridge-edges
+        st.metric("Jones bridge-edges (FORAS->Jones)",
+                  jones_summary.get("n_total_edges", 590))
+
+    # Status table per option
+    st.markdown("### 5.3 - Wat is er nog nodig per Optie?")
+    needs = pd.DataFrame([
+        {"Optie": "1 - sentinel", "Wat is af": "rewrites + GCN-rangen via PPR-stand-in",
+         "Wat ontbreekt": "ASReview-rangen (run asreview_batch.ps1) + echte GCN (run train_gnn.ps1)"},
+        {"Optie": "2 - drift",    "Wat is af": "concept + prompt-templates",
+         "Wat ontbreekt": "Anthropic API-key + drift-pipeline (T-026 backlog)"},
+        {"Optie": "3 - Jones",    "Wat is af": "data parse + cross-reference + bridge-edges",
+         "Wat ontbreekt": "70/30 GCN-train op Jones-subgraph (zie tab 6)"},
+    ])
+    st.dataframe(needs, width="stretch", hide_index=True)
+    st.caption(
+        "Deze tab is een commando-centrale richting de begeleidersmeeting: "
+        "wat hebben we, wat moet nog. Elke regel correspondeert met een "
+        "PowerShell-script (`asreview_batch.ps1` / `train_gnn.ps1`) of een "
+        "backlog-task (T-026)."
+    )
+
+
+# ============================================================
 # main
 # ============================================================
 def main():
-    st.set_page_config(page_title="FORAS . v5",
-                       page_icon=":sparkles:", layout="wide")
+    st.set_page_config(page_title="FORAS . v5", page_icon=":sparkles:",
+                       layout="wide")
     inject_css()
     _render_global_sidebar()
     papers, edges = load_data()
@@ -2916,8 +3156,9 @@ def main():
     title_suffix = (" . DEMO mode" if _in_demo_mode() else "")
     focus = _focused_sentinel()
     sub = ("The 172 systematic-review-included papers as a cyan core inside "
-           "the FORAS corpus . four tabs: graph, ASReview baseline, GNN "
-           "learning lab, candidates with sentinel cards.")
+           "the FORAS corpus . five tabs: graph, ASReview baseline, GNN "
+           "learning lab, candidates with sentinel cards, compare across "
+           "options.")
     if focus:
         sub += f" Focused: {focus}."
     st.markdown(
@@ -2926,11 +3167,12 @@ def main():
         unsafe_allow_html=True,
     )
 
-    tab1, tab2, tab3, tab4 = st.tabs([
+    tab1, tab2, tab3, tab4, tab5 = st.tabs([
         "FORAS",
         "ASReview",
         "GNN",
         "Candidates",
+        "Compare",
     ])
     with tab1:
         render_citation_graph_tab(papers, G)
@@ -2940,6 +3182,8 @@ def main():
         render_gnn_tab(papers, cand, cross)
     with tab4:
         render_candidate_tab(cand, cross)
+    with tab5:
+        render_compare_tab(papers, cand, cross)
 
 
 if __name__ == "__main__":
