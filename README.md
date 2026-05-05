@@ -1,6 +1,6 @@
 # FORAS citation-graph demo (v5)
 
-Live: https://citation-graph-demo.streamlit.app
+**Live:** https://chielvanbarneveld-citation-graph-demo-streamlit-app-wfx5qe.streamlit.app/
 
 Four-tab Streamlit app for the FORAS PTSD-trajectories review experiment:
 

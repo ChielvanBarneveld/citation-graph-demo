@@ -30,7 +30,7 @@ import plotly.graph_objects as go
 import plotly.express as px
 import streamlit as st
 
-ROOT = Path(__file__).parent.parent  # thesis-folder root
+ROOT = Path(__file__).parent  # cloud-deploy: app at repo root
 DATA = ROOT / "data"  # cloud-deploy
 THESIS_DATA = ROOT / "data"
 SENTINEL_DIR = ROOT / "outputs" / "sentinel_rewrites"
