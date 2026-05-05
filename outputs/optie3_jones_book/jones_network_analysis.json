@@ -1,0 +1,253 @@
+{
+  "intra_edges_total": 148,
+  "papers_with_intra_outgoing": 47,
+  "nodes_with_any_intra_edge": 134,
+  "isolated_nodes": 197,
+  "foras_to_jones_edges": 590,
+  "distinct_foras_papers_linking": 472,
+  "distinct_jones_cited_by_foras": 88,
+  "top_intra_cited": [
+    {
+      "id": "W164493232",
+      "in_degree": 4,
+      "year": 1963,
+      "title": "Human Behavior Under Stress\u2014From Combat to Social Psychiatry"
+    },
+    {
+      "id": "W2070707109",
+      "in_degree": 4,
+      "year": 1975,
+      "title": "A Prediction of Delayed Stress Response Syndromes in Vietnam Veterans"
+    },
+    {
+      "id": "W2003359826",
+      "in_degree": 3,
+      "year": 1954,
+      "title": "PSYCHOTHERAPY IN THE COMBAT ZONE"
+    },
+    {
+      "id": "W2399187930",
+      "in_degree": 3,
+      "year": 1952,
+      "title": "Psychoneuroses; military applications of a follow-up study."
+    },
+    {
+      "id": "W2037429169",
+      "in_degree": 3,
+      "year": 1946,
+      "title": "PSYCHONEUROTICS IN COMBAT"
+    },
+    {
+      "id": "W2496837584",
+      "in_degree": 3,
+      "year": 1941,
+      "title": "The traumatic neuroses of war."
+    },
+    {
+      "id": "W2060806934",
+      "in_degree": 3,
+      "year": 1945,
+      "title": "Men under stress"
+    },
+    {
+      "id": "W2059110384",
+      "in_degree": 2,
+      "year": 1952,
+      "title": "RESTATEMENT OF COMBAT PSYCHIATRY"
+    },
+    {
+      "id": "W62212040",
+      "in_degree": 2,
+      "year": 1967,
+      "title": "Experiences of a Division Psychiatrist in Vietnam"
+    },
+    {
+      "id": "W2123862865",
+      "in_degree": 2,
+      "year": 1986,
+      "title": "Paralysis: The Rise and Fall of a \"Hysterical\" Symptom"
+    },
+    {
+      "id": "W2171448006",
+      "in_degree": 2,
+      "year": 2002,
+      "title": "Post-combat syndromes from the Boer war to the Gulf war: a cluster analysis of their nature and attr"
+    },
+    {
+      "id": "W2060954754",
+      "in_degree": 2,
+      "year": 2001,
+      "title": "Post-modernity and post-traumatic stress disorder"
+    },
+    {
+      "id": "W4244704374",
+      "in_degree": 2,
+      "year": 1993,
+      "title": "Symptoms in the community. Prevalence, classification, and psychiatric comorbidity"
+    },
+    {
+      "id": "W2316796509",
+      "in_degree": 2,
+      "year": 1869,
+      "title": "Neurasthenia, or Nervous Exhaustion"
+    },
+    {
+      "id": "W2143548840",
+      "in_degree": 2,
+      "year": 1943,
+      "title": "THE NEUROTIC CONSTITUTION: A Statistical Study of Two Thousand Neurotic Soldiers"
+    },
+    {
+      "id": "W188109617",
+      "in_degree": 2,
+      "year": 1946,
+      "title": "The hospital as a therapeutic institution."
+    },
+    {
+      "id": "W2405884843",
+      "in_degree": 2,
+      "year": 1946,
+      "title": "The Northfield experiment."
+    },
+    {
+      "id": "W2090368540",
+      "in_degree": 2,
+      "year": 1867,
+      "title": "A Lecture on Diseases of the Heart in the British Army: The Cause and the Remedy"
+    },
+    {
+      "id": "W2298743613",
+      "in_degree": 2,
+      "year": 1993,
+      "title": "\u201cMinds the Dead Have Ravished\u201d:<sup>1</sup> Shell Shock, History, and the Ecology of Disease-Systems"
+    },
+    {
+      "id": "W2123629620",
+      "in_degree": 2,
+      "year": 1999,
+      "title": "Functional Somatic Syndromes"
+    }
+  ],
+  "top_foras_cited": [
+    {
+      "id": "W4241715325",
+      "foras_cites": 84,
+      "year": 2002,
+      "title": "Post-Traumatic Stress Disorder"
+    },
+    {
+      "id": "W2165454307",
+      "foras_cites": 45,
+      "year": 1998,
+      "title": "Risk Factors for DSM-III-R Posttraumatic Stress Disorder: Findings from the National Comorbidity Sur"
+    },
+    {
+      "id": "W2096851434",
+      "foras_cites": 42,
+      "year": 1998,
+      "title": "Relationship Between Acute Stress Disorder and Posttraumatic Stress Disorder Following Mild Traumati"
+    },
+    {
+      "id": "W2082317339",
+      "foras_cites": 39,
+      "year": 1999,
+      "title": "A critique of seven assumptions behind psychological trauma programmes in war-affected areas"
+    },
+    {
+      "id": "W2036613574",
+      "foras_cites": 30,
+      "year": 2001,
+      "title": "The invention of post-traumatic stress disorder and the social usefulness of a psychiatric category"
+    },
+    {
+      "id": "W2062206553",
+      "foras_cites": 23,
+      "year": 1989,
+      "title": "Eye movement desensitization: A new treatment for post-traumatic stress disorder"
+    },
+    {
+      "id": "W1897891557",
+      "foras_cites": 22,
+      "year": 1993,
+      "title": "Combat Stress Reaction: The Enduring Toll of War"
+    },
+    {
+      "id": "W2496837584",
+      "foras_cites": 20,
+      "year": 1941,
+      "title": "The traumatic neuroses of war."
+    },
+    {
+      "id": "W2126260347",
+      "foras_cites": 19,
+      "year": 1989,
+      "title": "Combat Experience and Emotional Health: Impairment and Resilience in Later Life"
+    },
+    {
+      "id": "W1978663763",
+      "foras_cites": 15,
+      "year": 1994,
+      "title": "DSM-IV: Diagnostic and Statistical Manual of Mental Disorders"
+    },
+    {
+      "id": "W2038866618",
+      "foras_cites": 14,
+      "year": 1987,
+      "title": "Epidemiology of PTSD in a national cohort of Vietnam veterans"
+    },
+    {
+      "id": "W2114161980",
+      "foras_cites": 12,
+      "year": 1990,
+      "title": "PTSD in DSM-III: A Case in the Politics of Diagnosis and Disease"
+    },
+    {
+      "id": "W2060806934",
+      "foras_cites": 12,
+      "year": 1945,
+      "title": "Men under stress"
+    },
+    {
+      "id": "W2171448006",
+      "foras_cites": 11,
+      "year": 2002,
+      "title": "Post-combat syndromes from the Boer war to the Gulf war: a cluster analysis of their nature and attr"
+    },
+    {
+      "id": "W1982210139",
+      "foras_cites": 10,
+      "year": 1982,
+      "title": "Self-efficacy mechanism in human agency."
+    },
+    {
+      "id": "W2164581133",
+      "foras_cites": 9,
+      "year": 2001,
+      "title": "Outcome in consecutive emergency department attenders following a road traffic accident"
+    },
+    {
+      "id": "W1981416828",
+      "foras_cites": 8,
+      "year": 2003,
+      "title": "Flashbacks and post-traumatic stress disorder: the genesis of a 20th-century diagnosis"
+    },
+    {
+      "id": "W2070707109",
+      "foras_cites": 8,
+      "year": 1975,
+      "title": "A Prediction of Delayed Stress Response Syndromes in Vietnam Veterans"
+    },
+    {
+      "id": "W1980176620",
+      "foras_cites": 7,
+      "year": 1915,
+      "title": "A CONTRIBUTION TO THE STUDY OF SHELL SHOCK."
+    },
+    {
+      "id": "W2412558249",
+      "foras_cites": 7,
+      "year": 1994,
+      "title": "Delayed Onset Post-Traumatic Stress Disorder in World war Ii Veterans"
+    }
+  ]
+}

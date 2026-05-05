@@ -1,0 +1,3458 @@
+[
+  {
+    "year": "1982",
+    "authors": "Abraham, P.",
+    "title": "Training for battleshock",
+    "raw": "Abraham, P. (1982). Training for battleshock. Journal of the Royal Army Medical Corps, 128, 18– 27."
+  },
+  {
+    "year": "1919",
+    "authors": "Abrahams, A.",
+    "title": "Soldier’s heart",
+    "raw": "Abrahams, A. (1919). Soldier’s heart. Journal of the Royal Medical Corps, 32, 276–285."
+  },
+  {
+    "year": "1958",
+    "authors": "Ahrenfeldt, R.H.",
+    "title": "British psychiatry in the Second World War",
+    "raw": "Ahrenfeldt, R.H. (1958). British psychiatry in the Second World War. London: Routledge & Kegan Paul."
+  },
+  {
+    "year": "1968",
+    "authors": "Ahrenfeldt, R.H.",
+    "title": "The army psychiatric service",
+    "raw": "Ahrenfeldt, R.H. (1968). The army psychiatric service. In A.Salusbury McNalty and W.Franklin Mellor (Eds.), Medical Services in War, The principal medical lessons of the Second World War, pp. 175–216. London: HMSO."
+  },
+  {
+    "year": "1941",
+    "authors": "Aita, J.A.",
+    "title": "Neurologic and psychiatric examination during military mobilization",
+    "raw": "Aita, J.A. (1941). Neurologic and psychiatric examination during military mobilization. War Medicine, 1, 775."
+  },
+  {
+    "year": "1949",
+    "authors": "Aita, J.A.",
+    "title": "Efficacy of the brief clinical interview method in predicting adjustments",
+    "raw": "Aita, J.A. (1949). Efficacy of the brief clinical interview method in predicting adjustments. Archives of Neurology and Psychiatry, 61, 170–176."
+  },
+  {
+    "year": "2002",
+    "authors": "Akagi, H. and House, A.",
+    "title": "The clinical epidemiology of hysteria: vanishing rare or just vanishing? Psychological Medicine, 32, 191–194",
+    "raw": "Akagi, H. and House, A. (2002). The clinical epidemiology of hysteria: vanishing rare or just vanishing? Psychological Medicine, 32, 191–194."
+  },
+  {
+    "year": "1980",
+    "authors": "American Psychiatric Association",
+    "title": "Diagnostic and statistical manual of mental disorders (DSM-IV)",
+    "raw": "American Psychiatric Association (1980). Diagnostic and statistical manual of mental disorders (DSM-IV). Washington DC: American Psychiatric Association."
+  },
+  {
+    "year": "1994",
+    "authors": "American Psychiatric Association",
+    "title": "Diagnostic and statistical manual of mental disorders (DSM-III)",
+    "raw": "American Psychiatric Association (1994). Diagnostic and statistical manual of mental disorders (DSM-III). Washington DC: American Psychiatric Association."
+  },
+  {
+    "year": "1865",
+    "authors": "Anon",
+    "title": "Report of the committee appointed to inquire into the effect on the health of the present system of carrying the accoutrements, ammunition, and kit of infantry soldiers, and drill &c. of recruits",
+    "raw": "Anon (1865). Report of the committee appointed to inquire into the effect on the health of the present system of carrying the accoutrements, ammunition, and kit of infantry soldiers, and drill &c. of recruits. London: HMSO."
+  },
+  {
+    "year": "1868",
+    "authors": "Anon",
+    "title": "Second report of the committee appointed to inquire into the effect of the present system of accoutrements and knapsacks on the health of the infantry soldier",
+    "raw": "Anon (1868). Second report of the committee appointed to inquire into the effect of the present system of accoutrements and knapsacks on the health of the infantry soldier. London: HMSO."
+  },
+  {
+    "year": "1902",
+    "authors": "Anon",
+    "title": "Magersfontein: A psychological study of war",
+    "raw": "Anon (1902). Magersfontein: A psychological study of war. Lancet, 2, 181."
+  },
+  {
+    "year": "1904a",
+    "authors": "Anon",
+    "title": "Inter-Departmental Committee on Physical Deterioration, Report (1904), in Reports from commissioners, inspectors and other series, XXXII, 17",
+    "raw": "Anon (1904a). Inter-Departmental Committee on Physical Deterioration, Report (1904), in Reports from commissioners, inspectors and other series, XXXII, 17."
+  },
+  {
+    "year": "1904b",
+    "authors": "Anon",
+    "title": "Madness in armies in the field",
+    "raw": "Anon (1904b). Madness in armies in the field. British Medical Journal, 2, 30–31."
+  },
+  {
+    "year": "1905",
+    "authors": "Anon",
+    "title": "Neurasthenia in a Russian naval officer",
+    "raw": "Anon (1905). Neurasthenia in a Russian naval officer. Lancet, 1, 609."
+  },
+  {
+    "year": "1907",
+    "authors": "Anon",
+    "title": "Neuroses of military men after a campaign",
+    "raw": "Anon (1907). Neuroses of military men after a campaign. Lancet, 1, 1740."
+  },
+  {
+    "year": "1912",
+    "authors": "Anon",
+    "title": "Report of the army medical department",
+    "raw": "Anon (1912). Report of the army medical department. London: HMSO."
+  },
+  {
+    "year": "1914a",
+    "authors": "Anon",
+    "title": "United services medical society",
+    "raw": "Anon (1914a). United services medical society. Lancet, 1, 897."
+  },
+  {
+    "year": "1914b",
+    "authors": "Anon",
+    "title": "Wind contusions",
+    "raw": "Anon (1914b). Wind contusions. Lancet, 1, 1423."
+  },
+  {
+    "year": "1914c",
+    "authors": "Anon",
+    "title": "Casualties in modern war",
+    "raw": "Anon (1914c). Casualties in modern war. British Medical Journal, 2, 514–515."
+  },
+  {
+    "year": "1914d",
+    "authors": "Anon",
+    "title": "Mental and nervous shock among the wounded",
+    "raw": "Anon (1914d). Mental and nervous shock among the wounded. British Medical Journal, 2, 802."
+  },
+  {
+    "year": "1915a",
+    "authors": "Anon",
+    "title": "Special report and second special report from the select committee naval and military services (pensions and grants)",
+    "raw": "Anon (1915a). Special report and second special report from the select committee naval and military services (pensions and grants). London: HMSO."
+  },
+  {
+    "year": "1915b",
+    "authors": "Anon",
+    "title": "Third special report from the select committee on naval and military services (pensions and grants)",
+    "raw": "Anon (1915b). Third special report from the select committee on naval and military services (pensions and grants). London: HMSO. .5002 .wal thgirypoc elbacilppa ro .S.U dettimrep sesu riaf tpecxe eht morf noissimrep tuohtiw mrof yna ni decudorper eb ton yaM .devreser sthgir Wessely; Shell Shock to PTSD : Military Psychiatry From 1900 to the Gulf War Account:ehost. References 208"
+  },
+  {
+    "year": "1915c",
+    "authors": "Anon",
+    "title": "House of Commons parliamentary debates, Vol 71, 14 April 1915–19 May 1915",
+    "raw": "Anon (1915c). House of Commons parliamentary debates, Vol 71, 14 April 1915–19 May 1915. London."
+  },
+  {
+    "year": "1916",
+    "authors": "Anon",
+    "title": "The diseases of active service",
+    "raw": "Anon (1916). The diseases of active service. Lancet, 1, 1048."
+  },
+  {
+    "year": "1918a",
+    "authors": "Anon",
+    "title": "Shell shock and war neuroses",
+    "raw": "Anon (1918a). Shell shock and war neuroses. British Medical Journal, 2, 260."
+  },
+  {
+    "year": "1918b",
+    "authors": "Anon",
+    "title": "Report on the length of stay in hospital in the UK and the disposal of gas casualties (WIHM/RAMC/2045/No",
+    "raw": "Anon (1918b). Report on the length of stay in hospital in the UK and the disposal of gas casualties (WIHM/RAMC/2045/No. 16, 8)."
+  },
+  {
+    "year": "1919a",
+    "authors": "Anon",
+    "title": "First annual report of the minister of pensions to 31 March 1918",
+    "raw": "Anon (1919a). First annual report of the minister of pensions to 31 March 1918. London: HMSO."
+  },
+  {
+    "year": "1919b",
+    "authors": "Anon",
+    "title": "Return of officers and men",
+    "raw": "Anon (1919b). Return of officers and men. War Pensions Gazette, 23, 282."
+  },
+  {
+    "year": "1919c",
+    "authors": "Anon",
+    "title": "Letter from A",
+    "raw": "Anon (1919c). Letter from A.Webb, Director General of Medical Services, Ministry of Pensions (TNA, PIN15/55, Treatment of neurasthenia)."
+  },
+  {
+    "year": "1919d",
+    "authors": "Anon",
+    "title": "Letter from Director General of Medical Services, Ministry of Pensions (TNA, PIN15/55, Treatment of neurasthenia, 18 December 1919)",
+    "raw": "Anon (1919d). Letter from Director General of Medical Services, Ministry of Pensions (TNA, PIN15/55, Treatment of neurasthenia, 18 December 1919)."
+  },
+  {
+    "year": "1920a",
+    "authors": "Anon",
+    "title": "House of Lords Debates Vol",
+    "raw": "Anon (1920a). House of Lords Debates Vol. 39, 10 February 1920–28 April 1920. London: HMSO."
+  },
+  {
+    "year": "1920b",
+    "authors": "Anon",
+    "title": "First and second reports from the select committee on pensions",
+    "raw": "Anon (1920b). First and second reports from the select committee on pensions. London: HMSO."
+  },
+  {
+    "year": "1920c",
+    "authors": "Anon",
+    "title": "Accommodation for border-line cases",
+    "raw": "Anon (1920c). Accommodation for border-line cases. Lancet, 2, 923."
+  },
+  {
+    "year": "1922a",
+    "authors": "Anon",
+    "title": "Editorial, shell-shock",
+    "raw": "Anon (1922a). Editorial, shell-shock. Journal of the Royal Army Medical Corps, 39, 450–458."
+  },
+  {
+    "year": "1922b",
+    "authors": "Anon",
+    "title": "Work of the Pensions Ministry",
+    "raw": "Anon (1922b). Work of the Pensions Ministry. British Medical Journal, 1, 68."
+  },
+  {
+    "year": "1925",
+    "authors": "Anon",
+    "title": "Answer to parliamentary question, 15 December 1925 (TNA, PIN 15/2946/81)",
+    "raw": "Anon (1925). Answer to parliamentary question, 15 December 1925 (TNA, PIN 15/2946/81)."
+  },
+  {
+    "year": "1926",
+    "authors": "Anon",
+    "title": "Reports on Saltash and Harrowby Camp (TNA, PIN15/58, Treatment of cases of neurasthenia)",
+    "raw": "Anon (1926). Reports on Saltash and Harrowby Camp (TNA, PIN15/58, Treatment of cases of neurasthenia)."
+  },
+  {
+    "year": "1935",
+    "authors": "Anon",
+    "title": "Nervous disablement in war and industry",
+    "raw": "Anon (1935). Nervous disablement in war and industry. Lancet, 2, 311–312."
+  },
+  {
+    "year": "1938",
+    "authors": "Anon",
+    "title": "Obituary William McDougall",
+    "raw": "Anon (1938). Obituary William McDougall. British Medical Journal, 2, 1232."
+  },
+  {
+    "year": "1939a",
+    "authors": "Anon",
+    "title": "Report of the Horder Conference, July 1939 (TNA, PIN15/2399)",
+    "raw": "Anon (1939a). Report of the Horder Conference, July 1939 (TNA, PIN15/2399)."
+  },
+  {
+    "year": "1939b",
+    "authors": "Anon",
+    "title": "Conference on entitlement in neurasthenia and the psychoses (TNA, PIN15/ 2401)",
+    "raw": "Anon (1939b). Conference on entitlement in neurasthenia and the psychoses (TNA, PIN15/ 2401)."
+  },
+  {
+    "year": "1939c",
+    "authors": "Anon",
+    "title": "Neuroses in war time, memorandum for the medical profession",
+    "raw": "Anon(1939c). Neuroses in war time, memorandum for the medical profession. British Medical Journal, 2, 1201."
+  },
+  {
+    "year": "1940a",
+    "authors": "Anon",
+    "title": "Dyspepsia in the army",
+    "raw": "Anon (1940a). Dyspepsia in the army. British Medical Journal, 2, 836–837."
+  },
+  {
+    "year": "1940b",
+    "authors": "Anon",
+    "title": "Draft air council typescript (TNA, AIR2/8591)",
+    "raw": "Anon (1940b). Draft air council typescript (TNA, AIR2/8591)."
+  },
+  {
+    "year": "1941a",
+    "authors": "Anon",
+    "title": "Psychiatry and the war",
+    "raw": "Anon (1941a). Psychiatry and the war. American Journal of Psychiatry, 97, 975–976."
+  },
+  {
+    "year": "1941b",
+    "authors": "Anon",
+    "title": "The effects of gas (WIHM, RAMC, 1652/2/4)",
+    "raw": "Anon (1941b). The effects of gas (WIHM, RAMC, 1652/2/4)."
+  },
+  {
+    "year": "1941c",
+    "authors": "Anon",
+    "title": "Neurasthenia: Definition of nervous shock in relation to war injury (TNA, PIN15/2208, 26B6), March 1941",
+    "raw": "Anon (1941c). Neurasthenia: Definition of nervous shock in relation to war injury (TNA, PIN15/2208, 26B6), March 1941."
+  },
+  {
+    "year": "1941d",
+    "authors": "Anon",
+    "title": "Letter to Pontypridd Labour Party (TNA, PIN15/2208, 26B), June 1941",
+    "raw": "Anon (1941d). Letter to Pontypridd Labour Party (TNA, PIN15/2208, 26B), June 1941."
+  },
+  {
+    "year": "1942a",
+    "authors": "Anon",
+    "title": "Standing committee on neurosis in war, approximate numbers dealt with by the",
+    "raw": "Anon (1942a). Standing committee on neurosis in war, approximate numbers dealt with by the"
+  },
+  {
+    "year": "1942b",
+    "authors": "Anon",
+    "title": "Psychiatric casualties, hints to medical officers in the Middle East Forces",
+    "raw": "Anon (1942b). Psychiatric casualties, hints to medical officers in the Middle East Forces. Cairo: General Headquarters MEF."
+  },
+  {
+    "year": "1943a",
+    "authors": "Anon",
+    "title": "House of Commons Parliamentary Debates",
+    "raw": "Anon (1943a). House of Commons Parliamentary Debates. 387, 1554–1555."
+  },
+  {
+    "year": "1943b",
+    "authors": "Anon",
+    "title": "Pensions: New provisions of Royal Warrant",
+    "raw": "Anon (1943b). Pensions: New provisions of Royal Warrant. British Medical Journal, 2, 185."
+  },
+  {
+    "year": "1944",
+    "authors": "Anon",
+    "title": "The rise in peptic ulcer",
+    "raw": "Anon (1944). The rise in peptic ulcer. British Medical Journal, 2, 665."
+  },
+  {
+    "year": "1945a",
+    "authors": "Anon",
+    "title": "Progress in psychiatry during the war",
+    "raw": "Anon (1945a). Progress in psychiatry during the war. British Medical Journal, 1, 913."
+  },
+  {
+    "year": "1945b",
+    "authors": "Anon",
+    "title": "Doctor-made",
+    "raw": "Anon (1945b). Doctor-made. Lancet, 2, 240."
+  },
+  {
+    "year": "1946",
+    "authors": "Anon",
+    "title": "Obituary C",
+    "raw": "Anon (1946). Obituary C.S.Myers. British Medical Journal, 2, 628."
+  },
+  {
+    "year": "1951a",
+    "authors": "Anon",
+    "title": "British medical services in Korea",
+    "raw": "Anon (1951a). British medical services in Korea. British Medical Journal, 2, 556."
+  },
+  {
+    "year": "1951b",
+    "authors": "Anon",
+    "title": "Medical services in Korea",
+    "raw": "Anon (1951b). Medical services in Korea. Lancet, 1, 896–897."
+  },
+  {
+    "year": "1951c",
+    "authors": "Anon",
+    "title": "Cold weather clothing for Korea",
+    "raw": "Anon (1951c). Cold weather clothing for Korea. British Medical Journal, 2, 1457."
+  },
+  {
+    "year": "1952",
+    "authors": "Anon",
+    "title": "Cold in Korea",
+    "raw": "Anon (1952). Cold in Korea. Lancet, 2, 233."
+  },
+  {
+    "year": "1953",
+    "authors": "Anon",
+    "title": "Ministry of Pensions, twenty-eighth report…for the period to 31 March 1953",
+    "raw": "Anon (1953). Ministry of Pensions, twenty-eighth report…for the period to 31 March 1953. London: HMSO. https://www.ebsco.com/terms-of-use. References 209"
+  },
+  {
+    "year": "1957",
+    "authors": "Anon",
+    "title": "Obituary D",
+    "raw": "Anon (1957). Obituary D. Carmalt Jones. British Medical Journal, 1, 649–650."
+  },
+  {
+    "year": "1992",
+    "authors": "Anon",
+    "title": "The ICD-10 Classification of Mental and Behavioural Disorders, Clinical Descriptions and Diagnostic Guidelines",
+    "raw": "Anon (1992). The ICD-10 Classification of Mental and Behavioural Disorders, Clinical Descriptions and Diagnostic Guidelines. Geneva: World Health Organisation."
+  },
+  {
+    "year": "1994",
+    "authors": "Anon",
+    "title": "Veterans and Agent Orange, health effects of herbicides used in Vietnam",
+    "raw": "Anon (1994). Veterans and Agent Orange, health effects of herbicides used in Vietnam. Washington DC: National Academy Press."
+  },
+  {
+    "year": "1966",
+    "authors": "Appel, J.W.",
+    "title": "Preventative psychiatry",
+    "raw": "Appel, J.W. (1966). Preventative psychiatry. In A.J.Glass and R.J.Bernucci (Eds.), Neuropsychiatry in World War II, Volume 1, Zone of Interior, pp. 389–390, Washington: Office of the Surgeon General. Appel, J.W., Beebe, G.W. and Hilger, D.W. (1946). Comparative incidence of neuropsychiatric casualties in World War I and World War II. American Journal of Psychiatry, 103, 196–199."
+  },
+  {
+    "year": "1965",
+    "authors": "Archibald, H. and Tuddenham, R.",
+    "title": "Persistent stress reaction after combat: a twentyyear follow-up",
+    "raw": "Archibald, H. and Tuddenham, R. (1965). Persistent stress reaction after combat: a twentyyear follow-up. Archives of General Psychiatry, 12, 475–481. Archibald, H., Long, D., Miller, C. and Tuddenham, R. (1962). Gross stress reaction in combat—a 15-year follow up. American Journal of Psychiatry, 119, 317–322."
+  },
+  {
+    "year": "1920",
+    "authors": "Armstong-Jones, R.",
+    "title": "Medico-Psychological Association of Great Britain and Ireland, Annual meeting",
+    "raw": "Armstong-Jones, R. (1920). Medico-Psychological Association of Great Britain and Ireland, Annual meeting. Lancet, 2, 404."
+  },
+  {
+    "year": "1971",
+    "authors": "Arthur, R.J.",
+    "title": "Success is predictable",
+    "raw": "Arthur, R.J. (1971). Success is predictable. Military Medicine, 136, 539–545."
+  },
+  {
+    "year": "1978",
+    "authors": "Arthur, R.J.",
+    "title": "Reflections on military psychiatry",
+    "raw": "Arthur, R.J. (1978). Reflections on military psychiatry. American Journal of Psychiatry, 135 (Supplement), 2–7."
+  },
+  {
+    "year": "1963",
+    "authors": "Artiss, K.L.",
+    "title": "Human behavior under stress: From combat to social psychiatry",
+    "raw": "Artiss, K.L. (1963). Human behavior under stress: From combat to social psychiatry. Military Medicine, 128, 1011–1015."
+  },
+  {
+    "year": "1907",
+    "authors": "Awtokratow, P.M.",
+    "title": "Die Geisteskranken im Russischen Heere während des Japanischen Krieges",
+    "raw": "Awtokratow, P.M. (1907). Die Geisteskranken im Russischen Heere während des Japanischen Krieges. Allgemeine Zeitschrift für Psychiatrie, 64, 286–319."
+  },
+  {
+    "year": "1997",
+    "authors": "Babbington, A.",
+    "title": "Shell-shock: A history of the changing attitudes to war neurosis",
+    "raw": "Babbington, A. (1997). Shell-shock: A history of the changing attitudes to war neurosis. London: Leo Cooper."
+  },
+  {
+    "year": "1946",
+    "authors": "Bado, A.J.",
+    "title": "Medical quarterly reports, No",
+    "raw": "Bado, A.J. (1946). Medical quarterly reports, No. 78 Neuropathic Hospital, April 1943 to September 1946 (TNA, WO222/788). Baggaley, M., Piper, M., Cumming, P. and Murphy, G. (1999). Trauma related symptoms in British soldiers 36 months following a tour in the former Yugoslavia. Journal of the Royal Army Medical Corps, 145, 13–14. Bailey P. (1929). Direction and elimination of individuals with nervous or mental disease. In P.Bailey, F.E.Williams and P.O.Komora (Eds.), The Medical Department of th"
+  },
+  {
+    "year": "1941",
+    "authors": "Baillie, W.",
+    "title": "A summary of 200 neurological and psychiatric admissions from Canadian army service forces",
+    "raw": "Baillie, W. (1941). A summary of 200 neurological and psychiatric admissions from Canadian army service forces. American Journal of Psychiatry, 97, 753–779."
+  },
+  {
+    "year": "1980",
+    "authors": "Balson, P.M. and Dempster, C.R.",
+    "title": "Treatment of war neuroses from Vietnam",
+    "raw": "Balson, P.M. and Dempster, C.R. (1980). Treatment of war neuroses from Vietnam. Comprehensive Psychiatry, 21, 167–175."
+  },
+  {
+    "year": "1982",
+    "authors": "Bandura, A.",
+    "title": "Self-efficacy mechanisms in human agency",
+    "raw": "Bandura, A. (1982). Self-efficacy mechanisms in human agency. American Psychologist, 27, 122– 147. Barclay Lyon, A. (1918). War diary no. 63 CCS (TNA, WO95/345), 29 April 1918."
+  },
+  {
+    "year": "2003",
+    "authors": "Barnett, C.",
+    "title": "The western front experience as interpreted through literature",
+    "raw": "Barnett, C. (2003). The western front experience as interpreted through literature. RUSI Journal, 148, 50–56. Barrett, D.E., Duque, D., Engel, C.E., Friedl, K., Gray, G., Hogan, B., Hyams, K.C., Kaforski, G., Murphy, F., North, R., Riddle, J., Ryan, M.A.K., Trump, D.H. and Wells, J. (2002). The recruit assessment program: A program to collect comprehensive baseline health data from US military personnel. Military Medicine, 167, 44–47."
+  },
+  {
+    "year": "1919",
+    "authors": "Barrett, J.W.",
+    "title": "A vision of the possible, What the RAMC might become",
+    "raw": "Barrett, J.W. (1919). A vision of the possible, What the RAMC might become. London: H.K. Lewis & Co."
+  },
+  {
+    "year": "1988",
+    "authors": "Barsky, A.J.",
+    "title": "The paradox of health",
+    "raw": "Barsky, A.J. (1988). The paradox of health. New England Journal of Medicine, 318, 414–418."
+  },
+  {
+    "year": "1999",
+    "authors": "Barsky, A.J. and Borus, J.F.",
+    "title": "Functional somatic syndromes",
+    "raw": "Barsky, A.J. and Borus, J.F. (1999). Functional somatic syndromes. Annals of Internal Medicine, 130, 910–921. https://www.ebsco.com/terms-of-use. References 210 Bartemeier, L.H., Kubie, L.S., Menninger, K.A., Romano, J. and Whitehorn, J.C. (1946). Combat exhaustion. Journal of Nervous and Mental Disease, 104, 358–389. Bass, C., Peveler, R. and House, A. (2001). Somatoform disorders: Severe psychiatric illnesses neglected by psychiatrists. British Journal of Psychiatry, 179, 11–14. Bate, A.L.F. ("
+  },
+  {
+    "year": "1869",
+    "authors": "Beard, G.",
+    "title": "Neurasthenia and nervous exhaustion",
+    "raw": "Beard, G. (1869). Neurasthenia and nervous exhaustion. Boston Medical and Surgical Journal, 3, 217–221."
+  },
+  {
+    "year": "1995",
+    "authors": "Beal, L.",
+    "title": "Post-traumatic stress disorder in prisoners of war and combat veterans of the Dieppe Raid: A 50-year follow up",
+    "raw": "Beal, L. (1995). Post-traumatic stress disorder in prisoners of war and combat veterans of the Dieppe Raid: A 50-year follow up. Canadian Journal of Psychiatry, 40, 177–184."
+  },
+  {
+    "year": "1958",
+    "authors": "Beebe, G.W. and Apple, J.W.",
+    "title": "Psychological breakdown in relation to stress and other factors",
+    "raw": "Beebe, G.W. and Apple, J.W. (1958). Psychological breakdown in relation to stress and other factors. In Variation in Psychological Tolerance to Ground Combat in World War II, Final Report, pp. 88–131. Washington: National Academy of Sciences."
+  },
+  {
+    "year": "1952",
+    "authors": "Beebe, G.W. and DeBakey, M.E.",
+    "title": "Battle casualties: Incidence, mortality, and logistic considerations",
+    "raw": "Beebe, G.W. and DeBakey, M.E. (1952). Battle casualties: Incidence, mortality, and logistic considerations. Springfield, IL: Charles C.Thomas."
+  },
+  {
+    "year": "1987",
+    "authors": "Belenky, G.L.",
+    "title": "Varieties of reaction and adaptation to combat experience",
+    "raw": "Belenky, G.L. (1987). Varieties of reaction and adaptation to combat experience. Bulletin of the Menninger Clinic. 51, 64–79."
+  },
+  {
+    "year": "1944",
+    "authors": "Bennet, E.A.",
+    "title": "Report of a conference on psychiatry in forward areas held in Calcutta (TNA, WO32/H550, August 8–10 1944)",
+    "raw": "Bennet, E.A. (1944). Report of a conference on psychiatry in forward areas held in Calcutta (TNA, WO32/H550, August 8–10 1944)."
+  },
+  {
+    "year": "1999",
+    "authors": "Bennet, P.",
+    "title": "Understanding responses to risk: Some basic findings",
+    "raw": "Bennet, P. (1999). Understanding responses to risk: Some basic findings. In P.Bennet and K. Calman (Eds.), Risk Communication and Public Health, pp. 3–19. Oxford: Oxford Medical Publications."
+  },
+  {
+    "year": "1966",
+    "authors": "Berlien, I.C. and Waggoner, R.W.",
+    "title": "Selection and induction",
+    "raw": "Berlien, I.C. and Waggoner, R.W. (1966). Selection and induction. In A.J.Glass and R.J. Bernucci (Eds.), Neuropsychiatry in World War II, Volume 1: Zone of the interior, pp. 153–91. Washington: Office of the Surgeon General."
+  },
+  {
+    "year": "1970",
+    "authors": "Bey, W.",
+    "title": "Division psychiatry in Vietnam",
+    "raw": "Bey, W. (1970). Division psychiatry in Vietnam. American Journal of Psychiatry, 127, 146–150."
+  },
+  {
+    "year": "1942",
+    "authors": "Bierer, J.",
+    "title": "Group psychotherapy",
+    "raw": "Bierer, J. (1942). Group psychotherapy. British Medical Journal, 1, 214–216."
+  },
+  {
+    "year": "1997",
+    "authors": "Binneveld, H.",
+    "title": "From shell shock to combat stress: A comparative history of military psychiatry",
+    "raw": "Binneveld, H. (1997). From shell shock to combat stress: A comparative history of military psychiatry. Amsterdam:Amsterdam University Press."
+  },
+  {
+    "year": "1986",
+    "authors": "Bion, W.R.",
+    "title": "The long week-end 1897–1919",
+    "raw": "Bion, W.R. (1986). The long week-end 1897–1919. London: Free Association Books."
+  },
+  {
+    "year": "1943",
+    "authors": "Bion, W.R. and Rickman, J.",
+    "title": "Intra-group tensions in therapy: Their study as the task of the group",
+    "raw": "Bion, W.R. and Rickman, J. (1943). Intra-group tensions in therapy: Their study as the task of the group. Lancet, 2, 678–681."
+  },
+  {
+    "year": "1995",
+    "authors": "Bisson, J. and Jones, N.",
+    "title": "Taped imaginal exposure as a treatment for post-traumatic stress reactions",
+    "raw": "Bisson, J. and Jones, N. (1995). Taped imaginal exposure as a treatment for post-traumatic stress reactions. Journal of the Royal Army Medical Corps, 141, 20–25."
+  },
+  {
+    "year": "1982",
+    "authors": "Blank, A.S.",
+    "title": "Stresses of war: The example of Viet Nam",
+    "raw": "Blank, A.S. (1982). Stresses of war: The example of Viet Nam. In L.Goldberger and S.Breznitz (Eds.), Handbook of Stress: theoretical and clinical aspects, pp. 631–643. New York: Free Press. Bleich, A., Garb, R. and Kotler, M. (1986). Combat stress disorder and the military physician: An approach to a category of post-traumatic stress disorder. Journal of the Royal Army Medical Corps, 132, 54–57. Bleich, A., Gelkopf, M. and Solomon, Z. (2003). Exposure to terrorist attacks, stress-related mental "
+  },
+  {
+    "year": "1990",
+    "authors": "Blinkhorn, S. and Johnson, C.",
+    "title": "The insignificance of personality testing",
+    "raw": "Blinkhorn, S. and Johnson, C. (1990). The insignificance of personality testing. Nature, 348, 671– 672."
+  },
+  {
+    "year": "1993",
+    "authors": "Blood, C.G. and Gauker, E.D.",
+    "title": "The relationship between battle intensity and disease rates among marine corps infantry units",
+    "raw": "Blood, C.G. and Gauker, E.D. (1993). The relationship between battle intensity and disease rates among marine corps infantry units. Military Medicine, 158, 340–344. Bloom W. (1983). Changes made, lessons learned after mental health screening. Military Medicine, 148, 889–890."
+  },
+  {
+    "year": "1989",
+    "authors": "Bogacz, T.",
+    "title": "War neurosis and cultural change in England 1914–22: The work of the War Office committee of enquiry into ‘shell-shock’",
+    "raw": "Bogacz, T. (1989). War neurosis and cultural change in England 1914–22: The work of the War Office committee of enquiry into ‘shell-shock’. Journal of Contemporary History, 24, 236–251. https://www.ebsco.com/terms-of-use. References 211"
+  },
+  {
+    "year": "1974",
+    "authors": "Borus, J.",
+    "title": "Incidence of maladjustment in Vietnam returnees",
+    "raw": "Borus, J. (1974). Incidence of maladjustment in Vietnam returnees. Archives of General Psychiatry, 30, 554–557."
+  },
+  {
+    "year": "1996",
+    "authors": "Bourke, J.",
+    "title": "Dismembering the male: Men’s bodies, Britain and the Great War",
+    "raw": "Bourke, J. (1996). Dismembering the male: Men’s bodies, Britain and the Great War. London: Reaktion Books."
+  },
+  {
+    "year": "1998",
+    "authors": "Bourke, J.",
+    "title": "Disciplining the emotions: fear, psychiatry and the Second World War",
+    "raw": "Bourke, J. (1998). Disciplining the emotions: fear, psychiatry and the Second World War. In R.Cooter, M.Harrison and S.Sturdy (Eds.), War, medicine and modernity, pp 225–238. Thrupp, Stroud: Sutton Publishing."
+  },
+  {
+    "year": "1999",
+    "authors": "Bourke, J.",
+    "title": "An intimate history of killing, face to face killing in twentieth century warfare",
+    "raw": "Bourke, J. (1999). An intimate history of killing, face to face killing in twentieth century warfare. London: Granta Books."
+  },
+  {
+    "year": "2000",
+    "authors": "Bourke, J.",
+    "title": "Wartime",
+    "raw": "Bourke, J. (2000). Wartime. In R.Cooter and J.Pickstone (Eds.), Companion to Medicine in the Twentieth Century, pp. 589–600. London: Routledge."
+  },
+  {
+    "year": "1970",
+    "authors": "Bourne, P.",
+    "title": "Military psychiatry and the Vietnam experience",
+    "raw": "Bourne, P. (1970). Military psychiatry and the Vietnam experience. American Journal of Psychiatry, 127, 481–488."
+  },
+  {
+    "year": "1969",
+    "authors": "Bowlby, A.",
+    "title": "The recollections of Rifleman Bowlby",
+    "raw": "Bowlby, A. (1969). The recollections of Rifleman Bowlby. London: Leo Cooper. Bowlby, A.A., Tooth, H.H., Wallace, C., Calverley, J.E. and Surgeon-Major Kilkelly (1901). A civilian war hospital, being an account of the work of the Portland Hospital, and of experience of wounds and sickness in South Africa, 1900. London: John Murray."
+  },
+  {
+    "year": "1941",
+    "authors": "Bowman, K.M.",
+    "title": "Psychiatric examination in the armed forces",
+    "raw": "Bowman, K.M. (1941). Psychiatric examination in the armed forces. War Medicine, 1, 216–219."
+  },
+  {
+    "year": "1999",
+    "authors": "Bowman, M.",
+    "title": "Individual differences in posttraumatic stress disorder: Problems with the DSM-IV model",
+    "raw": "Bowman, M. (1999). Individual differences in posttraumatic stress disorder: Problems with the DSM-IV model. Canadian Journal of Psychiatry, 44, 21–32. Boyle, C.A., Decouffle, P. and O’Brien, T.R. (1989). The long-term health consequences of military service in Vietnam. Epidemiological Review, 11, 1–27."
+  },
+  {
+    "year": "2001",
+    "authors": "Bracken, P.",
+    "title": "Post-modernity and post-traumatic stress disorder",
+    "raw": "Bracken, P. (2001). Post-modernity and post-traumatic stress disorder. Social Science and Medicine, 53, 733–743. Bracken, P., Geiller, J. and Summerfield, D. (1995). Psychological responses to war and atrocity: The limitations of current concepts. Social Science and Medicine, 40, 1073–1082."
+  },
+  {
+    "year": "1996",
+    "authors": "Brandon, S.",
+    "title": "LMF in Bomber Command 1939–45: Diagnosis or denouncement? In H",
+    "raw": "Brandon, S. (1996). LMF in Bomber Command 1939–45: Diagnosis or denouncement? In H.Freeman and G.Berrios (Eds.), 150 Years of British Psychiatry, Volume Two, pp. 119–129. London: Gaskell."
+  },
+  {
+    "year": "1981",
+    "authors": "Brende, J.O.",
+    "title": "Combined individual and group therapy for Vietnam veterans",
+    "raw": "Brende, J.O. (1981). Combined individual and group therapy for Vietnam veterans. International Journal of Group Psychotherapy, 31, 367–378."
+  },
+  {
+    "year": "1980",
+    "authors": "Brende, J.O. and Benedict, B.D.",
+    "title": "The Vietnam combat delayed stress response syndrome: Hypnotherapy of ‘dissociative symptoms’",
+    "raw": "Brende, J.O. and Benedict, B.D. (1980). The Vietnam combat delayed stress response syndrome: Hypnotherapy of ‘dissociative symptoms’. American Journal of Clinical Hypnosis, 23, 34–40. Brewin, C.R., Andrews, B., Rose, S. and Kirk, M. (1999). Acute stress disorder and PTSD in victims of violent crime. American Journal of Psychiatry, 156, 360–366. Brewin, C.R., Andrews, B. and Valentine, J.D. (2000). Meta-analysis of risk factors for posttraumatic stress disorder in trauma-exposed adults. Journal o"
+  },
+  {
+    "year": "1946",
+    "authors": "Bridger, H.",
+    "title": "The Northfield Experiment",
+    "raw": "Bridger, H. (1946). The Northfield Experiment. Bulletin of the Menninger Clinic, 10, 71–76."
+  },
+  {
+    "year": "1952a",
+    "authors": "Brill, N.Q. and Beebe, G.W.",
+    "title": "Psychoneuroses: Military applications of a follow-up study",
+    "raw": "Brill, N.Q. and Beebe, G.W. (1952a). Psychoneuroses: Military applications of a follow-up study. US Armed Forces Medical Journal, 3, 15–33."
+  },
+  {
+    "year": "1952b",
+    "authors": "Brill, N.Q. and Beebe, G.W.",
+    "title": "Some applications of a follow-up study to psychiatric standards for mobilization",
+    "raw": "Brill, N.Q. and Beebe, G.W. (1952b). Some applications of a follow-up study to psychiatric standards for mobilization. American Journal of Psychiatry, 109, 401–410."
+  },
+  {
+    "year": "1918",
+    "authors": "Brown, W.",
+    "title": "The treatment of cases of shell shock in an advanced neurological centre",
+    "raw": "Brown, W. (1918). The treatment of cases of shell shock in an advanced neurological centre. Lancet, 2, 197."
+  },
+  {
+    "year": "1919",
+    "authors": "Brown, W.",
+    "title": "War neuroses",
+    "raw": "Brown, W. (1919). War neuroses. Lancet, 2, 833."
+  },
+  {
+    "year": "1939",
+    "authors": "Brown, W.",
+    "title": "The psychologist in war-time",
+    "raw": "Brown, W. (1939). The psychologist in war-time. Lancet, 1, 1288."
+  },
+  {
+    "year": "2001",
+    "authors": "Bryant, R. and Friedman, M.",
+    "title": "Medication and non-medication treatments of posttraumatic stress disorder",
+    "raw": "Bryant, R. and Friedman, M. (2001). Medication and non-medication treatments of posttraumatic stress disorder. Current Opinion in Psychiatry, 14, 119–123."
+  },
+  {
+    "year": "1998",
+    "authors": "Bryant, R.A. and Harvey, A.G.",
+    "title": "The relationship between acute stress disorder and PTSD following mild traumatic brain injury",
+    "raw": "Bryant, R.A. and Harvey, A.G. (1998). The relationship between acute stress disorder and PTSD following mild traumatic brain injury. American Journal of Psychiatry, 155, 625–629. https://www.ebsco.com/terms-of-use. References 212"
+  },
+  {
+    "year": "1974",
+    "authors": "Bucky, S.F. and Edwards, A.",
+    "title": "The recruit temperament survey (RTS) as it discriminates between psychoses, neuroses and personality disorders",
+    "raw": "Bucky, S.F. and Edwards, A. (1974). The recruit temperament survey (RTS) as it discriminates between psychoses, neuroses and personality disorders. Journal of Clinical Psychology, 30, 195–199."
+  },
+  {
+    "year": "1945",
+    "authors": "Burch, J.E.",
+    "title": "Medical quarterly reports, 1 Canadian Exhaustion Unit (TNA, WO222/ 1735, Appendix III)",
+    "raw": "Burch, J.E. (1945). Medical quarterly reports, 1 Canadian Exhaustion Unit (TNA, WO222/ 1735, Appendix III)."
+  },
+  {
+    "year": "1998",
+    "authors": "Burkitt, B. and Whitley, G.",
+    "title": "Stolen valour: How the Vietnam generation was robbed of its heroes and its history",
+    "raw": "Burkitt, B. and Whitley, G. (1998). Stolen valour: How the Vietnam generation was robbed of its heroes and its history. Dallas: Verity Press."
+  },
+  {
+    "year": "1985",
+    "authors": "Burstein, A.",
+    "title": "How common is delayed posttraumatic stress disorder? American Journal of Psychiatry, 142, 887",
+    "raw": "Burstein, A. (1985). How common is delayed posttraumatic stress disorder? American Journal of Psychiatry, 142, 887."
+  },
+  {
+    "year": "1949",
+    "authors": "Burt, C.",
+    "title": "An autobiographical sketch",
+    "raw": "Burt, C. (1949). An autobiographical sketch. Occupational Psychology, 23, 17. Butters, M., Retzlaff, P. and Gibertini, M. (1986). Non-adaptability to basic training and the Millon Clinical Multiaxial Inventory. Military Medicine, 151, 574–576."
+  },
+  {
+    "year": "1993",
+    "authors": "Camp, N.",
+    "title": "The Vietnam War and the ethics of combat psychiatry",
+    "raw": "Camp, N. (1993). The Vietnam War and the ethics of combat psychiatry. American Journal of Psychiatry, 150, 1000–1010."
+  },
+  {
+    "year": "1952",
+    "authors": "Cantlie, N.",
+    "title": "Impressions of a visit to Korea and Japan",
+    "raw": "Cantlie, N. (1952). Impressions of a visit to Korea and Japan. British Medical Journal, 2, 1253– 1255."
+  },
+  {
+    "year": "1995",
+    "authors": "Caplan, E.M.",
+    "title": "Trains, brains and sprains: Railway spine and the origins of psychoneuroses",
+    "raw": "Caplan, E.M. (1995). Trains, brains and sprains: Railway spine and the origins of psychoneuroses. Bulletin of Medical History, 69, 390–394."
+  },
+  {
+    "year": "1987",
+    "authors": "Card, J.",
+    "title": "Epidemiology of PTSD in a national cohort of Vietnam veterans",
+    "raw": "Card, J. (1987). Epidemiology of PTSD in a national cohort of Vietnam veterans. Journal of Clinical Psychology, 43, 6–17."
+  },
+  {
+    "year": "1944",
+    "authors": "Carroll, D.",
+    "title": "Report on the work of the medical division, Military (P) Hospital, Northfield (TNA, WO222/846, 25 December 1944, 1)",
+    "raw": "Carroll, D. (1944). Report on the work of the medical division, Military (P) Hospital, Northfield (TNA, WO222/846, 25 December 1944, 1)."
+  },
+  {
+    "year": "1994",
+    "authors": "Carson, R.",
+    "title": "Silent spring",
+    "raw": "Carson, R. (1994). Silent spring. New York: Mariner Books."
+  },
+  {
+    "year": "1995",
+    "authors": "Caruth, C.",
+    "title": "Trauma: Explorations in memory",
+    "raw": "Caruth, C. (1995). Trauma: Explorations in memory. Baltimore: Johns Hopkins. Centers for Disease Control Vietnam Experience Study (1988). Health status of Vietnam veterans. 1: Psychosocial characteristics. Journal of the American Medical Association, 259, 2701–2707."
+  },
+  {
+    "year": "1997",
+    "authors": "Christophers, A.J.",
+    "title": "The epidemic of heart disease amongst British soldiers during the First World War",
+    "raw": "Christophers, A.J. (1997). The epidemic of heart disease amongst British soldiers during the First World War. War and Society, 15, 53–72."
+  },
+  {
+    "year": "1942",
+    "authors": "Churchill, W.S.",
+    "title": "Minute (TNA, PREM4/15/2, December 1942)",
+    "raw": "Churchill, W.S. (1942). Minute (TNA, PREM4/15/2, December 1942)."
+  },
+  {
+    "year": "1981",
+    "authors": "Clark, M.J.",
+    "title": "Rejection of psychological approaches",
+    "raw": "Clark, M.J. (1981). Rejection of psychological approaches. In A.Scull (Ed.), Madhouses, maddoctors and madmen: The social history of psychiatry in the Victorian era. London: AthlonePress. Clauw, D., Engel, C., Aronowitz, R., Jones, E., Kipen, H., Kroenke, K., Ratzan, S., Sharpe, M. and"
+  },
+  {
+    "year": "2003",
+    "authors": "Wessely, S.",
+    "title": "Unexplained symptoms after terrorism and war: An expert consensus statement",
+    "raw": "Wessely, S. (2003). Unexplained symptoms after terrorism and war: An expert consensus statement. Journal of Occupational and Environmental Medicine, 45, 1040–1048. Coker, W.J., Bhatt, B.M., Blatchley, N.J. and Graham, J.T. (1999). The clinical findings of the first 1000 Gulf war veterans in the Ministry of Defence’s medical assessmentprogramme. British Medical Journal, 318, 290–294."
+  },
+  {
+    "year": "1917",
+    "authors": "Collie, J.",
+    "title": "Malingering and feigning sickness",
+    "raw": "Collie, J. (1917). Malingering and feigning sickness. London: Edward Arnold."
+  },
+  {
+    "year": "1999",
+    "authors": "Cooke, B.",
+    "title": "Crimean shell-shock",
+    "raw": "Cooke, B. (1999). Crimean shell-shock. War Correspondent, Journal of the Crimean War Research Society, 17, 34."
+  },
+  {
+    "year": "1942",
+    "authors": "Cooper, E.L. and Sinclair, A.J.M.",
+    "title": "War neurosis in Tobruk",
+    "raw": "Cooper, E.L. and Sinclair, A.J.M. (1942). War neurosis in Tobruk. Medical Journal of Australia, 2, 73–81."
+  },
+  {
+    "year": "1998a",
+    "authors": "Cooter, R.",
+    "title": "Malingering in modernity: Psychological scripts and adversarial encounters during the First World War",
+    "raw": "Cooter, R. (1998a). Malingering in modernity: Psychological scripts and adversarial encounters during the First World War. In R.Cooter, M.Harrison and S.Sturdy (Eds.), War, medicine and modernity, pp. 133–135. Thrupp, Stroud: Sutton Publishing."
+  },
+  {
+    "year": "1998b",
+    "authors": "Cooter, R. and Sturdy, S.",
+    "title": "Of war, medicine and modernity",
+    "raw": "Cooter, R. and Sturdy, S. (1998b). Of war, medicine and modernity. In R.Cooter, M.Harrison and S.Sturdy (Eds.), War, medicine and modernity, pp. 1–21. Thrupp, Stroud: Sutton Publishing. Cooter, R., Harrison, M. and Sturdy, S. (1999). Medicine and modern warfare. Amsterdam: Rodopi. https://www.ebsco.com/terms-of-use. References 213"
+  },
+  {
+    "year": "1997",
+    "authors": "Copp, T.",
+    "title": "‘If this war isn’t over…’ First Canadian Army, February-March 1945",
+    "raw": "Copp, T. (1997). ‘If this war isn’t over…’ First Canadian Army, February-March 1945. In P.Addison and A.Calder (Eds.), Time to kill: The soldier’s experience of the war in the west 1939–1945, pp. 147–158. London: Pimlico."
+  },
+  {
+    "year": "1990",
+    "authors": "Copp, T. and McAndrew, W.",
+    "title": "Battle exhaustion, soldiers and psychiatrists in the Canadian Army 1939–45",
+    "raw": "Copp, T. and McAndrew, W. (1990). Battle exhaustion, soldiers and psychiatrists in the Canadian Army 1939–45. Montreal and Kingston: McGill-Queen’s University Press."
+  },
+  {
+    "year": "1980",
+    "authors": "Coppard, G.",
+    "title": "With a machine gun to Cambrai: A story of the First World War",
+    "raw": "Coppard, G. (1980). With a machine gun to Cambrai: A story of the First World War. London: Cassell."
+  },
+  {
+    "year": "1991",
+    "authors": "Cozza, K.L. and Hales, R.E.",
+    "title": "Psychiatry in the army—a brief historical perspective and current developments",
+    "raw": "Cozza, K.L. and Hales, R.E. (1991). Psychiatry in the army—a brief historical perspective and current developments. Hospital and Community Psychiatry, 42, 413–418."
+  },
+  {
+    "year": "1999",
+    "authors": "Crang, J.",
+    "title": "Square pegs in round holes: Other rank selection in the British Army 1939–45",
+    "raw": "Crang, J. (1999). Square pegs in round holes: Other rank selection in the British Army 1939–45. Journal of the Society for Army Historical Research, 77, 293–298."
+  },
+  {
+    "year": "1991",
+    "authors": "Crawford, S.L. and Fiedler, E.R.",
+    "title": "Development and current status of USAF mental health screening",
+    "raw": "Crawford, S.L. and Fiedler, E.R. (1991). Development and current status of USAF mental health screening. Military Medicine, 156, 596–599. Crew, F.A.E. (1955). The army medical services, administration, Vol II. London: HMSO. Crew, F.A.E. (1957). The army medical services, campaigns, Vol. II, Hong Kong, Malaya, Iceland and the Faroes, Libya 1942–43, North West Africa. London: HMSO. Crew, F.A.E. (1959). The army medical services, campaigns, Vol III, Sicily, Italy, Greece 1944–45. London: HMSO. Crew"
+  },
+  {
+    "year": "1939",
+    "authors": "Crichton-Miller, H.",
+    "title": "Memorandum (TNA, PIN15/2399)",
+    "raw": "Crichton-Miller, H. (1939), Memorandum (TNA, PIN15/2399)."
+  },
+  {
+    "year": "1920a",
+    "authors": "Culpin, M.",
+    "title": "Psychoneuroses of war and peace",
+    "raw": "Culpin, M. (1920a). Psychoneuroses of war and peace. Cambridge: Cambridge University Press."
+  },
+  {
+    "year": "1920b",
+    "authors": "Culpin, M.",
+    "title": "The problem of the neurasthenic pensioner",
+    "raw": "Culpin, M. (1920b). The problem of the neurasthenic pensioner. British Journal of Psychology, Medical Section, 1, 317."
+  },
+  {
+    "year": "1949",
+    "authors": "Culpin, M.",
+    "title": "An autobiography",
+    "raw": "Culpin, M. (1949). An autobiography. Occupational Psychology, 23, 139–152."
+  },
+  {
+    "year": "1952a",
+    "authors": "Culpin, M.",
+    "title": "Clinical psychology and some forgotten episodes",
+    "raw": "Culpin, M. (1952a). Clinical psychology and some forgotten episodes. British Medical Journal, 2, 956."
+  },
+  {
+    "year": "1952b",
+    "authors": "Culpin, M.",
+    "title": "A criticism of modern trends in the treatment of psychoneurosis",
+    "raw": "Culpin, M. (1952b). A criticism of modern trends in the treatment of psychoneurosis. Medical Press, 228, 71–73. Cumming, A., Benson Maxwell, P. and Sinclair Laing, P. (1855). Report upon the state of the hospital in the British Army in the Crimea and Scutari (TNA, WO33/1, 23 February 1855)."
+  },
+  {
+    "year": "1936",
+    "authors": "Cushing, H.",
+    "title": "From a surgeon’s journal 1915–1918",
+    "raw": "Cushing, H. (1936). From a surgeon’s journal 1915–1918. London: Constable. Da Costa, J.M. (1871). On irritable heart: A clinical study of a form of functional cardiac disorder and its consequences. American Journal of Medical Sciences, 121, 17–52."
+  },
+  {
+    "year": "1998",
+    "authors": "Dalrymple, T.",
+    "title": "Mass listeria: The meaning of health scares",
+    "raw": "Dalrymple, T. (1998). Mass listeria: The meaning of health scares. London: André Deutsch."
+  },
+  {
+    "year": "1944",
+    "authors": "Dancy, T.E.",
+    "title": "Medical quarterly report, 1 Canadian Exhaustion Unit, July 1944 to March 1945 (TNA, WO222/1735, 31 December 1944, 1, 4)",
+    "raw": "Dancy, T.E. (1944). Medical quarterly report, 1 Canadian Exhaustion Unit, July 1944 to March 1945 (TNA, WO222/1735, 31 December 1944, 1, 4)."
+  },
+  {
+    "year": "1954",
+    "authors": "Danielson, J.R. and Clark, J.H.",
+    "title": "A personality inventory for induction screening",
+    "raw": "Danielson, J.R. and Clark, J.H. (1954). A personality inventory for induction screening. Journal of Clinical Psychology, 10, 137–143. David, A., Ferry, S. and Wessely, S. (1997). Gulf War illness. British Medical Journal, 314, 239– 240."
+  },
+  {
+    "year": "1940",
+    "authors": "Davidson, H.A.",
+    "title": "Mental hygiene in our armed forces",
+    "raw": "Davidson, H.A. (1940). Mental hygiene in our armed forces. Military Surgeon, 86, 480."
+  },
+  {
+    "year": "1872",
+    "authors": "Dawes, C.",
+    "title": "War pension file (TNA, PIN71/2260)",
+    "raw": "Dawes, C. (1872). War pension file (TNA, PIN71/2260). Deahl, M.P., Gillham, A.B., Thomas, J., Searle, M.M. and Srinivasan, M. (1994). Psychological sequelae following the Gulf War. Factors associated with subsequent morbidity and the effectiveness of psychological debriefing. British Journal of Psychiatry, 165, 60–65. Dean, C.G.T. (1950). The Royal Hospital Chelsea. London: Hutchinson."
+  },
+  {
+    "year": "1997",
+    "authors": "Dean, E.T.",
+    "title": "Shook over hell, post-traumatic stress, Vietnam and the Civil War",
+    "raw": "Dean, E.T. (1997). Shook over hell, post-traumatic stress, Vietnam and the Civil War. Cambridge, MA: Harvard University Press. https://www.ebsco.com/terms-of-use. References 214 de Bargue Hubert, W.H. (1941). Acute nervous illness in active warfare. Lancet, 1, 306–308. de Maré, P.B. (1944). Exhaustion centre (typescript). de Maré, P.B. (1983). Michael Foulkes and the Northfield experiment. In M.Pines (Ed.), The Evolution of Group Analysis, pp. 218–231. London: Routledge & Kegan Paul. de Maré, P."
+  },
+  {
+    "year": "1889",
+    "authors": "Dercum, F.X.",
+    "title": "Railway shock and its treatment",
+    "raw": "Dercum, F.X. (1889). Railway shock and its treatment. Therapeutic Gazette, 13, 654."
+  },
+  {
+    "year": "1944",
+    "authors": "Deutsch, A.",
+    "title": "Military psychiatry: World War II, 1941–1943",
+    "raw": "Deutsch, A. (1944). Military psychiatry: World War II, 1941–1943. In J.Hall, G.Zilboorg and H.Bunker (Eds.), One Hundred Years of American Psychiatry, pp. 418–441. New York: Columbia University Press. De Vries, F. (1998). To make a drama out of trauma is fully justified. Lancet, 3351, 1579–1581."
+  },
+  {
+    "year": "1970",
+    "authors": "Dicks, H.V.",
+    "title": "Fifty years of the Tavistock Clinic",
+    "raw": "Dicks, H.V. (1970). Fifty years of the Tavistock Clinic. London: Routledge & Kegan Paul. Difede, J., Ptacek, J.T., Roberts, J., Barocas, D., Rives, W., Apfeldorf, W. and Yurt, R. (2002). Acute stress disorder after burn injury: A predictor of post-traumatic stress disorder? Psychosomatic Medicine, 64, 826–834."
+  },
+  {
+    "year": "1916",
+    "authors": "Dillon, F.",
+    "title": "War diary no",
+    "raw": "Dillon, F. (1916). War diary no. 6 Stationary Hospital (TNA, WO95/4100)."
+  },
+  {
+    "year": "1919",
+    "authors": "Dillon, F.",
+    "title": "The analysis of a composite neurosis",
+    "raw": "Dillon, F. (1919). The analysis of a composite neurosis. Lancet, 1, 57."
+  },
+  {
+    "year": "1939",
+    "authors": "Dillon, F.",
+    "title": "Neuroses among combatant troops in the Great War",
+    "raw": "Dillon, F. (1939). Neuroses among combatant troops in the Great War. British Medical Journal, 2, 66."
+  },
+  {
+    "year": "1940",
+    "authors": "Dillon, F.",
+    "title": "Treatment of neuroses in the field: The advanced psychiatric centre",
+    "raw": "Dillon, F. (1940). Treatment of neuroses in the field: The advanced psychiatric centre. In E.Miller (Ed.), The Neuroses in War, pp. 119–127. London: Macmillan."
+  },
+  {
+    "year": "1996",
+    "authors": "Dineen, T.",
+    "title": "Manufacturing victims",
+    "raw": "Dineen, T. (1996). Manufacturing victims. Montreal: Robert Davis. Donta, S., Clauw, D., Engel, C., Guarino, P., Peduzzi, P., Williams, D.A., Skinner, J.S., Barkhiuzen, A., Taylor, T., Kazis, L.E. and Sogg, S. (2003). Cognitive behavioral therapy and aerobic exercise for Gulf War Veterans’ Illness: A randomized controlled trial. Journal of the American Medical Association, 289, 1396–1404. Douglas, H.E.M. (1916). War diary no. 21 CCS (TNA, WO95/414, 25 November 1916, 17 March 1917)."
+  },
+  {
+    "year": "1973",
+    "authors": "Drayer, C.S. and Glass, A.J.",
+    "title": "Introduction",
+    "raw": "Drayer, C.S. and Glass, A.J. (1973). Introduction. In A.J.Glass (Ed.), Neuropsychiatry in World War II, Volume 2, Overseas Theaters, pp. 1–23. Washington DC: Office of theSurgeon General, U.S.Army."
+  },
+  {
+    "year": "1997",
+    "authors": "Dunant, S. and Porter, R.",
+    "title": "The age of anxiety",
+    "raw": "Dunant, S. and Porter, R. (1997). The age of anxiety. London: Virago."
+  },
+  {
+    "year": "1930",
+    "authors": "Dunn, T.",
+    "title": "War pension file (TNA, PIN71/279)",
+    "raw": "Dunn, T. (1930). War pension file (TNA, PIN71/279)."
+  },
+  {
+    "year": "1989",
+    "authors": "Dygregov, A.",
+    "title": "Caring for helpers in disaster situations: Psychological debriefing",
+    "raw": "Dygregov, A. (1989). Caring for helpers in disaster situations: Psychological debriefing. Disaster Management, 2, 25–29."
+  },
+  {
+    "year": "2000",
+    "authors": "Eckart, W.",
+    "title": "War, emotional stress and German medicine",
+    "raw": "Eckart, W. (2000). War, emotional stress and German medicine. In E.Chickering and S.Förster (Eds.), Great war, total war, combat and mobilization on the Western Front 1914–1918, pp. 133–149. Cambridge: Cambridge University Press. Egan, J.R., Jackson, L. and Eanes, R.H. (1951). A study of neuropsychiatric rejectees. Journal of the American Medical Association, 145, 466–469."
+  },
+  {
+    "year": "1986",
+    "authors": "Eissler, K.R.",
+    "title": "Freud as an expert witness: The discussion of the war neuroses between Freud and Wagner-Jaugegg",
+    "raw": "Eissler, K.R. (1986). Freud as an expert witness: The discussion of the war neuroses between Freud and Wagner-Jaugegg. Madison, CT: International Universities Press Inc."
+  },
+  {
+    "year": "1988",
+    "authors": "Elder, G. and Clipp, E.",
+    "title": "Wartime losses and social bonding: Influences across 40 years in men’s lives",
+    "raw": "Elder, G. and Clipp, E. (1988). Wartime losses and social bonding: Influences across 40 years in men’s lives. Psychiatry, 51, 177–198."
+  },
+  {
+    "year": "1989",
+    "authors": "Elder, G.H. and Clipp, E.C.",
+    "title": "Combat experience and emotional health: Impairment and resilience in later life",
+    "raw": "Elder, G.H. and Clipp, E.C. (1989). Combat experience and emotional health: Impairment and resilience in later life. Journal of Personality, 57, 311–341. Elder, G., Shanahan, M. and Clipp, E. (1997). Linking combat and physician health: The legacy of World War II in men’s lives. American Journal of Psychiatry, 154, 330–336."
+  },
+  {
+    "year": "1923",
+    "authors": "Elliott, T.R.",
+    "title": "Vesicants, mustard gas",
+    "raw": "Elliott, T.R. (1923). Vesicants, mustard gas. In W.G.Macpherson, W.P.Herringham, T.R. Elliott and A.Balfour (Eds.), History of the Great War based on official documents, medicalservices, diseases of the war, Volume 2, pp. 425–462. London: HMSO. https://www.ebsco.com/terms-of-use. References 215"
+  },
+  {
+    "year": "1948",
+    "authors": "Ellis, A. and Conrad, H.S.",
+    "title": "The validity of personality inventories in military practice",
+    "raw": "Ellis, A. and Conrad, H.S. (1948). The validity of personality inventories in military practice. Psychological Bulletin, 45, 420. Engel, C.C., Roy, M., Kayanan, D. and Ursano, R. (1998). Multidisciplinary treatment of persistent symptoms after Gulf War service. Military Medicine, 163, 202–208. Engel, C.C., Liu, X., McCarthy, B.D., Miller, R.F. and Ursano, R. (2000). Relationship to physical symptoms to posttraumatic stress disorder among veterans seeking care for Gulf War-related health concerns"
+  },
+  {
+    "year": "1866",
+    "authors": "Erichsen, J.E.",
+    "title": "On railway and other injuries of the nervous system",
+    "raw": "Erichsen, J.E. (1866). On railway and other injuries of the nervous system. London: Walton & Maberly."
+  },
+  {
+    "year": "1882",
+    "authors": "Erichsen, J.E.",
+    "title": "On concussion of the spine, nervous shock and other obscure injuries of the nervous system",
+    "raw": "Erichsen, J.E. (1882). On concussion of the spine, nervous shock and other obscure injuries of the nervous system. London: Longmans Green & Co."
+  },
+  {
+    "year": "1940",
+    "authors": "Evans, C.E.",
+    "title": "The disposal of members of air crews in operational units (TNA, AIR2/ 8591)",
+    "raw": "Evans, C.E. (1940). The disposal of members of air crews in operational units (TNA, AIR2/ 8591)."
+  },
+  {
+    "year": "1941",
+    "authors": "Evans, C.E.",
+    "title": "Letter (TNA, AIR2/8591)",
+    "raw": "Evans, C.E. (1941). Letter (TNA, AIR2/8591). Ex-Servicemen’s Mental Welfare Society Minute Books (1918–39). Volumes 1–9. Fairbairn, W.R.D. (1943a). The war neuroses: Their nature and significance. British Medical Journal, 1, 183–186. Fairbairn, W.R.D. (1943b). The repression and return of bad objects. British Journal of Medical Psychohgy, 19, 327–341. Fairbairn, W.R.D. (1952). Psychoanalytic studies of the personality. London: Routledge & Kegan Paul."
+  },
+  {
+    "year": "1985",
+    "authors": "Fancher, R.E.",
+    "title": "The intelligence men: Makers of the IQ controversy",
+    "raw": "Fancher, R.E. (1985). The intelligence men: Makers of the IQ controversy. New York: W.W. Norton & Co."
+  },
+  {
+    "year": "1915",
+    "authors": "Fearnsides, E.G. and Culpin, M.",
+    "title": "Frostbite",
+    "raw": "Fearnsides, E.G. and Culpin, M. (1915). Frostbite. British Medical Journal, 1, 84."
+  },
+  {
+    "year": "1929",
+    "authors": "Fenton, N.",
+    "title": "A post-war study of a typical group of war neuroses cases in 1919–20 and 1924–25",
+    "raw": "Fenton, N. (1929). A post-war study of a typical group of war neuroses cases in 1919–20 and 1924–25. In P.Bailey, F.E.Williams and P.O.Komora (Eds.), The medical department of the"
+  },
+  {
+    "year": "1993",
+    "authors": "Feudtner, C.",
+    "title": "‘Minds the dead have ravished’: Shell shock, history, and the ecology of disease-systems",
+    "raw": "Feudtner, C. (1993). ‘Minds the dead have ravished’: Shell shock, history, and the ecology of disease-systems. History of Science, 31, 377–420."
+  },
+  {
+    "year": "1978a",
+    "authors": "Figley, C.R.",
+    "title": "Psychosocial adjustment among Vietnam veterans: An overview of the research",
+    "raw": "Figley, C.R. (1978a). Psychosocial adjustment among Vietnam veterans: An overview of the research. In C.Figley (Ed.), Stress disorders among Vietnam veterans, pp. 57–70. New York: Brunner/Mazel."
+  },
+  {
+    "year": "1978b",
+    "authors": "Figley, C.R.",
+    "title": "Symptoms of delayed combat stress among a college sample of Vietnam veterans",
+    "raw": "Figley, C.R. (1978b). Symptoms of delayed combat stress among a college sample of Vietnam veterans. Military Medicine, 143, 107–110."
+  },
+  {
+    "year": "2002",
+    "authors": "Figley, C.R.",
+    "title": "Origins of traumatology and prospects for the future: Part 1",
+    "raw": "Figley, C.R. (2002). Origins of traumatology and prospects for the future: Part 1. Journal of Trauma Practice, 1, 17–32."
+  },
+  {
+    "year": "1900",
+    "authors": "Finucane, M.I.",
+    "title": "General nervous shock, immediate and remote, after gunshot and shell injuries in the South African campaign",
+    "raw": "Finucane, M.I. (1900). General nervous shock, immediate and remote, after gunshot and shell injuries in the South African campaign. Lancet, 2, 807–809."
+  },
+  {
+    "year": "1985",
+    "authors": "Fleming, R.",
+    "title": "Post Vietnam syndrome: Neurosis or sociosis? Psychiatry, 48, 122–139",
+    "raw": "Fleming, R. (1985). Post Vietnam syndrome: Neurosis or sociosis? Psychiatry, 48, 122–139."
+  },
+  {
+    "year": "1954",
+    "authors": "Flood, J.J.",
+    "title": "Psychiatric casualties in UK",
+    "raw": "Flood, J.J. (1954). Psychiatric casualties in UK. Elements of Korean force. Journal of the Royal Army Medical Corps, 100, 40–47."
+  },
+  {
+    "year": "1989",
+    "authors": "Foa, E.B. and Rothbaum, B.O.",
+    "title": "Behavioural psychotherapy for post-traumatic stress disorder",
+    "raw": "Foa, E.B. and Rothbaum, B.O. (1989). Behavioural psychotherapy for post-traumatic stress disorder. International Review of Psychiatry, 1, 219–226. Foa, E., Keane, T. and Friedman, M. (2000a). Guidelines for treatment of PTSD. Journal of Traumatic Stress, 13, 539–588. Foa, E., Keane, T. and Friedman, M. (Eds.) (2000b). Effective treatments for PTSD. New York: Guildford Press."
+  },
+  {
+    "year": "1997",
+    "authors": "Ford, C.V.",
+    "title": "Somatization and fashionable diagnoses: Illness as a way of life",
+    "raw": "Ford, C.V. (1997). Somatization and fashionable diagnoses: Illness as a way of life. Scandinavian Journal of Work and Environmental Health, 23 (Supplement 3), 7–16."
+  },
+  {
+    "year": "1946",
+    "authors": "Ford, T.C.",
+    "title": "War pension file (TNA, PIN71/2668)",
+    "raw": "Ford, T.C. (1946). War pension file (TNA, PIN71/2668)."
+  },
+  {
+    "year": "1934",
+    "authors": "Foulkes, C.H.",
+    "title": "Gas! The story of the Special Brigade",
+    "raw": "Foulkes, C.H. (1934). Gas! The story of the Special Brigade. Edinburgh: William Blackwood. https://www.ebsco.com/terms-of-use. References 216"
+  },
+  {
+    "year": "1946",
+    "authors": "Foulkes, S.H.",
+    "title": "Group analysis in a military neurosis centre",
+    "raw": "Foulkes, S.H. (1946). Group analysis in a military neurosis centre. Lancet, 1, 303."
+  },
+  {
+    "year": "1948",
+    "authors": "Foulkes, S.H.",
+    "title": "Introduction to group-analytic psychotherapy",
+    "raw": "Foulkes, S.H. (1948). Introduction to group-analytic psychotherapy. London: Heinemann."
+  },
+  {
+    "year": "1956",
+    "authors": "Freud, S.",
+    "title": "Memorandum on the electrical treatment of war neurotics (1920)",
+    "raw": "Freud, S. (1956). Memorandum on the electrical treatment of war neurotics (1920). International Journal of Psycho-Analysis, 37, 16–18."
+  },
+  {
+    "year": "1966",
+    "authors": "Freud, S.",
+    "title": "Project for scientific psychology, Standard Edition, Volume 1",
+    "raw": "Freud, S. (1966). Project for scientific psychology, Standard Edition, Volume 1. London: Hogarth Press."
+  },
+  {
+    "year": "1981",
+    "authors": "Friedman, M.J.",
+    "title": "Post-Vietnam syndromes: Recognition and management",
+    "raw": "Friedman, M.J. (1981). Post-Vietnam syndromes: Recognition and management. Psychosomatics, 22, 931–943. Frueh, B.C., Mirabella, R.F., Chobot, K. and Fossey, M. (1994). Chronicity symptoms in combat veterans with PTSD treated by the VA Mental Health System. PsychologicalReports, 75, 843– 848. Frueh, B.C., Cahill, S.P., Gold, P.B. and Hamlin, K.L. (2000). Apparent symptom overreporting in combat veterans evaluated for PTSD. Clinical Psychology Review, 20, 853–885."
+  },
+  {
+    "year": "1997",
+    "authors": "Furedi, F.",
+    "title": "Culture of fear, risk-taking and the morality of low expectation",
+    "raw": "Furedi, F. (1997). Culture of fear, risk-taking and the morality of low expectation. London: Cassell."
+  },
+  {
+    "year": "2003",
+    "authors": "Furedi, F.",
+    "title": "Therapy culture, cultivating vulnerability in an anxious age",
+    "raw": "Furedi, F. (2003). Therapy culture, cultivating vulnerability in an anxious age. London: Routledge."
+  },
+  {
+    "year": "1975",
+    "authors": "Fussel, P.",
+    "title": "The Great War and modern memory",
+    "raw": "Fussel, P. (1975). The Great War and modern memory. Oxford: Oxford University Press."
+  },
+  {
+    "year": "1951",
+    "authors": "Futterman, S. and Pumpian-Mindlin, E.",
+    "title": "Traumatic war neuroses five years later",
+    "raw": "Futterman, S. and Pumpian-Mindlin, E. (1951). Traumatic war neuroses five years later. American Journal of Psychiatry, 108, 401–408."
+  },
+  {
+    "year": "1922",
+    "authors": "Garrison, F.H.",
+    "title": "Notes on the history of military medicine",
+    "raw": "Garrison, F.H. (1922). Notes on the history of military medicine. Washington DC: Association of Military Surgeons."
+  },
+  {
+    "year": "1995",
+    "authors": "Gaudry, P.",
+    "title": "Quelle psychiatrie pour le temps de guerre? Réflexion et approche historique sur la psychiatrie de guerre a partir de publications médicales en langues frangaise et angloaméricaine",
+    "raw": "Gaudry, P. (1995). Quelle psychiatrie pour le temps de guerre? Réflexion et approche historique sur la psychiatrie de guerre a partir de publications médicales en langues frangaise et angloaméricaine. Doctor of medicine thesis, Claude Bernard-Lyon University."
+  },
+  {
+    "year": "1973",
+    "authors": "Geertz, C.",
+    "title": "The interpretation of culture",
+    "raw": "Geertz, C. (1973). The interpretation of culture. New York: Basic Books."
+  },
+  {
+    "year": "1928",
+    "authors": "Gilchrist, H.L.",
+    "title": "A comparative study of world war gas casualties from gas and other weapons",
+    "raw": "Gilchrist, H.L. (1928). A comparative study of world war gas casualties from gas and other weapons. Washington: United States Government Printing Office."
+  },
+  {
+    "year": "1933",
+    "authors": "Gilchrist, H.L. and Matz, P.B.",
+    "title": "The residual effects of warfare gases, I. chlorine, II. mustard",
+    "raw": "Gilchrist, H.L. and Matz, P.B. (1933). The residual effects of warfare gases, I. chlorine, II. mustard. Washington: United States Printing Office."
+  },
+  {
+    "year": "1942",
+    "authors": "Gillespie, R.",
+    "title": "The psychological effects of war on citizen and soldier",
+    "raw": "Gillespie, R. (1942). The psychological effects of war on citizen and soldier. New York: W.W. Norton & Co."
+  },
+  {
+    "year": "1993",
+    "authors": "Gillham, A.B. and Robbins, I.",
+    "title": "Brief therapy in a battleshock recovery unit: Three case studies",
+    "raw": "Gillham, A.B. and Robbins, I. (1993). Brief therapy in a battleshock recovery unit: Three case studies. Journal of the Royal Army Medical Corps, 139, 58–60. Ginzberg, E., Anderson, J.K., Ginsburg, S.W. and Herma, J.L. (1959). The lost divisions. New York: Columbia University Press."
+  },
+  {
+    "year": "1947",
+    "authors": "Glass, A.J.",
+    "title": "Effectiveness of forward neuropsychiatric treatment",
+    "raw": "Glass, A.J. (1947). Effectiveness of forward neuropsychiatric treatment. Bulletin of the US Army Medical Department, 7, 1034–1041."
+  },
+  {
+    "year": "1953a",
+    "authors": "Glass, A.J.",
+    "title": "Preventative psychiatry in the combat zone",
+    "raw": "Glass, A.J. (1953a). Preventative psychiatry in the combat zone. US Armed Forces Medical Journal, 4, 683–692."
+  },
+  {
+    "year": "1953b",
+    "authors": "Glass, A.J.",
+    "title": "Psychiatry in the Korean campaign: A historical review",
+    "raw": "Glass, A.J. (1953b). Psychiatry in the Korean campaign: A historical review. US Armed Forces Medical Journal, 4, 1563–1583."
+  },
+  {
+    "year": "1954",
+    "authors": "Glass, A.J.",
+    "title": "Psychotherapy in the combat zone",
+    "raw": "Glass, A.J. (1954). Psychotherapy in the combat zone. American Journal of Psychiatry, 110, 725– 731."
+  },
+  {
+    "year": "1966",
+    "authors": "Glass, A.J.",
+    "title": "Lessons learned",
+    "raw": "Glass, A.J. (1966). Lessons learned. In A.Glass and R.Bernucci (Eds.), Neuropsychiatry in World War II, Volume 1, Zone of Interior, pp. 735–759. Washington DC: Office of the Surgeon General, US Army."
+  },
+  {
+    "year": "1973",
+    "authors": "Glass, A.J.",
+    "title": "Lessons learned",
+    "raw": "Glass, A.J. (1973). Lessons learned. In A.J.Glass (Ed.), Neuropsychiatry in World War II, Volume 2, Overseas Theaters, pp. 989–1027. Washington DC: Office of the Surgeon General, US Army."
+  },
+  {
+    "year": "1974",
+    "authors": "Glass, A.",
+    "title": "Mental health programs in the armed forces",
+    "raw": "Glass, A. (1974). Mental health programs in the armed forces. In G.Caplan (Ed.), American Handbook of Psychiatry, pp. 800–809. New York: Basic Books. https://www.ebsco.com/terms-of-use. References 217"
+  },
+  {
+    "year": "2002",
+    "authors": "Glass, T. and Schoch-Spana, M.",
+    "title": "Bioterrorism and the people: How to vaccinate a city against panic",
+    "raw": "Glass, T. and Schoch-Spana, M. (2002). Bioterrorism and the people: How to vaccinate a city against panic. Clinical Infectious Diseases, 34, 217–223. Glass, A.J., Ryan, F.J., Lubin, A., Ramana, C.V. and Tucker, A.C. (1956). Psychiatric prediction and military effectiveness, Part 1 and Part 2. US Armed Forces Medical Journal, 7, 1427–1443, 1575–1588."
+  },
+  {
+    "year": "1910",
+    "authors": "Glynn, T.R.",
+    "title": "The traumatic neuroses",
+    "raw": "Glynn, T.R. (1910). The traumatic neuroses. Lancet, 2, 1332–1336. Goldberg, J., True, W., Eisen, S. and Henderson, W. (1990). A twin study of the effects of the Vietnam War on posttraumatic stress disorder. Journal of the American Medical Association, 263, 1227–1232."
+  },
+  {
+    "year": "1940",
+    "authors": "Gossage, E.L.",
+    "title": "Minutes to DPM, 21 March (TNA, AIR2/8591)",
+    "raw": "Gossage, E.L. (1940). Minutes to DPM, 21 March (TNA, AIR2/8591)."
+  },
+  {
+    "year": "1934",
+    "authors": "Gosse, P.",
+    "title": "Memoirs of a camp follower",
+    "raw": "Gosse, P. (1934). Memoirs of a camp follower. London: Longmans, Green & Co."
+  },
+  {
+    "year": "1941",
+    "authors": "Graham, J.G. and Kerr, J.D.O.",
+    "title": "Digestive disorders in the forces",
+    "raw": "Graham, J.G. and Kerr, J.D.O. (1941). Digestive disorders in the forces. British Medical Journal 1, 475."
+  },
+  {
+    "year": "1925",
+    "authors": "Grant, R.T.",
+    "title": "Observations on the after-histories of men suffering from the effort syndrome",
+    "raw": "Grant, R.T. (1925). Observations on the after-histories of men suffering from the effort syndrome. Heart, 12, 121–142."
+  },
+  {
+    "year": "1960",
+    "authors": "Graves, R.",
+    "title": "Goodbye to all that",
+    "raw": "Graves, R. (1960). Goodbye to all that. Harmondsworth: Penguin."
+  },
+  {
+    "year": "1994",
+    "authors": "Gregory, A.",
+    "title": "The silence of memory, Armistice day 1919–1946",
+    "raw": "Gregory, A. (1994). The silence of memory, Armistice day 1919–1946. Oxford: Berg."
+  },
+  {
+    "year": "1925",
+    "authors": "Griffith-Boscawen, A.",
+    "title": "Memories",
+    "raw": "Griffith-Boscawen, A. (1925). Memories. London: John Murray."
+  },
+  {
+    "year": "1943",
+    "authors": "Grinker, R.R. and Spiegel, J.P.",
+    "title": "War neuroses in North Africa: The Tunisian Campaign, January to May 1943",
+    "raw": "Grinker, R.R. and Spiegel, J.P. (1943). War neuroses in North Africa: The Tunisian Campaign, January to May 1943. New York: Air Surgeon, Army Air Forces."
+  },
+  {
+    "year": "1944",
+    "authors": "Grinker, R.R. and Spiegel, J.P.",
+    "title": "Brief psychotherapy in war neuroses",
+    "raw": "Grinker, R.R. and Spiegel, J.P. (1944). Brief psychotherapy in war neuroses. Psychosomatic Medicine, 6, 123–131."
+  },
+  {
+    "year": "1945",
+    "authors": "Grinker, R.R. and Spiegel, J.P.",
+    "title": "Men under stress",
+    "raw": "Grinker, R.R. and Spiegel, J.P. (1945). Men under stress. London: J. & A.Churchill."
+  },
+  {
+    "year": "1986",
+    "authors": "Grosskurth, P.",
+    "title": "Melanie Klein",
+    "raw": "Grosskurth, P. (1986). Melanie Klein. London: Hodder & Stoughton."
+  },
+  {
+    "year": "1946",
+    "authors": "Guttman, E. and Thomas, E.L.",
+    "title": "A report on the re-adjustment in civil life of soldiers discharged from the army on account of neurosis",
+    "raw": "Guttman, E. and Thomas, E.L. (1946). A report on the re-adjustment in civil life of soldiers discharged from the army on account of neurosis. London: HMSO."
+  },
+  {
+    "year": "1986",
+    "authors": "Haber, L.F.",
+    "title": "The poisonous cloud, chemical warfare in the First World War",
+    "raw": "Haber, L.F. (1986). The poisonous cloud, chemical warfare in the First World War. Oxford: Clarendon Press."
+  },
+  {
+    "year": "1998",
+    "authors": "Hacking, I.",
+    "title": "Mad travellers",
+    "raw": "Hacking, I. (1998). Mad travellers. Reflections on the reality of transient mental illnesses. London: Free Association Books."
+  },
+  {
+    "year": "1940",
+    "authors": "Hadfield, J.A.",
+    "title": "Treatment by suggestion and hypno-analysis",
+    "raw": "Hadfield, J.A. (1940). Treatment by suggestion and hypno-analysis. In E.Miller (Ed.), The Neuroses in War, pp. 128–149. London: Macmillan."
+  },
+  {
+    "year": "1942",
+    "authors": "Hadfield, J.A.",
+    "title": "War neurosis: A year in a neuropathic hospital",
+    "raw": "Hadfield, J.A. (1942). War neurosis: A year in a neuropathic hospital. British Medical Journal, 1, 281–285, 320–323."
+  },
+  {
+    "year": "1985",
+    "authors": "Hall, W. and MacPhee, D.",
+    "title": "Do Vietnam veterans suffer from toxic neurasthenia? Australian and New Zealand Journal of Psychiatry, 19, 19–29",
+    "raw": "Hall, W. and MacPhee, D. (1985). Do Vietnam veterans suffer from toxic neurasthenia? Australian and New Zealand Journal of Psychiatry, 19, 19–29."
+  },
+  {
+    "year": "1982",
+    "authors": "Hamilton, J.W.",
+    "title": "Unusual long-term sequelae of a traumatic war experience",
+    "raw": "Hamilton, J.W. (1982). Unusual long-term sequelae of a traumatic war experience. Bulletin of the Menninger Clinic, 46, 539–541. Handfield Jones, C. (1855). Record of a case of Crimean fever. Lancet, 2, 461."
+  },
+  {
+    "year": "1964",
+    "authors": "Hanson, H.E. and Goldman, R.F.",
+    "title": "Cold injury in man: A review of its etiology and discussion of its prediction",
+    "raw": "Hanson, H.E. and Goldman, R.F. (1964). Cold injury in man: A review of its etiology and discussion of its prediction. Military Medicine, 134, 1307–1316. Hargreaves, G.R., Wittkower, E. and Wilson, A.T.M. (1940). Psychiatric organisation in the services. In E.Miller (Ed.), The Neuroses in War, pp. 163–179. London: Macmillan."
+  },
+  {
+    "year": "1996",
+    "authors": "Harrington, R.",
+    "title": "The ‘railway spine’ diagnosis and Victorian responses to PTSD",
+    "raw": "Harrington, R. (1996). The ‘railway spine’ diagnosis and Victorian responses to PTSD. Journal of Psychosomatic Research, 40, 11–14."
+  },
+  {
+    "year": "1999",
+    "authors": "Harrington, R.",
+    "title": "The railway journey and the neuroses of modernity",
+    "raw": "Harrington, R. (1999). The railway journey and the neuroses of modernity. In R.Wrigley and G.Revill (Eds.), Pathologies of Travel, pp. 229–259. Amsterdam: Rodopi."
+  },
+  {
+    "year": "2003",
+    "authors": "Harrington, R.",
+    "title": "On the tracks of trauma: Railway Spine reconsidered",
+    "raw": "Harrington, R. (2003). On the tracks of trauma: Railway Spine reconsidered. Social History of Medicine, 16, 209–223."
+  },
+  {
+    "year": "1928",
+    "authors": "Harris, E.T.",
+    "title": "War pension file (TNA, PIN71/3086)",
+    "raw": "Harris, E.T. (1928). War pension file (TNA, PIN71/3086)."
+  },
+  {
+    "year": "1915",
+    "authors": "Harris, W.",
+    "title": "Oxford primer on nerve injuries and shock",
+    "raw": "Harris, W. (1915). Oxford primer on nerve injuries and shock. Oxford: Oxford University Press. https://www.ebsco.com/terms-of-use. References 218"
+  },
+  {
+    "year": "1992",
+    "authors": "Harrison, T.M. and Clarke, D.",
+    "title": "The Northfield Experiments",
+    "raw": "Harrison, T.M. and Clarke, D. (1992). The Northfield Experiments. British Journal of Psychiatry, 160, 698–708."
+  },
+  {
+    "year": "2000",
+    "authors": "Harrison, T.",
+    "title": "Bion, Rickman, Foulkes and the Northfield Experiments: Advancing on a different front",
+    "raw": "Harrison, T. (2000). Bion, Rickman, Foulkes and the Northfield Experiments: Advancing on a different front. London: Jessica Kingsley."
+  },
+  {
+    "year": "1864",
+    "authors": "Hartshorne, H.",
+    "title": "On heart disease in the army",
+    "raw": "Hartshorne, H. (1864). On heart disease in the army. American Journal of Medical Science, 48, 89– 92."
+  },
+  {
+    "year": "1998",
+    "authors": "Harvey, A.G. and Bryant, R.A.",
+    "title": "Relationship between acute stress disorder and posttraumatic stress disorder following mild traumatic brain injury",
+    "raw": "Harvey, A.G. and Bryant, R.A. (1998). Relationship between acute stress disorder and posttraumatic stress disorder following mild traumatic brain injury. American Journal ofPsychiatry, 155, 625–629."
+  },
+  {
+    "year": "1999",
+    "authors": "Harvey, A.G. and Bryant, R.A.",
+    "title": "The relationship between acute stress disorder and post- traumatic stree disorder: A 2-year prospective evaluation",
+    "raw": "Harvey, A.G. and Bryant, R.A. (1999). The relationship between acute stress disorder and post- traumatic stree disorder: A 2-year prospective evaluation. Journal of Consulting andClinical Psychohgy, 67, 985–988."
+  },
+  {
+    "year": "2000",
+    "authors": "Harvey, A.G. and Bryant, R.A.",
+    "title": "Two-year prospective evaluation of the relationship between acute stress disorder and post-traumatic stress disorder following mild traumatic brain injury",
+    "raw": "Harvey, A.G. and Bryant, R.A. (2000). Two-year prospective evaluation of the relationship between acute stress disorder and post-traumatic stress disorder following mild traumatic brain injury. American Journal of Psychiatry, 157, 626–628."
+  },
+  {
+    "year": "1923",
+    "authors": "Hebb, J.H.",
+    "title": "Memorandum (TNA, PIN15/2946/23a, 28 September 1923)",
+    "raw": "Hebb, J.H. (1923). Memorandum (TNA, PIN15/2946/23a, 28 September 1923)."
+  },
+  {
+    "year": "1922",
+    "authors": "Heldt, T.J.",
+    "title": "Some important factors in the hospital treatment of psychoneurotic exservicemen",
+    "raw": "Heldt, T.J. (1922). Some important factors in the hospital treatment of psychoneurotic exservicemen. American Journal of Psychiatry, 79, 647–663."
+  },
+  {
+    "year": "1984",
+    "authors": "Heller, C.E.",
+    "title": "Chemical warfare in World War One: The American experience, 1917–18",
+    "raw": "Heller, C.E. (1984). Chemical warfare in World War One: The American experience, 1917–18. Leavenworth Papers, 10, 1–102."
+  },
+  {
+    "year": "1919a",
+    "authors": "Herringham, W.",
+    "title": "Medicine in the war, A retrospective sketch",
+    "raw": "Herringham, W. (1919a). Medicine in the war, A retrospective sketch. British Medical Journal, 1, 20–23."
+  },
+  {
+    "year": "1919b",
+    "authors": "Herringham, W.",
+    "title": "A physician in France",
+    "raw": "Herringham, W. (1919b). A physician in France. London: Edward Arnold."
+  },
+  {
+    "year": "1994",
+    "authors": "Herrmann, N. and Eryavec, G.",
+    "title": "Delayed onset post traumatic stress disorder in World War II veterans",
+    "raw": "Herrmann, N. and Eryavec, G. (1994). Delayed onset post traumatic stress disorder in World War II veterans. Canadian Journal of Psychiatry, 39, 439–441."
+  },
+  {
+    "year": "1940",
+    "authors": "Hillman, C.C.",
+    "title": "Medical problems encountered in military service",
+    "raw": "Hillman, C.C. (1940). Medical problems encountered in military service. Annals of Internal Medicine, 13, 2205–2211. Hinds Howell, C.A. (1941). A comparison of dyspepsia in the army for 1940 and 1941. British Medical Journal, 1, 692–693."
+  },
+  {
+    "year": "2001",
+    "authors": "Hoare, P.",
+    "title": "Spike Island: The memory of a military hospital",
+    "raw": "Hoare, P. (2001). Spike Island: The memory of a military hospital. London: Fourth Estate."
+  },
+  {
+    "year": "1678",
+    "authors": "Hofer, J.",
+    "title": "Diss. de Nostalgia",
+    "raw": "Hofer, J. (1678). Diss. de Nostalgia. Basle."
+  },
+  {
+    "year": "1980",
+    "authors": "Hoiberg, A.",
+    "title": "Military effectiveness of navy men during and after Vietnam",
+    "raw": "Hoiberg, A. (1980). Military effectiveness of navy men during and after Vietnam. Armed Forces and Society, 6, 232–246."
+  },
+  {
+    "year": "1979",
+    "authors": "Holden, C.",
+    "title": "Agent Orange furor continues to build",
+    "raw": "Holden, C. (1979). Agent Orange furor continues to build. Science, 205, 770–772. Holeva, V., Tarrier, N. and Wells, A. (2001). Prevalence and predictions of acute stress disorder and post-traumatic stress disorder following road traffic accidents: Control strategies and social support. Behavior Therapy, 32, 65–83."
+  },
+  {
+    "year": "1939",
+    "authors": "Holmes, G.",
+    "title": "Report of conference (TNA, PIN15/2402/15B, 10 November 1939, 12)",
+    "raw": "Holmes, G. (1939). Report of conference (TNA, PIN15/2402/15B, 10 November 1939, 12)."
+  },
+  {
+    "year": "1997",
+    "authors": "Holmes, R.",
+    "title": "The Italian job: Five armies in Italy, 1943–45",
+    "raw": "Holmes, R. (1997). The Italian job: Five armies in Italy, 1943–45. In P.Addison and A.Calder (Eds.), Time to Kill, pp. 206–220. London: Pimlico."
+  },
+  {
+    "year": "1975",
+    "authors": "Horowitz, M.J. and Solomon, G.F.",
+    "title": "A prediction of delayed stress response syndromes in Vietnam veterans",
+    "raw": "Horowitz, M.J. and Solomon, G.F. (1975). A prediction of delayed stress response syndromes in Vietnam veterans. Journal of Social Issues, 31, 67–80."
+  },
+  {
+    "year": "1978",
+    "authors": "Horowitz, M. and Solomon, G.",
+    "title": "Delayed stress response syndromes in Vietnam veterans",
+    "raw": "Horowitz, M. and Solomon, G. (1978). Delayed stress response syndromes in Vietnam veterans. In C.Figley (Ed.), Stress disorders among Vietnam veterans, pp. 268–280. New York: Brunner/Mazel."
+  },
+  {
+    "year": "2003",
+    "authors": "Hotopf, M.",
+    "title": "Treating Gulf War veterans’ illnesses—are more focused studies needed? Journal of the American Medical Association, 289, 1436–1437",
+    "raw": "Hotopf, M. (2003). Treating Gulf War veterans’ illnesses—are more focused studies needed? Journal of the American Medical Association, 289, 1436–1437. Hotopf, M., David, A.S., Hull, L., Nikalaou, V., Unwin, C. and Wessely, S. (2003). Gulf war illness—better, worse, or just the same? A cohort study. British Medical Journal, 327, 1370– 1372. Howell, H.A.L. (1924). The British medical arrangements during the Waterloo Campaign. Proceedings of the Royal Society of Medicine, Section of the History of "
+  },
+  {
+    "year": "1998",
+    "authors": "Howell, J.D.",
+    "title": "Soldier’s heart: The redefinition of heart disease and speciality formation in early twentieth century Great Britain",
+    "raw": "Howell, J.D. (1998). Soldier’s heart: The redefinition of heart disease and speciality formation in early twentieth century Great Britain. In R.Cooter, M.Harrison and S.Sturdy (Eds.), War, medicine and modernity, pp. 85–105. Thrupp, Stroud: Sutton Publishing."
+  },
+  {
+    "year": "1970",
+    "authors": "Huffman, R.E.",
+    "title": "Which soldiers break down: A survey of 610 psychiatric patients in Vietnam",
+    "raw": "Huffman, R.E. (1970). Which soldiers break down: A survey of 610 psychiatric patients in Vietnam. Bulletin of the Menninger Clinic, 34, 343–351."
+  },
+  {
+    "year": "1920",
+    "authors": "Hulbert, H.S.",
+    "title": "Gas neurosis syndrome",
+    "raw": "Hulbert, H.S. (1920). Gas neurosis syndrome. American Journal of Insanity, 77, 213–216."
+  },
+  {
+    "year": "1923",
+    "authors": "Hume, W.E.",
+    "title": "Cardio-vascular disorders",
+    "raw": "Hume, W.E. (1923). Cardio-vascular disorders. In W.G.Macpherson,W.P.Herringham, T.R.Elliott and A.Balfour (Eds.), History of the Great War based on official documents, medical services, diseases of the war, Volume 2, pp. 504–534. London: HMSO."
+  },
+  {
+    "year": "1918",
+    "authors": "Hunt, G.H. and Price Jones, C.",
+    "title": "The later effects of irritant gas poisoning (WIHM/ RAMC/2045/ No",
+    "raw": "Hunt, G.H. and Price Jones, C. (1918). The later effects of irritant gas poisoning (WIHM/ RAMC/2045/ No. 15, 4–5). Hunt, S.C., Richardson, R.D. and Engel, C.C. (2002). Clinical management of Gulf War veterans with medically unexplained physical symptoms. Military Medicine, 167, 414–420."
+  },
+  {
+    "year": "1946",
+    "authors": "Hunter, D.",
+    "title": "The work of a corps psychiatrist in the Italian campaign",
+    "raw": "Hunter, D. (1946). The work of a corps psychiatrist in the Italian campaign. Journal of the Royal Arny Medical Corps, 86, 127–130."
+  },
+  {
+    "year": "1918",
+    "authors": "Hurst, A.",
+    "title": "Medical diseases of the war",
+    "raw": "Hurst, A. (1918). Medical diseases of the war. London: Edward Arnold."
+  },
+  {
+    "year": "1949",
+    "authors": "Hurst, A.",
+    "title": "A twentieth century physician, being the reminiscences of Sir Arthur Hurst",
+    "raw": "Hurst, A. (1949). A twentieth century physician, being the reminiscences of Sir Arthur Hurst. London: Edward Arnold."
+  },
+  {
+    "year": "1941",
+    "authors": "Hutchison, J.H.",
+    "title": "The incidence of dyspepsia in a military hospital",
+    "raw": "Hutchison, J.H. (1941). The incidence of dyspepsia in a military hospital. British Medical Journal, 2, 78–81."
+  },
+  {
+    "year": "1998",
+    "authors": "Hyams, K.C.",
+    "title": "Developing case definitions for symptom-based conditions: The problem of specificity",
+    "raw": "Hyams, K.C. (1998). Developing case definitions for symptom-based conditions: The problem of specificity. Epidemiologic Reviews, 20, 148–156."
+  },
+  {
+    "year": "1998",
+    "authors": "Hyams, K.C. and Roswell, R.H.",
+    "title": "Resolving the Gulf War question",
+    "raw": "Hyams, K.C. and Roswell, R.H. (1998). Resolving the Gulf War question. American Journal of Epidemiology, 148, 339–342. Hyams, K.C., Wignall, F.S. and Roswell, R. (1996). War syndromes and their evaluation: From the US Civil War to the Persian Gulf War. Annals of Internal Medicine, 125, 398–405."
+  },
+  {
+    "year": "1990",
+    "authors": "Hynes, S.",
+    "title": "A war imagined: The First World War and English culture",
+    "raw": "Hynes, S. (1990). A war imagined: The First World War and English culture. London: BodleyHead."
+  },
+  {
+    "year": "1997",
+    "authors": "Hynes, S.",
+    "title": "The soldiers’ tale, bearing witness to modern war",
+    "raw": "Hynes, S. (1997). The soldiers’ tale, bearing witness to modern war. London: Allen Lane. Ismail, K., Brugha, T., Hotopf, M., Hull, L., Seed, P., Palmer, L, Reid, S., Unwin, C., David, A. and Wessely, S. (2002). The mental health of UK Gulf War veterans: Phase 2 of a twophase cohort study. British Medical Journal, 325, 576–579. Iversen, A., Nikolaou, V., Greenberg, N., Unwin, C., Hull, L., Hotopf, M., Dandeker, C., Ross, J. and Wessely, S. (2005). What happens to British veterans when they leave "
+  },
+  {
+    "year": "1963",
+    "authors": "Jaspers, K.",
+    "title": "General psychopathology",
+    "raw": "Jaspers, K. (1963). General psychopathology. Manchester: Manchester University Press."
+  },
+  {
+    "year": "1961",
+    "authors": "Jensen, M.B.",
+    "title": "Adjustive and non-adjustive reactions to basic training in the air force",
+    "raw": "Jensen, M.B. (1961). Adjustive and non-adjustive reactions to basic training in the air force. Journal of Social Psychology, 55, 33–41. Jewesbury, E.C.O. (1943). The work and problems of an RAF neuropsychiatric centre (TNA, AIR49/357)."
+  },
+  {
+    "year": "1923",
+    "authors": "Johnson, W. and Rows, R.G.",
+    "title": "Neurasthenia and the war neuroses",
+    "raw": "Johnson, W. and Rows, R.G. (1923). Neurasthenia and the war neuroses. In W.G. MacPherson, W.P.Herringham and T.R.Elliott (Eds.), History of the Great War, Diseases of the War, Volume 2, pp. 1–67. London: HMSO."
+  },
+  {
+    "year": "2003",
+    "authors": "Jones, E.",
+    "title": "Aubrey Lewis, Edward Mapother and the Maudsley",
+    "raw": "Jones, E. (2003), Aubrey Lewis, Edward Mapother and the Maudsley. In K.Angel, E.Jones and M.Neve (Eds.), European psychiatry on the eve of war: Aubrey Lewis, the Maudsley Hospital and the Rockefeller Foundation in the 1930s. Medical History, 22(Supplement), 3–38."
+  },
+  {
+    "year": "2004a",
+    "authors": "Jones, E.",
+    "title": "War and the practice of psychotherapy: The UK experience 1939–1960",
+    "raw": "Jones, E. (2004a). War and the practice of psychotherapy: The UK experience 1939–1960. Medical History, 48, 493–510. https://www.ebsco.com/terms-of-use. References 220"
+  },
+  {
+    "year": "2004b",
+    "authors": "Jones, E.",
+    "title": "Doctors and trauma in World War One: The response of British military psychiatrists, In P",
+    "raw": "Jones, E. (2004b). Doctors and trauma in World War One: The response of British military psychiatrists, In P.Gray and K.Oliver (Eds.), The Memory of Catastrophe, pp. 91–105. Manchester: Manchester University Press."
+  },
+  {
+    "year": "2000",
+    "authors": "Jones, E. and Palmer, I.P.",
+    "title": "Army psychiatry in the Korean War: The experience of 1 Commonwealth Division",
+    "raw": "Jones, E. and Palmer, I.P. (2000). Army psychiatry in the Korean War: The experience of 1 Commonwealth Division. Military Medicine, 165, 256–260."
+  },
+  {
+    "year": "1999",
+    "authors": "Jones, E. and Wessely, S.",
+    "title": "Case of chronic fatigue syndrome after Crimean War and Indian Mutiny",
+    "raw": "Jones, E. and Wessely, S. (1999). Case of chronic fatigue syndrome after Crimean War and Indian Mutiny. British Medical Journal, 319, 1645–1647."
+  },
+  {
+    "year": "2001a",
+    "authors": "Jones, E. and Wessely, S.",
+    "title": "Psychiatric battle casualties: an intra- and inter-war comparison",
+    "raw": "Jones, E. and Wessely, S. (2001a). Psychiatric battle casualties: an intra- and inter-war comparison. British Journal of Psychiatry, 178, 243–245."
+  },
+  {
+    "year": "2001b",
+    "authors": "Jones, E. and Wessely, S.",
+    "title": "The origins of British military psychiatry before the First World War",
+    "raw": "Jones, E. and Wessely, S. (2001b). The origins of British military psychiatry before the First World War. War and Society, 19, 91–108."
+  },
+  {
+    "year": "2003a",
+    "authors": "Jones, E. and Wessely, S.",
+    "title": "‘Forward psychiatry’ in the military: Its origins and effectiveness",
+    "raw": "Jones, E. and Wessely, S. (2003a), ‘Forward psychiatry’ in the military: Its origins and effectiveness. Journal of Traumatic Stress, 16, 411–419."
+  },
+  {
+    "year": "2003b",
+    "authors": "Jones, E. and Wessely, S.",
+    "title": "The impact of total war on the practice of British psychiatry",
+    "raw": "Jones, E. and Wessely, S. (2003b). The impact of total war on the practice of British psychiatry. In R.Chickering and S.Förster (Eds.), The shadows of total war, Europe, East Asia and the United States, 1919–39, pp. 129–148. Cambridge: Cambridge University Press."
+  },
+  {
+    "year": "2005",
+    "authors": "Jones, E. and Wessely, S.",
+    "title": "War syndromes: The impact of culture on medically unexplained symptoms",
+    "raw": "Jones, E. and Wessely, S. (2005). War syndromes: The impact of culture on medically unexplained symptoms. Medical History, 49, 59–78. Jones, E., Palmer, I. and Wessely, S. (2002a). War pensions (1917–1945): Changing models of psychological understanding. British Journal of Psychiatry, 180, 374–379. Jones, E., Hodgins Vermaas, R., McCartney, H., Everitt, B., Beech, B., Poynter, D., Palmer, I.,"
+  },
+  {
+    "year": "2002b",
+    "authors": "Hyams, K. and Wessely, S.",
+    "title": "Post-combat syndromes from the Boer War to the Gulf: A cluster analysis of their nature and attribution",
+    "raw": "Hyams, K. and Wessely, S. (2002b). Post-combat syndromes from the Boer War to the Gulf: A cluster analysis of their nature and attribution. British Medical Journal, 324, 321–324. Jones, E., Hodgins Vermaas, R., McCartney, H., Beech, C., Palmer, I., Hyams, K. and Wessely, S. (2003a). Flashbacks and post-traumatic stress disorder: the genesis of a twentieth-century diagnosis. British Journal of Psychiatry, 182: 158–163. Jones, E., Hyams, K. and Wessely, S. (2003b). Screening for vulnerability to p"
+  },
+  {
+    "year": "1967",
+    "authors": "Jones, F.D.",
+    "title": "Experiences of a division psychiatrist in Vietnam",
+    "raw": "Jones, F.D. (1967). Experiences of a division psychiatrist in Vietnam. Military Medicine, 132, 1003–1008."
+  },
+  {
+    "year": "1995a",
+    "authors": "Jones, F.D.",
+    "title": "Psychiatric lessons of war",
+    "raw": "Jones, F.D. (1995a) Psychiatric lessons of war. In F.D.Jones, L.R.Sparacino, V.L.Wilcox, J.M.Rothberg and J.W.Stokes (Eds.), Textbook of military medicine, part 1—war psychiatry, pp. 3–33. Washington DC: Office of the Surgeon General US Army."
+  },
+  {
+    "year": "1995b",
+    "authors": "Jones, F.D.",
+    "title": "Traditional warfare combat stress casualties",
+    "raw": "Jones, F.D. (1995b). Traditional warfare combat stress casualties. In F.D.Jones, L.R. Sparacino, V.L.Wilcox, J.M.Rothberg and J.W.Stokes (Eds.), Textbook of military medicine, part 1—war psychiatry, pp. 35–61. Washington DC: Office of the Surgeon General US Army."
+  },
+  {
+    "year": "1987",
+    "authors": "Jones, G. and Lovett, J.",
+    "title": "Delayed psychiatric sequelae among Falklands War veterans",
+    "raw": "Jones, G. and Lovett, J. (1987). Delayed psychiatric sequelae among Falklands War veterans. Journal of the Royal College of General Practitioners, 37, 34–35."
+  },
+  {
+    "year": "1991",
+    "authors": "Jones, K.",
+    "title": "The culture of the mental hospital",
+    "raw": "Jones, K. (1991). The culture of the mental hospital. In G.E.Berrios and H.Freeman (Eds.), 150 Years of British Psychiatry, 1841–1991 pp. 20–25. London: Gaskell."
+  },
+  {
+    "year": "1948",
+    "authors": "Jones, M.",
+    "title": "Emotional catharsis and re-education in the neuroses with the help of group methods",
+    "raw": "Jones, M. (1948). Emotional catharsis and re-education in the neuroses with the help of group methods. British Journal of Medical Psychology, 21, 104–110."
+  },
+  {
+    "year": "1952",
+    "authors": "Jones, M.",
+    "title": "Social psychiatry: A study of therapeutic communities",
+    "raw": "Jones, M. (1952). Social psychiatry: A study of therapeutic communities. London: Tavistock Publications."
+  },
+  {
+    "year": "1941",
+    "authors": "Jones, M. and Lewis, A.",
+    "title": "Effort syndrome",
+    "raw": "Jones, M. and Lewis, A. (1941). Effort syndrome. Lancet, 1, 813–818."
+  },
+  {
+    "year": "1946",
+    "authors": "Jones, M. and Mellersh, V.",
+    "title": "A comparison of the exercise response in anxiety states and normal controls",
+    "raw": "Jones, M. and Mellersh, V. (1946). A comparison of the exercise response in anxiety states and normal controls. Psychosomatic Medicine, 8, 180–187. https://www.ebsco.com/terms-of-use. References 221 Jones, N., Roberts, P. and Greenberg, N. (2003). Peer-group risk assessment: a post-traumatic management strategy for hierarchical organisations. Occupational Medicine, 53, 469–475. Joseph, S., Williams, R. and Yule, W. (1997). Understanding post-traumatic stress: A psychosocial perspective on PTSD a"
+  },
+  {
+    "year": "1941b",
+    "authors": "Kardiner, A.",
+    "title": "The traumatic neuroses of war",
+    "raw": "Kardiner, A. (1941b). The traumatic neuroses of war. New York: Paul B.Hoeber."
+  },
+  {
+    "year": "1959",
+    "authors": "Kardiner, A.",
+    "title": "Traumatic neuroses of war",
+    "raw": "Kardiner, A. (1959). Traumatic neuroses of war. In S.Arieti (Ed.), American Handbook of Psychiatry, Volume One, pp. 245–257. New York: Basic Books."
+  },
+  {
+    "year": "1912",
+    "authors": "Kay, A.G.",
+    "title": "Insanity in the army during peace and war, and its treatment",
+    "raw": "Kay, A.G. (1912). Insanity in the army during peace and war, and its treatment. Journal of theRoyal Army Medical Corps, 18, 146–158. Kaylor, J., King, D. and King, L. (1987). Psychological effects of military service in Vietnam: A meta analysis. Psychological Bulletin, 102, 257–271."
+  },
+  {
+    "year": "1995",
+    "authors": "Keller, T.",
+    "title": "Railway spine revisited: Traumatic neurosis or neurotrauma? Journal of the History of Medicine and Allied Sciences, 50, 507–524",
+    "raw": "Keller, T. (1995). Railway spine revisited: Traumatic neurosis or neurotrauma? Journal of the History of Medicine and Allied Sciences, 50, 507–524."
+  },
+  {
+    "year": "1946",
+    "authors": "Kenton, C.",
+    "title": "Forward psychiatry in the army",
+    "raw": "Kenton, C. (1946). Forward psychiatry in the army. Proceedings of the Royal Society of Medicine, 39, 137–140."
+  },
+  {
+    "year": "1981",
+    "authors": "Keynes, G.",
+    "title": "The gates of memory",
+    "raw": "Keynes, G. (1981). The gates of memory. Oxford: Clarendon Press. Kiene, H.E., Hassell, A.S. and Miller, H. (1942). Neuro-psychiatric examination at the R.I. Army induction station. American Journal of Psychiatry, 98, 509–514."
+  },
+  {
+    "year": "2004",
+    "authors": "Kilshaw, S.",
+    "title": "Friendly fire: The construction of Gulf War Syndrome narratives",
+    "raw": "Kilshaw, S. (2004). Friendly fire: The construction of Gulf War Syndrome narratives. Anthropology and Medicine, 11, 149–160. King, D., King, L., Gudanowski, D. and Vreven, D. (1995). Alternative representations of war zone stressors and relationships to posttraumatic stress disorder in male and female Vietnam veterans. Journal of Abnormal Psychology, 104, 184–196."
+  },
+  {
+    "year": "2002",
+    "authors": "King, P.",
+    "title": "Bion, Rickman, Foulkes and the Northfield Experiments",
+    "raw": "King, P. (2002). Bion, Rickman, Foulkes and the Northfield Experiments. Psychoanalytic Psychotherapy, 16, 96–97. Kluznik, J.C., Speed, N., Van Valkenburg, C. and Magraw, R. (1986). Forty-year follow-up of"
+  },
+  {
+    "year": "1924",
+    "authors": "United States prisoners of war. American Journal of Psychiatry, 143, 1443–1446. Knowles Boney, T.",
+    "title": "Observations on the effort syndrome",
+    "raw": "United States prisoners of war. American Journal of Psychiatry, 143, 1443–1446. Knowles Boney, T. (1924). Observations on the effort syndrome. Journal of the Royal Army Medical Corps, 42, 347–350. Koller, P., Marmar, C. and Kanas, N. (1992). Psychodynamic group treatment of posttraumatic stress disorder in Vietnam veterans. International Journal of Group Psychotherapy, 42, 225– 246."
+  },
+  {
+    "year": "1978",
+    "authors": "Kormos, H.",
+    "title": "The nature of combat stress",
+    "raw": "Kormos, H. (1978). The nature of combat stress. In C.R.Figley (Ed.), Stress disorders among Vietnam veterans: Theory, research and treatment, pp. 3–22. New York: Bmnner/Mazel. Kowal, D., Vogel, J., Sharp, D. et al. (1982). Analysis of attrition, retention and criterion task performance of recruits during training. Natick, MA: US Army Research Institute ofEnvironmental Medicine."
+  },
+  {
+    "year": "1993",
+    "authors": "Kroenke, K. and Price, R.",
+    "title": "Symptoms in the community: prevalence, classification and psychiatric comorbidity",
+    "raw": "Kroenke, K. and Price, R. (1993). Symptoms in the community: prevalence, classification and psychiatric comorbidity. Archives of Internal Medicine, 153, 2474–2480."
+  },
+  {
+    "year": "2003",
+    "authors": "Kroll, J.",
+    "title": "Posttraumatic symptoms and the complexities of responses to trauma",
+    "raw": "Kroll, J. (2003). Posttraumatic symptoms and the complexities of responses to trauma. Journal of the American Medical Association, 290, 667–670. Kulka, R.A., Schlenger, W.E., Fairbank, J.A., Hough, R.L., Jordan, B.K., Marmar, C.R. and Weiss, D.S. (1990). Trauma and the Vietnam War generation: Report of findings from the National Vietnam Veterans Readjustment Study. New York: Brunner/Mazel. Lachar, D., Sparks, J.C., Larsen, R.M. and Bisbee, C.T. (1974). Psychometric prediction of behavioural crit"
+  },
+  {
+    "year": "1997",
+    "authors": "Latcham, A.P.",
+    "title": "‘Journey’s end’: Ex-servicemen and the state during and after the Great War",
+    "raw": "Latcham, A.P. (1997). ‘Journey’s end’: Ex-servicemen and the state during and after the Great War. Doctor of Philosophy thesis, Oxford University."
+  },
+  {
+    "year": "1916",
+    "authors": "Laurent, O.",
+    "title": "La guerre en Bulgarie et en Turquie",
+    "raw": "Laurent, O. (1916). La guerre en Bulgarie et en Turquie. Paris. Lee, H.A., Gabriel, R. and Bolton, P. (2001a). Depleted uranium—is it really a health issue? Lancet Oncology, 2, 197. Lee, H.A., Gabriel, R., Bolton, J.P.G., Bale, A.J. and Blatchley, N.F. (2001b). Clinical findings of the first 1000 UK Gulf War veterans who attended the Ministry of Defence’s Medical Assessment Programme. Journal of the Royal Army Medical Corps, 147, 153–160. Lee, H.A., Gabriel, R., Bolton, J.P.G., Bale, A.J. and Ja"
+  },
+  {
+    "year": "1979",
+    "authors": "Leed, E.",
+    "title": "No man’s land: Combat and identity in World War One",
+    "raw": "Leed, E. (1979). No man’s land: Combat and identity in World War One. Cambridge: Cambridge University Press."
+  },
+  {
+    "year": "2001",
+    "authors": "Leese, P.",
+    "title": "‘Why are they not cured?’ In M",
+    "raw": "Leese, P. (2001). ‘Why are they not cured?’ In M.Micale and P.Lerner (Eds.), Traumatic Pasts, History, Psychiatry and Trauma in the Modern Age, 1870–1930, pp. 205–221. Cambridge: Cambridge University Press."
+  },
+  {
+    "year": "2002",
+    "authors": "Leese, P.",
+    "title": "Shell shock, traumatic neurosis and the British soldiers of the First World War",
+    "raw": "Leese, P. (2002). Shell shock, traumatic neurosis and the British soldiers of the First World War. Houndmills, Basingstoke: Palgrave Macmillan."
+  },
+  {
+    "year": "1941",
+    "authors": "Leigh, A.D.",
+    "title": "Neurosis as viewed by a regimental medical officer",
+    "raw": "Leigh, A.D. (1941). Neurosis as viewed by a regimental medical officer. Lancet, 1, 394–396."
+  },
+  {
+    "year": "2003",
+    "authors": "Lengwiler, M.",
+    "title": "Psychiatry beyond the asylum: The origins of German military psychiatry before World War One",
+    "raw": "Lengwiler, M. (2003). Psychiatry beyond the asylum: The origins of German military psychiatry before World War One. History of Psychiatry, 14, 41–62."
+  },
+  {
+    "year": "1919",
+    "authors": "Léri, A.",
+    "title": "Shell shock, commotional and emotional aspects",
+    "raw": "Léri, A. (1919). Shell shock, commotional and emotional aspects. London: University of London Press."
+  },
+  {
+    "year": "2000",
+    "authors": "Lerner, P.",
+    "title": "Psychiatry and casualties of war in Germany 1914–18",
+    "raw": "Lerner, P. (2000). Psychiatry and casualties of war in Germany 1914–18. Journal of Contemporary History, 35, 13–28."
+  },
+  {
+    "year": "2001",
+    "authors": "Lerner, P.",
+    "title": "From traumatic neurosis to male hysteria: The decline and fall of Hermann Oppenheim, 1889–1919",
+    "raw": "Lerner, P. (2001). From traumatic neurosis to male hysteria: The decline and fall of Hermann Oppenheim, 1889–1919. In M.Micale and P.Lerner (Eds.),Traumatic Pasts, History, Psychiatry and Trauma in the Modern Age, 1870–1930, pp. 140–171. Cambridge: Cambridge University Press."
+  },
+  {
+    "year": "2001",
+    "authors": "Lerner, P. and Micale, M.S.",
+    "title": "Trauma, psychiatry, and history",
+    "raw": "Lerner, P. and Micale, M.S. (2001). Trauma, psychiatry, and history. In M.Micale and P.Lerner (Eds.), Traumatic Pasts, History, Psychiatry and Trauma in the Modern Age, 1870–1930, pp. 1– 27. Cambridge: Cambridge University Press. Levav, L, Greenfield, H. and Bamch, E. (1979). Psychiatric combat reactions during the Yom Kippur War. American Journal of Psychiatry, 136, 637–641."
+  },
+  {
+    "year": "1965",
+    "authors": "Levine, S.A.",
+    "title": "The origin of the term neurocirculatory asthenia",
+    "raw": "Levine, S.A. (1965). The origin of the term neurocirculatory asthenia. New England Journal of Medicine, 273, 604–605."
+  },
+  {
+    "year": "1943",
+    "authors": "Lewis, A.",
+    "title": "Social effects of neurosis",
+    "raw": "Lewis, A. (1943). Social effects of neurosis. Lancet, 1, 168–169. Lewis T. (1917). Report upon soldiers returned as cases of ‘disordered action of the heart’ (D.A.H.) or ‘valvular disease of the heart’ (V.D.H.). London: Medical Research Committee."
+  },
+  {
+    "year": "1918a",
+    "authors": "Lewis, T.",
+    "title": "The soldier’s heart and the effort syndrome",
+    "raw": "Lewis, T. (1918a). The soldier’s heart and the effort syndrome. London: Shaw & Sons."
+  },
+  {
+    "year": "1918b",
+    "authors": "Lewis, T.",
+    "title": "Report on neuro-circulatory asthenia and its management",
+    "raw": "Lewis, T. (1918b). Report on neuro-circulatory asthenia and its management. Military Surgeon, 42, 409–426."
+  },
+  {
+    "year": "2000",
+    "authors": "Leys, R.",
+    "title": "Trauma: A genealogy",
+    "raw": "Leys, R. (2000). Trauma: A genealogy. Chicago: University of Chicago Press."
+  },
+  {
+    "year": "1974",
+    "authors": "Lifton, R.J.",
+    "title": "Home from the war: Vietnam veterans neither victims nor executioners",
+    "raw": "Lifton, R.J. (1974). Home from the war: Vietnam veterans neither victims nor executioners. London: Wildwood House."
+  },
+  {
+    "year": "1937",
+    "authors": "Lipscomb, F.M.",
+    "title": "Contribution to discussion on anxiety neurosis in the army",
+    "raw": "Lipscomb, F.M. (1937). Contribution to discussion on anxiety neurosis in the army. Journal of the"
+  },
+  {
+    "year": "1986",
+    "authors": "Lipton, M.I. and Schaffer, W.R.",
+    "title": "Post-traumatic stress disorder in the older veteran",
+    "raw": "Lipton, M.I. and Schaffer, W.R. (1986). Post-traumatic stress disorder in the older veteran. Military Medicine, 151, 522–524. https://www.ebsco.com/terms-of-use. References 223"
+  },
+  {
+    "year": "1947",
+    "authors": "Ludwig, A.O. and Ranson, S.W.",
+    "title": "A statistical follow-up of effectiveness of treatment of combat-induced psychiatric casualties",
+    "raw": "Ludwig, A.O. and Ranson, S.W. (1947). A statistical follow-up of effectiveness of treatment of combat-induced psychiatric casualties. Military Surgeon, 100, 51–59."
+  },
+  {
+    "year": "1950",
+    "authors": "Lyons, J.",
+    "title": "War pension file (TNA, PIN71/3959)",
+    "raw": "Lyons, J. (1950). War pension file (TNA, PIN71/3959)."
+  },
+  {
+    "year": "1941",
+    "authors": "McCann, W.H.",
+    "title": "Nostalgia: A review of the literature",
+    "raw": "McCann, W.H. (1941). Nostalgia: A review of the literature. Psychological Bulletin, 38, 165–182. McCarroll, J.E., Kowal, D.M. and Phair, P.W. (1981). The Health Opinion Survey: Predicting illness in military trainees. Military Medicine, 146, 463–468."
+  },
+  {
+    "year": "1995",
+    "authors": "McCarthy, J.",
+    "title": "Aircrew and ‘lack of moral fibre’ in the Second World War",
+    "raw": "McCarthy, J. (1995). Aircrew and ‘lack of moral fibre’ in the Second World War. War and Society, 18, 87–101. MacCurdy, J.T., Myers, C.S., Riddoch, G. and Ross T.A. (1939). Memorandum on the subject of provision of treatment for nervous diseases in the event of war (TNA, PIN15/2401/3A)."
+  },
+  {
+    "year": "1990",
+    "authors": "MacDonald, C.",
+    "title": "Britain and the Korean War",
+    "raw": "MacDonald, C. (1990). Britain and the Korean War. Oxford: Basil Blackwell. Macfie Campbell, C. (1941). Selective service and psychiatric issues. Journal of the American Medical Association, 116, 1883–1887."
+  },
+  {
+    "year": "1961",
+    "authors": "McGhie, J.",
+    "title": "Army Psychiatry Advisory Committee (TNA, WO32/13462, 30 June 1961, 6)",
+    "raw": "McGhie, J. (1961). Army Psychiatry Advisory Committee (TNA, WO32/13462, 30 June 1961, 6)."
+  },
+  {
+    "year": "1999",
+    "authors": "McHugh, P.",
+    "title": "How psychiatry lost its way",
+    "raw": "McHugh, P. (1999). How psychiatry lost its way. Commentary, 105, 32–38."
+  },
+  {
+    "year": "1918",
+    "authors": "MacIlwaine, J.E.",
+    "title": "A clinical study of some functional disorders of the heart which occur in soldiers",
+    "raw": "MacIlwaine, J.E. (1918). A clinical study of some functional disorders of the heart which occur in soldiers. Journal of the Royal Army Medical Corps, 30, 357–377."
+  },
+  {
+    "year": "1946",
+    "authors": "MacKeith, S.A.",
+    "title": "Lasting lessons of overseas military psychiatry",
+    "raw": "MacKeith, S.A. (1946). Lasting lessons of overseas military psychiatry. Journal of Mental Health, 92, 548–549."
+  },
+  {
+    "year": "1916",
+    "authors": "Mackenzie, J.",
+    "title": "The soldier’s heart",
+    "raw": "Mackenzie, J. (1916). The soldier’s heart. British Medical Journal, 1, 117–119."
+  },
+  {
+    "year": "1920",
+    "authors": "MacKenzie, J.",
+    "title": "A lecture on the soldier’s heart and war neurosis",
+    "raw": "MacKenzie, J. (1920). A lecture on the soldier’s heart and war neurosis. British Medical Journal, 1, 491–494, 530–534."
+  },
+  {
+    "year": "1940",
+    "authors": "Maclay, W.S.",
+    "title": "The medical superintendent’s report on the organisation and work of Mill Hill Emergency Hospital to December 31 1940 (Bethlem Royal Hospital Archives, 2)",
+    "raw": "Maclay, W.S. (1940). The medical superintendent’s report on the organisation and work of Mill Hill Emergency Hospital to December 31 1940 (Bethlem Royal Hospital Archives, 2)."
+  },
+  {
+    "year": "1864",
+    "authors": "Maclean, W.C.",
+    "title": "The influence of the present knapsack and accoutrements on the health of the infantry soldier",
+    "raw": "Maclean, W.C. (1864). The influence of the present knapsack and accoutrements on the health of the infantry soldier. Journal of the Royal United Service Institution, 8, 105–115."
+  },
+  {
+    "year": "1867",
+    "authors": "Maclean, W.C.",
+    "title": "Diseases of the heart in the British Army: The cause and the remedy",
+    "raw": "Maclean, W.C. (1867). Diseases of the heart in the British Army: The cause and the remedy."
+  },
+  {
+    "year": "1993",
+    "authors": "McMannus, H.",
+    "title": "The Scars of War",
+    "raw": "McMannus, H. (1993). The Scars of War. London: HarperCollins. McNair Wilson, R. (1916). The irritable heart of soldiers. British Medical Journal, 1, 119–120."
+  },
+  {
+    "year": "1999",
+    "authors": "McNally, R.",
+    "title": "EMDR and mesmerism: A comparative historical analysis",
+    "raw": "McNally, R. (1999). EMDR and mesmerism: A comparative historical analysis. Journal of Anxiety Disorders, 13, 225–236. McNally, R., Bryant, R. and Ehlers, A. (2003). Does early psychological intervention promote recovery from traumatic stress? Psychological Science in the Public Interest, 4, 45–79."
+  },
+  {
+    "year": "1908",
+    "authors": "Macpherson, W.G.",
+    "title": "The Russo-Japanese War: Medical and sanitary reports from officers attached to the Japanese and Russian forces in the field",
+    "raw": "Macpherson, W.G. (1908). The Russo-Japanese War: Medical and sanitary reports from officers attached to the Japanese and Russian forces in the field. London: HMSO."
+  },
+  {
+    "year": "1944",
+    "authors": "Main, C.F.",
+    "title": "Quarterly report by the adviser in psychiatry",
+    "raw": "Main, C.F. (1944). Quarterly report by the adviser in psychiatry. London: Wellcome Institute of Medicine (GC135/B1/109)."
+  },
+  {
+    "year": "1946",
+    "authors": "Main, T.F.",
+    "title": "The hospital as a therapeutic institution",
+    "raw": "Main, T.F. (1946). The hospital as a therapeutic institution. Bulletin of the Menninger Clinic, 10, 66–70."
+  },
+  {
+    "year": "1986",
+    "authors": "Mair, A.",
+    "title": "Sir James MacKenzie 1853–1925, general practitioner",
+    "raw": "Mair, A. (1986). Sir James MacKenzie 1853–1925, general practitioner. London: Royal College of General Practitioners. Makler, S., Sigal, M., Gelkopf, M., Bar, K.B. and Horeb, E. (1990). Combat-related, chronic posttraumatic stress disorder: Implications for group-therapy intervention. American Journal of Psychotherapy, 44, 381–395."
+  },
+  {
+    "year": "1952",
+    "authors": "Malcolm, G.I.",
+    "title": "The Argylls in Korea",
+    "raw": "Malcolm, G.I. (1952). The Argylls in Korea. London: Thomas Nelson & Sons."
+  },
+  {
+    "year": "1919",
+    "authors": "Mapother, E.",
+    "title": "Letter to Colonel Sheen, Ministry of Pensions, 29 December 1919; further letter, 9 January 1920 (TNA, PIN15/55, Treatment of neurasthenia)",
+    "raw": "Mapother, E. (1919). Letter to Colonel Sheen, Ministry of Pensions, 29 December 1919; further letter, 9 January 1920 (TNA, PIN15/55, Treatment of neurasthenia)."
+  },
+  {
+    "year": "1936",
+    "authors": "Mapother, E.",
+    "title": "Discussion on the functional nervous disease in the fighting services",
+    "raw": "Mapother, E. (1936). Discussion on the functional nervous disease in the fighting services. Proceedings of the Royal Society of Medicine, 29, 60–67. https://www.ebsco.com/terms-of-use. References 224"
+  },
+  {
+    "year": "1937",
+    "authors": "Mapother, E.",
+    "title": "War neurosis",
+    "raw": "Mapother, E. (1937). War neurosis. Journal of the Royal Army Medical Corps, 68, 39–40."
+  },
+  {
+    "year": "1938",
+    "authors": "Mapother, E.",
+    "title": "Letter to J",
+    "raw": "Mapother, E. (1938). Letter to J.R.Rees (BRHA, Mapother Box 14, C/12/4, Letter to J.R. Rees, 18 November 1938)."
+  },
+  {
+    "year": "1985",
+    "authors": "Mareth, T.R. and Brooker, A.E.",
+    "title": "Combat stress reaction: A concept in evolution",
+    "raw": "Mareth, T.R. and Brooker, A.E. (1985). Combat stress reaction: A concept in evolution. Military Medicine, 150, 186–190."
+  },
+  {
+    "year": "2000",
+    "authors": "Marlowe, D.",
+    "title": "Psychological and psychosocial consequences of combat and deployment",
+    "raw": "Marlowe, D. (2000). Psychological and psychosocial consequences of combat and deployment. Santa Monica, CA: Report for the Rand Corporation."
+  },
+  {
+    "year": "2000",
+    "authors": "Marshall, R. and Pierce, D.",
+    "title": "Implications of recent findings in posttraumatic stress disorders pharmacotherapy",
+    "raw": "Marshall, R. and Pierce, D. (2000). Implications of recent findings in posttraumatic stress disorders pharmacotherapy. Harvard Review of Psychiatry,7, 247–256. Marshall, S.L.A. (1947). Men against fire: The problem of battle command in a future war. Washington: Infantry Journal Press."
+  },
+  {
+    "year": "1994",
+    "authors": "Martin, E.",
+    "title": "Flexible bodies: Tracking immunity in American culture from the days of polio to the age of aids",
+    "raw": "Martin, E. (1994). Flexible bodies: Tracking immunity in American culture from the days of polio to the age of aids. Boston, MA: Beacon Press."
+  },
+  {
+    "year": "2001",
+    "authors": "Mayou, R. and Bryant, B.",
+    "title": "Outcome in consecutive emergency department attenders following road traffic accident",
+    "raw": "Mayou, R. and Bryant, B. (2001). Outcome in consecutive emergency department attenders following road traffic accident. British Journal of Psychiatry, 179, 528–534."
+  },
+  {
+    "year": "2002",
+    "authors": "Mayou, R. and Bryant, B.",
+    "title": "Outcome three years after a road traffic accident",
+    "raw": "Mayou, R. and Bryant, B. (2002). Outcome three years after a road traffic accident. Psychological Medicine, 32, 671–675. Mayou, R.A., Ehlers, A. and Hobbs, M. (2000). A three-year follow-up of psychological debriefing for road traffic accident victims. British Journal of Psychiatry, 176, 589–593."
+  },
+  {
+    "year": "1918",
+    "authors": "Meakins, J.C. and Walker, T.M.",
+    "title": "Changes observed in the heart and circulation and the general after-effects of irritant gas poisoning (WIHM/RAMC/2045, No",
+    "raw": "Meakins, J.C. and Walker, T.M. (1918). Changes observed in the heart and circulation and the general after-effects of irritant gas poisoning (WIHM/RAMC/2045, No. 6, 21)."
+  },
+  {
+    "year": "1941",
+    "authors": "Menninger, W.C.",
+    "title": "A condensed neuropsychiatric examination",
+    "raw": "Menninger, W.C. (1941). A condensed neuropsychiatric examination. War Medicine, 1, 843–853."
+  },
+  {
+    "year": "2002",
+    "authors": "Merriman, C.",
+    "title": "Night of stone: Death and memory in Russia",
+    "raw": "Merriman, C. (2002). Night of stone: Death and memory in Russia. London: Penguin."
+  },
+  {
+    "year": "1991",
+    "authors": "Merskey, H.",
+    "title": "Shell-shock",
+    "raw": "Merskey, H. (1991). Shell-shock. In G.E.Berrios and H.Freeman (Eds.), 150 Years of British Psychiatry 1841–1991, pp. 245–267. London: Gaskell."
+  },
+  {
+    "year": "1995",
+    "authors": "Merskey, H.",
+    "title": "Post-traumatic stress disorder and shell shock",
+    "raw": "Merskey, H. (1995). Post-traumatic stress disorder and shell shock. In G.E.Berrios and R.Porter (Eds.), A History of Clinical Psychiatry, pp. 490–500. London: Athlone."
+  },
+  {
+    "year": "1973",
+    "authors": "Meyer, A.",
+    "title": "Frederick Mott, founder of the Maudsley Laboratories",
+    "raw": "Meyer, A. (1973). Frederick Mott, founder of the Maudsley Laboratories. British Journal of Psychiatry, 122, 497–516."
+  },
+  {
+    "year": "2001",
+    "authors": "Mezey, G. and Robbins, I.",
+    "title": "Usefulness and validity of post-traumatic stress disorder as a psychiatric category",
+    "raw": "Mezey, G. and Robbins, I. (2001). Usefulness and validity of post-traumatic stress disorder as a psychiatric category. British Medical Journal, 323, 561–563."
+  },
+  {
+    "year": "1993",
+    "authors": "Micale, M.",
+    "title": "On the ‘disappearance of hysteria’: A study in the clinical deconstruction of a diagnosis",
+    "raw": "Micale, M. (1993). On the ‘disappearance of hysteria’: A study in the clinical deconstruction of a diagnosis. Isis, 84, 496–526."
+  },
+  {
+    "year": "2001",
+    "authors": "Micale, M. and Lerner, P.",
+    "title": "Traumatic pasts, history, psychiatry and trauma in the modern age 1860–1930",
+    "raw": "Micale, M. and Lerner, P. (2001). Traumatic pasts, history, psychiatry and trauma in the modern age 1860–1930. Cambridge: Cambridge University Press."
+  },
+  {
+    "year": "1996",
+    "authors": "Millard, D.W.",
+    "title": "Maxwell Jones and the therapeutic community",
+    "raw": "Millard, D.W. (1996). Maxwell Jones and the therapeutic community. In G.Berrios and H.Freeman (Eds.), 150 Years of British Psychiatry: 1841–1991, pp. 581–604. London: Gaskell."
+  },
+  {
+    "year": "1945",
+    "authors": "Miller, C.W.",
+    "title": "Delayed combat reactions in air force personnel",
+    "raw": "Miller, C.W. (1945). Delayed combat reactions in air force personnel. War Medicine, 8, 253–257."
+  },
+  {
+    "year": "1940",
+    "authors": "Miller, E.",
+    "title": "The neuroses in war",
+    "raw": "Miller, E. (1940). The neuroses in war. London: Macmillan & Co. Miles, D.W., Wilkins, W.L., Lester, D.W. and Hutchens, W.H. (1946). The efficiency of a high- speed screening procedure in detecting the neuropsychiatrically unfit at a US Marine Corps recruit training depot. Journal of Psychology, 21, 243–268."
+  },
+  {
+    "year": "1953",
+    "authors": "Ministry of Pensions",
+    "title": "Twenty-eighth annual report for the period 1 April 1952 to 31 March 1953",
+    "raw": "Ministry of Pensions (1953). Twenty-eighth annual report for the period 1 April 1952 to 31 March 1953. London: HMSO."
+  },
+  {
+    "year": "1983",
+    "authors": "Mitchell, J.",
+    "title": "When disaster strikes: The critical incident stress debriefing procedure",
+    "raw": "Mitchell, J. (1983). When disaster strikes: The critical incident stress debriefing procedure. Journal of Emergency Medical Services, 8, 36–39."
+  },
+  {
+    "year": "1931",
+    "authors": "Mitchell, T.J. and Smith, G.M.",
+    "title": "Medical services, casualties and medical statistics of the Great War",
+    "raw": "Mitchell, T.J. and Smith, G.M. (1931). Medical services, casualties and medical statistics of the Great War. London: HMSO."
+  },
+  {
+    "year": "1991",
+    "authors": "Modell, J. and Haggerty, T.",
+    "title": "The social impact of war",
+    "raw": "Modell, J. and Haggerty, T. (1991). The social impact of war. Annual Review of Sociology, 17, 205–224. Moran [Wilson.C.McNair](1945). The anatomy of courage. London: Collins."
+  },
+  {
+    "year": "1901",
+    "authors": "Morris, C.A.",
+    "title": "Some war sequelae",
+    "raw": "Morris, C.A. (1901). Some war sequelae. Lancet, 1, 1559–1564. https://www.ebsco.com/terms-of-use. References 225"
+  },
+  {
+    "year": "1944",
+    "authors": "Morris, J.N. and Titmuss, R.M.",
+    "title": "Epidemiology of peptic ulcer, vital statistics",
+    "raw": "Morris, J.N. and Titmuss, R.M. (1944). Epidemiology of peptic ulcer, vital statistics. Lancet, 2, 841–845."
+  },
+  {
+    "year": "1984",
+    "authors": "Moses, R. and Cohen, I.",
+    "title": "Understanding and treatment of combat neurosis: The Israeli experience",
+    "raw": "Moses, R. and Cohen, I. (1984). Understanding and treatment of combat neurosis: The Israeli experience. In H.J.Schwartz (Ed.), Psychotherapy of the Combat Veteran, pp. 269–303. New York: McGraw-Hill."
+  },
+  {
+    "year": "1916a",
+    "authors": "Mott, F.W.",
+    "title": "Special discussion on shell shock without visible signs of injury",
+    "raw": "Mott, F.W. (1916a). Special discussion on shell shock without visible signs of injury. Proceedings of the Royal Society of Medicine, 9, i–xxiv."
+  },
+  {
+    "year": "1916b",
+    "authors": "Mott, F.W.",
+    "title": "The effects of high explosives upon the central nervous system",
+    "raw": "Mott, F.W. (1916b). The effects of high explosives upon the central nervous system. Lancet, 1, 331–338, 441–449."
+  },
+  {
+    "year": "1919a",
+    "authors": "Mott, F.W.",
+    "title": "War neuroses",
+    "raw": "Mott, F.W. (1919a). War neuroses. British Medical Journal, 1, 439–442."
+  },
+  {
+    "year": "1919b",
+    "authors": "Mott, F.W.",
+    "title": "War neuroses and shell shock",
+    "raw": "Mott, F.W. (1919b). War neuroses and shell shock. London: Henry Froude and Hodder & Stoughton."
+  },
+  {
+    "year": "1902",
+    "authors": "Muir, S.H.",
+    "title": "Report on revised regulations for wounds’ and injuries’ pensions (TNA, WO33/247)",
+    "raw": "Muir, S.H. (1902). Report on revised regulations for wounds’ and injuries’ pensions (TNA, WO33/247)."
+  },
+  {
+    "year": "1909",
+    "authors": "Mulcahy, F.E.",
+    "title": "Memorandum by the director of equipment and ordnance stores on the fourth report of the committee on the physiological effects of food, training and clothing on the soldier",
+    "raw": "Mulcahy, F.E. (1909). Memorandum by the director of equipment and ordnance stores on the fourth report of the committee on the physiological effects of food, training and clothing on the soldier. London: HMSO. Murray, J., Ehlers, A. and Mayou, R.A. (2002). Dissociation and post-traumatic stress disorder: Two prospective studies of road traffic accident survivors. British Journal of Psychiatry, 180, 363–368. Myers, A.B.R. (1870). On the etiology and prevalence of diseases of the heart among soldi"
+  },
+  {
+    "year": "1915",
+    "authors": "Myers, C.S.",
+    "title": "A contribution to the study of shell shock",
+    "raw": "Myers, C.S. (1915). A contribution to the study of shell shock. Lancet, 1, 316–320."
+  },
+  {
+    "year": "1916",
+    "authors": "Myers, C.S.",
+    "title": "Contributions to the study of shell shock, being an account of certain cases treated by hypnosis",
+    "raw": "Myers, C.S. (1916). Contributions to the study of shell shock, being an account of certain cases treated by hypnosis. Lancet, 1, 65–69."
+  },
+  {
+    "year": "1919",
+    "authors": "Myers, C.S.",
+    "title": "The justifiability of therapeutic lying",
+    "raw": "Myers, C.S. (1919). The justifiability of therapeutic lying. Lancet, 2, 1213–1214."
+  },
+  {
+    "year": "1921",
+    "authors": "Myers, C.S.",
+    "title": "Letter to Secretary of War Office Committee of Inquiry into shell shock (TNA, WO32/4747, 11 January 1921)",
+    "raw": "Myers, C.S. (1921). Letter to Secretary of War Office Committee of Inquiry into shell shock (TNA, WO32/4747, 11 January 1921)."
+  },
+  {
+    "year": "1940",
+    "authors": "Myers, C.S.",
+    "title": "Shell shock in France 1914–18, based on a war diary",
+    "raw": "Myers, C.S. (1940). Shell shock in France 1914–18, based on a war diary. Cambridge: Cambridge University Press. National Screening Committee (1998). First report of the National Screening Committee. London: HMSO."
+  },
+  {
+    "year": "1993",
+    "authors": "Neill, J.R.",
+    "title": "How psychiatric symptoms varied in World War I and II",
+    "raw": "Neill, J.R. (1993). How psychiatric symptoms varied in World War I and II. Military Medicine, 149, 149–151."
+  },
+  {
+    "year": "1964",
+    "authors": "Newman, R.A.",
+    "title": "Combat fatigue: A review of the Korean conflict",
+    "raw": "Newman, R.A. (1964). Combat fatigue: A review of the Korean conflict. Military Medicine, 129, 921–928. Noble, D., Roudebush, M.E. and Price, D. (1951). Studies of Korean War casualties. Part 1: Psychiatric manifestations in wounded men. American Journal of Psychiatry, 108, 495–499."
+  },
+  {
+    "year": "1998",
+    "authors": "Nolan, J.",
+    "title": "The therapeutic state: New York, justifying government at century’s end",
+    "raw": "Nolan, J. (1998). The therapeutic state: New York, justifying government at century’s end. New York: New York University Press."
+  },
+  {
+    "year": "1953",
+    "authors": "Norbury, F.B.",
+    "title": "Psychiatric admissions in a combat division",
+    "raw": "Norbury, F.B. (1953). Psychiatric admissions in a combat division. US Army Medical Bulletin Far East, July, 130–133. North, C., Smith, E. and Spitznagel, E. (1997). One year follow up of survivors of a mass shooting. American Journal of Psychiatry, 154, 1696–1702."
+  },
+  {
+    "year": "1987",
+    "authors": "Noy, S.",
+    "title": "Battle intensity and the length of stay on the battlefield as determinants of the type of evacuation",
+    "raw": "Noy, S. (1987). Battle intensity and the length of stay on the battlefield as determinants of the type of evacuation. Military Medicine, 152, 601–607. O’Brien, L.S. (1998). Traumatic events and mental health. Cambridge: Cambridge University Press. O’Brien, L.S. and Hughes, S. (1991). Symptoms of post-traumatic stress disorder in Falklands veterans five years after the conflict. British Journal of Psychiatry, 159, 135–141. O’Connell, M.R. (1985). Psychiatrist with the task force. In P.Pichot, P.B"
+  },
+  {
+    "year": "1991",
+    "authors": "Oppenheim, J.",
+    "title": "‘Shattered nerves’: Doctors, patients and depression in Victorian England",
+    "raw": "Oppenheim, J. (1991). ‘Shattered nerves’: Doctors, patients and depression in Victorian England. New York: Oxford University Press."
+  },
+  {
+    "year": "1942",
+    "authors": "Oppenheimer, B.S.",
+    "title": "Neurocirculatory asthenia and related problems in military medicine",
+    "raw": "Oppenheimer, B.S. (1942). Neurocirculatory asthenia and related problems in military medicine. Bulletin of the New York Academy of Medicine, 18, 367–382. Orner, R., Lynch, T. and Seed, P. (1993). Long-term traumatic stress reactions in British Falklands War veterans. British Journal of Clinical Psychology, 32, 457–459."
+  },
+  {
+    "year": "1941",
+    "authors": "Orr, D.W.",
+    "title": "Objectives of the selective service psychiatric classification",
+    "raw": "Orr, D.W. (1941). Objectives of the selective service psychiatric classification. Bulletin of the Menninger Clinic, 5, 131–133."
+  },
+  {
+    "year": "1945",
+    "authors": "Osborne, J.W. and Cowen, J.",
+    "title": "Psychiatric factors in peripheral vasoneuropathy after chilling",
+    "raw": "Osborne, J.W. and Cowen, J. (1945). Psychiatric factors in peripheral vasoneuropathy after chilling. Lancet, 2, 204–206. Owen, Mr Justice (2003). Multiple claimants versus the Ministry of Defence (typescript judgement of the PTSD class action). Ozer, E., Best, S., Lipsey, T. and Weiss, D. (2003). Predictors of post traumatic stress disorder and symptoms in adults: a meta analysis. Psychological Bulletin, 129, 52–73."
+  },
+  {
+    "year": "1885",
+    "authors": "Page, H.W.",
+    "title": "Injuries of the spine and spinal cord without apparent mechanical lesion and nervous shock",
+    "raw": "Page, H.W. (1885). Injuries of the spine and spinal cord without apparent mechanical lesion and nervous shock. London: J.& A.Churchill."
+  },
+  {
+    "year": "1946",
+    "authors": "Palmer, H.",
+    "title": "Forward psychiatry in the army",
+    "raw": "Palmer, H. (1946). Forward psychiatry in the army. Proceedings of the Royal Society of Medicine, 39, 137."
+  },
+  {
+    "year": "2003",
+    "authors": "Palmer, I.",
+    "title": "The emotion that dare not speak its name? British Army Review, 132, 31–37",
+    "raw": "Palmer, I. (2003). The emotion that dare not speak its name? British Army Review, 132, 31–37."
+  },
+  {
+    "year": "2004a",
+    "authors": "Palmer, I.",
+    "title": "The psychological dimension of chemical, biological, radiological and nuclear (CBRN) terrorism",
+    "raw": "Palmer, I. (2004a). The psychological dimension of chemical, biological, radiological and nuclear (CBRN) terrorism. Journal of the Royal Army Medical Corps, 150, 3–9."
+  },
+  {
+    "year": "2004b",
+    "authors": "Palmer, I.",
+    "title": "No pain, no gain, part II: A personal conceptualisation of PTSD and posttraumatic psychological difficulties",
+    "raw": "Palmer, I. (2004b). No pain, no gain, part II: A personal conceptualisation of PTSD and posttraumatic psychological difficulties. Journal of the Royal Army Medical Corps, 149, 67–71."
+  },
+  {
+    "year": "1998",
+    "authors": "Pantalon, M. and Motta, R.",
+    "title": "Effectiveness of anxiety management training in the treatment of posttraumatic stress disorder: A preliminary report",
+    "raw": "Pantalon, M. and Motta, R. (1998). Effectiveness of anxiety management training in the treatment of posttraumatic stress disorder: A preliminary report. Journal of Behaviour Therapy and Experimental Psychiatry, 29, 21–29."
+  },
+  {
+    "year": "1864",
+    "authors": "Parkes, E.A.",
+    "title": "Manual of Practical Hygiene prepared especially for use in the medical service of the army",
+    "raw": "Parkes, E.A. (1864). Manual of Practical Hygiene prepared especially for use in the medical service of the army. London: John Churchill & Sons."
+  },
+  {
+    "year": "1916",
+    "authors": "Parkinson, J.",
+    "title": "An inquiry into the cardiac disabilities of soldiers on active service",
+    "raw": "Parkinson, J. (1916). An inquiry into the cardiac disabilities of soldiers on active service. Lancet, 2, 133–138."
+  },
+  {
+    "year": "1929",
+    "authors": "Parsons, F.W.",
+    "title": "Hospital for war neuroses (Base Hospital No",
+    "raw": "Parsons, F.W. (1929). Hospital for war neuroses (Base Hospital No. 117). In T.W.Salmon and N.Fenton (Eds.), The Medical Department of the United States Army in the World War, Vol. X, Neuropsychiatry, pp. 355–367. Washington: US Government Printing Office."
+  },
+  {
+    "year": "1919",
+    "authors": "Parsons-Smith, P.",
+    "title": "The heart disorders of soldiers—an analysis of one thousand cases",
+    "raw": "Parsons-Smith, P. (1919). The heart disorders of soldiers—an analysis of one thousand cases. Journal of the Royal Army Medical Corps, 32, 117–145."
+  },
+  {
+    "year": "1940",
+    "authors": "Payne, R.T. and Newman, C.",
+    "title": "Interim report on dyspepsia in the army",
+    "raw": "Payne, R.T. and Newman, C. (1940). Interim report on dyspepsia in the army. British Medical Journal, 2, 819–821. https://www.ebsco.com/terms-of-use. References 227"
+  },
+  {
+    "year": "1943",
+    "authors": "Penfield, W. and Cone, W.V.",
+    "title": "The special hospital in time of war",
+    "raw": "Penfield, W. and Cone, W.V. (1943). The special hospital in time of war. Archives of Neurology and Psychiatry, 50, 193–196."
+  },
+  {
+    "year": "1952",
+    "authors": "Peterson, D.B. and Chambers, R.E.",
+    "title": "Restatement of combat psychiatry",
+    "raw": "Peterson, D.B. and Chambers, R.E. (1952). Restatement of combat psychiatry. American Journal of Psychiatry, 109, 249–254. Petrie, K.J., Sivertsen, B., Moss-Morris, R., Eriksen, H.R. and Ursin, H. (2001). Thoroughly modern worries: The relationship of worries about modernity to reported symptoms, health and medical care utilization. Journal of Psychosomatic Research, 51, 395–401."
+  },
+  {
+    "year": "1958",
+    "authors": "Phillipson, R.",
+    "title": "Army psychiatry 1948–1958",
+    "raw": "Phillipson, R. (1958). Army psychiatry 1948–1958. Journal of the Royal Army Medical Corps, 104, 151–154."
+  },
+  {
+    "year": "1989",
+    "authors": "Pick, D.",
+    "title": "Faces of degeneration: A European disorder c",
+    "raw": "Pick, D. (1989). Faces of degeneration: A European disorder c. 1848–c. 1918. Cambridge: Cambridge University Press."
+  },
+  {
+    "year": "1993",
+    "authors": "Pick, D.",
+    "title": "War machine, the rationalisation of slaughter in the modern age",
+    "raw": "Pick, D. (1993). War machine, the rationalisation of slaughter in the modern age. New Haven: Yale University Press."
+  },
+  {
+    "year": "1917",
+    "authors": "Pike, W.W.",
+    "title": "War diaries of director of medical services, First Army (TNA, WO95/197, 18 February 1917, Appendix 14)",
+    "raw": "Pike, W.W. (1917). War diaries of director of medical services, First Army (TNA, WO95/197, 18 February 1917, Appendix 14). Pitman, R., Orr, S., Altman, B., Longpre, R.E., Poiré, R.E., Madelin, M.L., Michaels, M.J. and"
+  },
+  {
+    "year": "1996",
+    "authors": "Steketee, G.S.",
+    "title": "Emotional processing and outcome of imaginal flooding therapy in Vietnam veterans with chronic post-traumatic stress disorder",
+    "raw": "Steketee, G.S. (1996). Emotional processing and outcome of imaginal flooding therapy in Vietnam veterans with chronic post-traumatic stress disorder. Comprehensive Psychiatry, 37, 409–418."
+  },
+  {
+    "year": "1962",
+    "authors": "Plag, J.A.",
+    "title": "Pre-enlistment variables related to the performance and adjustment of navy recruits",
+    "raw": "Plag, J.A. (1962). Pre-enlistment variables related to the performance and adjustment of navy recruits. Journal of Clinical Psychology, 18, 168–171."
+  },
+  {
+    "year": "1965",
+    "authors": "Plag, J.A. and Arthur, R.J.",
+    "title": "Psychiatric re-examination of unsuitable naval recruits: A two- year follow-up",
+    "raw": "Plag, J.A. and Arthur, R.J. (1965). Psychiatric re-examination of unsuitable naval recruits: A two- year follow-up. American Journal of Psychiatry, 122, 534–541."
+  },
+  {
+    "year": "1946",
+    "authors": "Plesset, M.R.",
+    "title": "Psychoneurotics in combat",
+    "raw": "Plesset, M.R. (1946). Psychoneurotics in combat. American Journal of Psychiatry, 103, 87–90."
+  },
+  {
+    "year": "1987",
+    "authors": "Porter, R.",
+    "title": "A social history of madness",
+    "raw": "Porter, R. (1987). A social history of madness. London: Weidenfeld & Nicolson."
+  },
+  {
+    "year": "1941a",
+    "authors": "Porter, W.C.",
+    "title": "Military psychiatry and the selective service",
+    "raw": "Porter, W.C. (1941a). Military psychiatry and the selective service. War Medicine, 1, 364–371."
+  },
+  {
+    "year": "1941b",
+    "authors": "Porter, W.C.",
+    "title": "The military psychiatrist at work",
+    "raw": "Porter, W.C. (1941b). The military psychiatrist at work. American Journal of Psychiatry, 98, 317– 323."
+  },
+  {
+    "year": "2000",
+    "authors": "Poynter, D.J.",
+    "title": "Regeneration revisited: W",
+    "raw": "Poynter, D.J. (2000). Regeneration revisited: W.H.R.Rivers and shell shock during the Great War. In M.Hughes and M.Seligmann (Eds.), Leadership in Conflict 1914–1918, pp. 227–243. Barnsley: Leo Cooper."
+  },
+  {
+    "year": "1961",
+    "authors": "Pozner, H.",
+    "title": "Department of Army psychiatry",
+    "raw": "Pozner, H. (1961). Department of Army psychiatry. Journal of the Royal Army Medical Corps, 107, 31–32."
+  },
+  {
+    "year": "1941",
+    "authors": "Pratt, J.H.",
+    "title": "Psychiatric factors in medical examination",
+    "raw": "Pratt, J.H. (1941). Psychiatric factors in medical examination. War Medicine, 1, 358–363."
+  },
+  {
+    "year": "1998",
+    "authors": "Pressman, J.D.",
+    "title": "The last resort: Psychosurgery and the limits of medicine",
+    "raw": "Pressman, J.D. (1998). The last resort: Psychosurgery and the limits of medicine. Cambridge: Cambridge University Press."
+  },
+  {
+    "year": "1984",
+    "authors": "Price, H.H.",
+    "title": "The Falklands: Rate of British psychiatry combat casualties compared to recent American wars",
+    "raw": "Price, H.H. (1984). The Falklands: Rate of British psychiatry combat casualties compared to recent American wars. Journal of the Royal Army Medical Corps, 130, 109–113. Prideaux, J.F.E. (1939). Memorandum on entitlement in neurasthenia and psychoses cases (TNA, PIN15/2401, 1). Prideaux, J.F.E. (1941). Letter to Dr Bernard Hart (TNA, PIN15/2208, 9A). Pulla, R.J., Pickard, L.J. and Carnett, T.S. (1994). Frostbite: An overview with case presentations. Journal of Foot Surgery, 33, 53–63."
+  },
+  {
+    "year": "2001",
+    "authors": "Pupavac, V.",
+    "title": "Therapeutic governance, psychosocial intervention and trauma risk management",
+    "raw": "Pupavac, V. (2001). Therapeutic governance, psychosocial intervention and trauma risk management. Disasters, 25, 358–372."
+  },
+  {
+    "year": "2002",
+    "authors": "Pupavac, V.",
+    "title": "Pathologising populations and colonizing minds: International psychosocial programs in Kosovo",
+    "raw": "Pupavac, V. (2002). Pathologising populations and colonizing minds: International psychosocial programs in Kosovo. Alternatives, 27, 489–511."
+  },
+  {
+    "year": "2004",
+    "authors": "Pupavac, V.",
+    "title": "Psychosocial interventions and the demoralisation of humanitarianism",
+    "raw": "Pupavac, V. (2004). Psychosocial interventions and the demoralisation of humanitarianism. Journal of Biosocial Science, 36, 491–504. Raglan, Lord (1901). Report of the Raglan Committee on Disability Pensions (TNA, WO32/ 6183, 4(20)). https://www.ebsco.com/terms-of-use. References 228"
+  },
+  {
+    "year": "1990",
+    "authors": "Ramchandani, D.",
+    "title": "Distinguishing features of delayed-onset posttraumatic stress disorder",
+    "raw": "Ramchandani, D. (1990). Distinguishing features of delayed-onset posttraumatic stress disorder. Bulletin of the Menninger Clinic, 54, 247–254."
+  },
+  {
+    "year": "1942",
+    "authors": "Raven, J.C.",
+    "title": "Testing the mental ability of adults",
+    "raw": "Raven, J.C. (1942). Testing the mental ability of adults. Lancet, 1, 115–117."
+  },
+  {
+    "year": "1990",
+    "authors": "Rayner, E.",
+    "title": "The independent mind in British psychoanalysis",
+    "raw": "Rayner, E. (1990). The independent mind in British psychoanalysis. London: Free Association Books."
+  },
+  {
+    "year": "1944",
+    "authors": "Rees, J.R.",
+    "title": "Report and comments on liaison visit to US Army and the Canadian Army (TNA, W0165/129)",
+    "raw": "Rees, J.R. (1944). Report and comments on liaison visit to US Army and the Canadian Army (TNA, W0165/129)."
+  },
+  {
+    "year": "1945",
+    "authors": "Rees, J.R.",
+    "title": "The shaping of psychiatry by war",
+    "raw": "Rees, J.R. (1945). The shaping of psychiatry by war. London: Chapman & Hall."
+  },
+  {
+    "year": "1966",
+    "authors": "Rees, J.R.",
+    "title": "Untitled typescript (TNA, WO32/13462 Army Psychiatry Advisory Committee, July 1945 to December 1966, 2)",
+    "raw": "Rees, J.R. (1966). Untitled typescript (TNA, WO32/13462 Army Psychiatry Advisory Committee, July 1945 to December 1966, 2)."
+  },
+  {
+    "year": "1911",
+    "authors": "Reid, D.A.",
+    "title": "Memories of the Crimean War January 1855 to June 1856",
+    "raw": "Reid, D.A. (1911). Memories of the Crimean War January 1855 to June 1856. London: St Catherine Press."
+  },
+  {
+    "year": "1973",
+    "authors": "Reister, F.A.",
+    "title": "Battle casualties and medical statistics: US Army experience in the Korean War",
+    "raw": "Reister, F.A. (1973). Battle casualties and medical statistics: US Army experience in the Korean War. Washington DC: Office of the Surgeon General, US Army. Remarque, Erich Maria (1996). All quiet on the Western Front. London: Vintage."
+  },
+  {
+    "year": "1973",
+    "authors": "Renner, J.A.",
+    "title": "The changing patterns of psychiatric problems in Vietnam",
+    "raw": "Renner, J.A. (1973). The changing patterns of psychiatric problems in Vietnam. Comprehensive Psychiatry, 14, 169–180."
+  },
+  {
+    "year": "1919",
+    "authors": "Rhind, T.D.",
+    "title": "Decentralisation",
+    "raw": "Rhind, T.D. (1919). Decentralisation. War Pensions Gazette, 25, 307–310."
+  },
+  {
+    "year": "1910",
+    "authors": "Richards, R.L.",
+    "title": "Mental and nervous disorders in the Russo-Japanese War",
+    "raw": "Richards, R.L. (1910). Mental and nervous disorders in the Russo-Japanese War. Military Surgeon, 26, 177–193."
+  },
+  {
+    "year": "1948",
+    "authors": "Richardson, F.M.",
+    "title": "Competitive health preservation in the army",
+    "raw": "Richardson, F.M. (1948). Competitive health preservation in the army. Journal of the Royal Army Medical Corps, 91, 203–215."
+  },
+  {
+    "year": "1978",
+    "authors": "Richardson, F.M.",
+    "title": "Fighting spirit: A study of psychological factors in war",
+    "raw": "Richardson, F.M. (1978). Fighting spirit: A study of psychological factors in war. London: Leo Cooper."
+  },
+  {
+    "year": "1986",
+    "authors": "Richmond, J.S. and Beck, J.C.",
+    "title": "Posttraumatic stress disorder in a World War II veteran [letter]",
+    "raw": "Richmond, J.S. and Beck, J.C. (1986). Posttraumatic stress disorder in a World War II veteran [letter]. American Journal of Psychiatry, 143, 941."
+  },
+  {
+    "year": "1992",
+    "authors": "Richter, D.",
+    "title": "Chemical soldiers, British gas warfare in World War One",
+    "raw": "Richter, D. (1992). Chemical soldiers, British gas warfare in World War One. London: Leo Cooper."
+  },
+  {
+    "year": "1941",
+    "authors": "Rickman, J.",
+    "title": "A case of hysteria: Theory and practice in the two world wars",
+    "raw": "Rickman, J. (1941). A case of hysteria: Theory and practice in the two world wars. Lancet, 1, 785– 786."
+  },
+  {
+    "year": "1992",
+    "authors": "Risse, G.B. and Warner, J.H.",
+    "title": "Reconstructing clinical activities: Patient records in medical history",
+    "raw": "Risse, G.B. and Warner, J.H. (1992). Reconstructing clinical activities: Patient records in medical history. Social History of Medicine, 5, 183–205."
+  },
+  {
+    "year": "2002",
+    "authors": "Ritchie, E.C.",
+    "title": "Psychiatry in the Korean War: Perils, PIES, and prisoners of war",
+    "raw": "Ritchie, E.C. (2002). Psychiatry in the Korean War: Perils, PIES, and prisoners of war. Military Medicine, 167, 898–903. Rivers, W.H.R. (1918). An address on the repression of war experience. Lancet, 1, 173–177."
+  },
+  {
+    "year": "1915",
+    "authors": "Roberts, A.A.",
+    "title": "The poison war",
+    "raw": "Roberts, A.A. (1915). The poison war. London: William Heinemann."
+  },
+  {
+    "year": "1960",
+    "authors": "Robson, W.",
+    "title": "Letters from a soldier",
+    "raw": "Robson, W. (1960). Letters from a soldier. London: Faber & Faber. Rona, R.J., Jones, M., French, C.Hopper, C. and Wessely, S. (2004). Screening for physical and psychological illness in the British Armed Forces: 1: The acceptability of the programme. Journal of Medical Screening, 11, 148–152."
+  },
+  {
+    "year": "2003",
+    "authors": "Rose, N.",
+    "title": "Inventing our selves",
+    "raw": "Rose, N. (2003). Inventing our selves. Cambridge: Cambridge University Press."
+  },
+  {
+    "year": "1975",
+    "authors": "Rosen, G.",
+    "title": "Nostalgia: A ‘forgotten’ psychological disorder",
+    "raw": "Rosen, G. (1975). Nostalgia: A ‘forgotten’ psychological disorder. Psychological Medicine, 5, 346–351."
+  },
+  {
+    "year": "1994",
+    "authors": "Rosenheck, R. and Fontana, A.",
+    "title": "Long term sequelae of combat on World War II, Korea and Vietnam: A comparative study",
+    "raw": "Rosenheck, R. and Fontana, A. (1994). Long term sequelae of combat on World War II, Korea and Vietnam: A comparative study. In R.Ursano, B.McCaughey and C.Fullerton (Eds.), Individual and Community Responses to Trauma and Disaster, pp. 330–359. Cambridge: Cambridge University Press."
+  },
+  {
+    "year": "1937",
+    "authors": "Ross, T.A.",
+    "title": "The common neuroses: Their treatment by psychotherapy",
+    "raw": "Ross, T.A. (1937). The common neuroses: Their treatment by psychotherapy. London: Edward Arnold. Rothbaum, B.O., Meadows, E.A., Resick, P. and Foy, D.W. (2000). Cognitive-behavioural therapy. Journal of Traumatic Stress, 13, 558–563. https://www.ebsco.com/terms-of-use. References 229"
+  },
+  {
+    "year": "1995",
+    "authors": "Roudebush, M.O.",
+    "title": "A battle of nerves: Hysteria and its treatment in France during World War One",
+    "raw": "Roudebush, M.O. (1995). A battle of nerves: Hysteria and its treatment in France during World War One. PhD thesis, University of California at Berkeley."
+  },
+  {
+    "year": "1918",
+    "authors": "Roussy, G. and Lhermitte, J.",
+    "title": "The Psychoneuroses of War",
+    "raw": "Roussy, G. and Lhermitte, J. (1918). The Psychoneuroses of War. London: University of London Press."
+  },
+  {
+    "year": "1919",
+    "authors": "Russel, C.K.",
+    "title": "The management of psycho-neuroses in the Canadian army",
+    "raw": "Russel, C.K. (1919). The management of psycho-neuroses in the Canadian army. Journal of Abnormal Psychology, 14, 27–33."
+  },
+  {
+    "year": "1997",
+    "authors": "Sadavoy, J.",
+    "title": "Survivors: A review of the late life effects of prior psychological trauma",
+    "raw": "Sadavoy, J. (1997). Survivors: A review of the late life effects of prior psychological trauma. American Journal of Geriatric Psychiatry, 5, 287–301."
+  },
+  {
+    "year": "1917",
+    "authors": "Salmon, T.W.",
+    "title": "The care and treatment of mental diseases and war neuroses (‘shell shock’) in the British Army",
+    "raw": "Salmon, T.W. (1917). The care and treatment of mental diseases and war neuroses (‘shell shock’) in the British Army. Mental Hygiene, 1, 509–547."
+  },
+  {
+    "year": "1929",
+    "authors": "Salmon, T.",
+    "title": "Care and treatment of mental diseases and war neurosis (‘shell shock’) in the British army",
+    "raw": "Salmon, T. (1929). Care and treatment of mental diseases and war neurosis (‘shell shock’) in the British army. In T.W.Salmon and N.Fenton (Eds.), The Medical Department of the United States Army in the World War, Volume X, Neuropsychiatry, pp. 497–547. Washington: US Government Printing Office."
+  },
+  {
+    "year": "1984",
+    "authors": "Sampson, J.B.",
+    "title": "Anxiety as a factor in the incidence of combat cold injury",
+    "raw": "Sampson, J.B. (1984). Anxiety as a factor in the incidence of combat cold injury. Military Medicine, 149, 89–91."
+  },
+  {
+    "year": "1938",
+    "authors": "Sandiford, H.A.",
+    "title": "War neuroses",
+    "raw": "Sandiford, H.A. (1938). War neuroses. Journal of the Royal Army Medical Corps, 71, 222–234."
+  },
+  {
+    "year": "1944a",
+    "authors": "Sandiford, H.A.",
+    "title": "Report on visit to CMF by director army psychiatry (TNA, WO32/ 11550, 4–5)",
+    "raw": "Sandiford, H.A. (1944a). Report on visit to CMF by director army psychiatry (TNA, WO32/ 11550, 4–5)."
+  },
+  {
+    "year": "1944b",
+    "authors": "Sandiford, H.A.",
+    "title": "Psychiatric service in operational theatres, report on visit to 21 Army Group (TNA, WO32/11550, 1)",
+    "raw": "Sandiford, H.A. (1944b). Psychiatric service in operational theatres, report on visit to 21 Army Group (TNA, WO32/11550, 1)."
+  },
+  {
+    "year": "1945a",
+    "authors": "Sandiford, H.A.",
+    "title": "Medical diaries AMD 11 (TNA, WO165/129, 23 February 1943)",
+    "raw": "Sandiford, H.A. (1945a). Medical diaries AMD 11 (TNA, WO165/129, 23 February 1943)."
+  },
+  {
+    "year": "1945b",
+    "authors": "Sandiford, H.A.",
+    "title": "Army Psychiatry Advisory Committee minutes (TNA, WO32/13462, 5 July 1945)",
+    "raw": "Sandiford, H.A. (1945b). Army Psychiatry Advisory Committee minutes (TNA, WO32/13462, 5 July 1945)."
+  },
+  {
+    "year": "1942",
+    "authors": "Sargant, W.",
+    "title": "Physical treatment of acute war neurosis: Some clinical observations",
+    "raw": "Sargant, W. (1942). Physical treatment of acute war neurosis: Some clinical observations. British Medical Journal, 2, 574–576."
+  },
+  {
+    "year": "1967",
+    "authors": "Sargant, W.",
+    "title": "The unquiet mind: The autobiography of a physician in psychological medicine",
+    "raw": "Sargant, W. (1967). The unquiet mind: The autobiography of a physician in psychological medicine. London: Heinemann."
+  },
+  {
+    "year": "1940",
+    "authors": "Sargant, W. and Slater, E.",
+    "title": "Acute war neuroses",
+    "raw": "Sargant, W. and Slater, E. (1940). Acute war neuroses. Lancet, 2, 1–2."
+  },
+  {
+    "year": "1941",
+    "authors": "Sargant, W. and Craske, N.",
+    "title": "Modified insulin therapy in war neuroses",
+    "raw": "Sargant, W. and Craske, N. (1941). Modified insulin therapy in war neuroses. Lancet, 2, 212–214."
+  },
+  {
+    "year": "1941",
+    "authors": "Sargant, W. and Slater, E.",
+    "title": "Amnesia syndromes in war",
+    "raw": "Sargant, W. and Slater, E. (1941). Amnesia syndromes in war. Proceedings of the Royal Society of Medicine, 34, 757–764."
+  },
+  {
+    "year": "1944",
+    "authors": "Sargant, W. and Slater, E.",
+    "title": "An introduction to physical methods of treatment in psychiatry",
+    "raw": "Sargant, W. and Slater, E. (1944). An introduction to physical methods of treatment in psychiatry. Edinburgh: E.& S.Livingstone. Schnurr, P.P., Friedman, M., Foy, D.W., Lunney, C.A., Segupta, A. and Waelde, L.C. (2003). Randomized trial of trauma-focused group therapy for posttraumatic stress disorder—results from a Department of Veterans’ Affairs Co-operative Study. Archives of General Psychiatry, 60, 481–489. Schnyder, U., Moergeli, H., Trentz, O., Klaghofer, R. and Buddeberg, C. (2001). Predi"
+  },
+  {
+    "year": "1919",
+    "authors": "Schwabe, S.I.",
+    "title": "The experiment in occupational therapy at Base Hospital 117, AEF",
+    "raw": "Schwabe, S.I. (1919). The experiment in occupational therapy at Base Hospital 117, AEF. Mental Hygiene, 3, 580–593."
+  },
+  {
+    "year": "1990",
+    "authors": "Scott, W.J.",
+    "title": "PTSD in DSM-III: A case in the politics of diagnosis and disease",
+    "raw": "Scott, W.J. (1990). PTSD in DSM-III: A case in the politics of diagnosis and disease. Social Problems, 37, 294–310."
+  },
+  {
+    "year": "1992",
+    "authors": "Scott, W.J.",
+    "title": "PTSD and Agent Orange: Implications for a sociology of veterans’ issues",
+    "raw": "Scott, W.J. (1992). PTSD and Agent Orange: Implications for a sociology of veterans’ issues. Armed Forces and Society, 18, 592–612. Shalev, A.Y., Spiro, S.E., Solomon, Z., Bleich, A. and Cooper, S. (1992). Positive clinical impressions: I. Therapists’ evaluations. Journal of Traumatic Stress, 5, 207–216. Shalom, D., Benbenishty, R. and Solomon, Z. (1995). Mental health officers’ causal explanations of combat stress reaction. Journal of Traumatic Stress, 8, 259–269. https://www.ebsco.com/terms-of"
+  },
+  {
+    "year": "1989",
+    "authors": "Shapiro, F.",
+    "title": "Eye movement desensitization: A new treatment for post-traumatic stress disorder",
+    "raw": "Shapiro, F. (1989). Eye movement desensitization: A new treatment for post-traumatic stress disorder. Journal of Behaviour Therapy and Experimental Psychiatry, 20, 211–217."
+  },
+  {
+    "year": "1950",
+    "authors": "Sharp, W.L.",
+    "title": "Fate of 395 mild neuropsychiatric cases salvaged from training period and taken into combat",
+    "raw": "Sharp, W.L. (1950). Fate of 395 mild neuropsychiatric cases salvaged from training period and taken into combat. American Journal of Psychiatry, 106, 801–807. Shaw, C., Abrams, K. and Marteau, T. (1999). Psychological impact of predicting individuals’ risks of illness: A systematic review. Social Science and Medicine, 49, 1571–1598."
+  },
+  {
+    "year": "1921",
+    "authors": "Shaw, H.A.",
+    "title": "Psychological examining in the United States Army",
+    "raw": "Shaw, H.A. (1921). Psychological examining in the United States Army. Memoirs National Academy of Sciences, 15, 22."
+  },
+  {
+    "year": "1996",
+    "authors": "Shephard, B.",
+    "title": "The early treatment of mental disorders: RG",
+    "raw": "Shephard, B. (1996). The early treatment of mental disorders: RG.Rows and Maghull 1914–1918. In H.Freeman and G.E.Berrios (Eds.), 150 Years of British Psychiatry, Volume 2, The Aftermath, pp. 434–464. London: Gaskell."
+  },
+  {
+    "year": "1999",
+    "authors": "Shephard, B.",
+    "title": "‘Pitiless psychology’: The role of prevention in British military psychiatry in the Second World War",
+    "raw": "Shephard, B. (1999). ‘Pitiless psychology’: The role of prevention in British military psychiatry in the Second World War. History of Psychiatry, 10, 491–542."
+  },
+  {
+    "year": "2000",
+    "authors": "Shephard, B.",
+    "title": "A war of nerves: Soldiers and psychiatrists 1914–1991",
+    "raw": "Shephard, B. (2000). A war of nerves: Soldiers and psychiatrists 1914–1991. London: Jonathan Cape."
+  },
+  {
+    "year": "1986",
+    "authors": "Shorter, E.",
+    "title": "Paralysis—the rise and fall of a hysterical symptom",
+    "raw": "Shorter, E. (1986). Paralysis—the rise and fall of a hysterical symptom. Journal of Social History, 19, 549–582."
+  },
+  {
+    "year": "1997a",
+    "authors": "Shorter, E.",
+    "title": "A history of psychiatry, from the era of asylum to the age of Prozac",
+    "raw": "Shorter, E. (1997a). A history of psychiatry, from the era of asylum to the age of Prozac. New York: John Wiley & Sons."
+  },
+  {
+    "year": "1997b",
+    "authors": "Shorter, E.",
+    "title": "Multiple chemical sensitivity: Pseudodisease in historical perspective",
+    "raw": "Shorter, E. (1997b). Multiple chemical sensitivity: Pseudodisease in historical perspective. Scandinavian Journal of Work and Environmental Health, 23 (Supplement 3), 35–42."
+  },
+  {
+    "year": "1987",
+    "authors": "Showalter, E.",
+    "title": "The female malady: Women, madness and English culture 1830–1980",
+    "raw": "Showalter, E. (1987). The female malady: Women, madness and English culture 1830–1980. London: Virago."
+  },
+  {
+    "year": "1997",
+    "authors": "Showalter, E.",
+    "title": "Hystories, hysterical epidemics and modern culture",
+    "raw": "Showalter, E. (1997). Hystories, hysterical epidemics and modern culture. London: Picador."
+  },
+  {
+    "year": "1997",
+    "authors": "Sing, S.P. and Lee, A.S.",
+    "title": "Conversion disorders in Nottingham: Alive but not kicking",
+    "raw": "Sing, S.P. and Lee, A.S. (1997). Conversion disorders in Nottingham: Alive but not kicking. Journal of Psychosomatic Research, 43, 425–430."
+  },
+  {
+    "year": "1942a",
+    "authors": "Slater, E.",
+    "title": "War neurosis",
+    "raw": "Slater, E. (1942a). War neurosis. British Medical Journal, 2, 421."
+  },
+  {
+    "year": "1942b",
+    "authors": "Slater, E.",
+    "title": "War neurosis—an error corrected",
+    "raw": "Slater, E. (1942b). War neurosis—an error corrected. British Medical Journal, 2, 654."
+  },
+  {
+    "year": "1943",
+    "authors": "Slater, E.",
+    "title": "The neurotic constitution: A statistical study of two thousand neurotic soldiers",
+    "raw": "Slater, E. (1943). The neurotic constitution: A statistical study of two thousand neurotic soldiers. Journal of Neurology and Psychiatry, 6, 1–16."
+  },
+  {
+    "year": "1965",
+    "authors": "Slater, E.",
+    "title": "Diagnosis of ‘hysteria’",
+    "raw": "Slater, E. (1965). Diagnosis of ‘hysteria’. British Medical Journal, 2, 1395–1399."
+  },
+  {
+    "year": "1978",
+    "authors": "Slobodin, R.",
+    "title": "Rivers",
+    "raw": "Slobodin, R. (1978). Rivers. New York: Columbia University Press, pp. 59–66."
+  },
+  {
+    "year": "1917",
+    "authors": "Smith, G.E. and Pear, T.H.",
+    "title": "Shellshock and its lessons",
+    "raw": "Smith, G.E. and Pear, T.H. (1917). Shellshock and its lessons. Manchester: Manchester University Press."
+  },
+  {
+    "year": "1978",
+    "authors": "Smith, J.C. and Hogan, B.",
+    "title": "Criminal law",
+    "raw": "Smith, J.C. and Hogan, B. (1978). Criminal law. London: Butterworths Tolley."
+  },
+  {
+    "year": "1922",
+    "authors": "Smith, K.R.",
+    "title": "The heart—in examining recruits and soldiers for discharge",
+    "raw": "Smith, K.R. (1922). The heart—in examining recruits and soldiers for discharge. Journal of the"
+  },
+  {
+    "year": "1932",
+    "authors": "Smith, S.",
+    "title": "Functional nervous diseases in the army",
+    "raw": "Smith, S. (1932). Functional nervous diseases in the army. Journal of the Royal Army Medical Corps, 59, 81–95, 175–189. Solkoff, N., Gray, P. and Keill, S. (1986). Which Vietnam veterans develop posttraumatic stress disorders? Journal of Clinical Psychology, 42, 687–698."
+  },
+  {
+    "year": "1989",
+    "authors": "Solomon, Z.",
+    "title": "A three-year prospective study of PTSD in Israeli combat veterans",
+    "raw": "Solomon, Z. (1989). A three-year prospective study of PTSD in Israeli combat veterans. Journal of Traumatic Stress, 2, 59–73."
+  },
+  {
+    "year": "1993",
+    "authors": "Solomon, Z.",
+    "title": "Combat stress reaction: The enduring toll of war",
+    "raw": "Solomon, Z. (1993). Combat stress reaction: The enduring toll of war. New York: Plenum Press."
+  },
+  {
+    "year": "2001",
+    "authors": "Solomon, Z.",
+    "title": "The impact of posttraumatic stress disorder in military situations",
+    "raw": "Solomon, Z. (2001). The impact of posttraumatic stress disorder in military situations. Journal of Clinical Psychiatry, 62 (Supplement 17), 11–15."
+  },
+  {
+    "year": "1988",
+    "authors": "Solomon, Z. and Benbenishty, R.",
+    "title": "A follow up of Israeli casualties of combat stress reaction (‘battle shock’) in the 1982 Lebanon War",
+    "raw": "Solomon, Z. and Benbenishty, R. (1988). A follow up of Israeli casualties of combat stress reaction (‘battle shock’) in the 1982 Lebanon War. British Journal of Clinical Psychology, 27, 125–135. Solomon, Z., Schwarzwold, J. and Weisenberg, M. (1984). Psycho-social adjustment of soldiers experiencing combat stress disorder during Operation Peace for Galilee: Annual scientific report. Tel-Aviv: Israel Defence Forces-Medical Corps. https://www.ebsco.com/terms-of-use. References 231 Solomon, Z., Opp"
+  },
+  {
+    "year": "1920",
+    "authors": "Soltau, A.B.",
+    "title": "A note on sick wastage",
+    "raw": "Soltau, A.B. (1920). A note on sick wastage. Journal of the Royal Army Medical Corps, 35, 152– 159. Southborough, Lord (1922). Report of the War Office Committee of Enquiry into ‘shell-shock’. London: HMSO."
+  },
+  {
+    "year": "1999",
+    "authors": "Spiers, E.M.",
+    "title": "Chemical warfare in the First World War",
+    "raw": "Spiers, E.M. (1999). Chemical warfare in the First World War. In B.Bond (Ed.), ‘Look to your front’: Studies in the First World War by the British Commission for Military History, pp. 163– 178. Staplehurst: Spellmount."
+  },
+  {
+    "year": "1988",
+    "authors": "Spiller, R.J.",
+    "title": "Isen’s run Human dimensions of war in the twentieth century",
+    "raw": "Spiller, R.J. (1988). Isen’s run Human dimensions of war in the twentieth century. Military Review, 68, 16–31. Staab, J.P., Grieger, T.A., Fullerton, C.S. and Ursano, R.J. (1996). Acute stress disorder, subsequent post-traumatic stress disorder and depression after a series of typhoons. Anxiety, 3, 219–225. Stanley, Lord (1901). Lord Stanley’s Memorandum on Disability Pensions (TNA, WO33/199, Appendix II, 6)."
+  },
+  {
+    "year": "2001",
+    "authors": "Stafford-Clark, D. (n.d.). Bomber command and lack of moral fibre (typescript). Stein, D., Zungu-Dirwaji, N., van der Linden, G. and Seedat, S.",
+    "title": "Pharmacotherapy for posttraumatic stress disorder",
+    "raw": "Stafford-Clark, D. (n.d.). Bomber command and lack of moral fibre (typescript). Stein, D., Zungu-Dirwaji, N., van der Linden, G. and Seedat, S. (2001). Pharmacotherapy for posttraumatic stress disorder. Cochrane Library, 2."
+  },
+  {
+    "year": "1997",
+    "authors": "Stokes, J.W. and Banderet, L.E.",
+    "title": "Psychological aspects of chemical defense warfare",
+    "raw": "Stokes, J.W. and Banderet, L.E. (1997). Psychological aspects of chemical defense warfare. Military Psychohgy, 9, 395–415."
+  },
+  {
+    "year": "1985",
+    "authors": "Stone, M.",
+    "title": "Shellshock and the psychologists",
+    "raw": "Stone, M. (1985). Shellshock and the psychologists. In W.F.Bynum, R.Porter and M. Shepherd (Eds.), The anatomy of madness: Essays in the history of psychiatry: volume II, pp. 242–271. London: Tavistock Publications. Stouffer, S.A., Lumsdaine, A.A., Lumsdaine, M.H., DeVinney, L.C, Star, S.A. and"
+  },
+  {
+    "year": "1949",
+    "authors": "Williams, R.M.",
+    "title": "The American soldier: Combat and its aftermath, Volume II",
+    "raw": "Williams, R.M. (1949). The American soldier: Combat and its aftermath, Volume II. New Jersey: Princeton University Press."
+  },
+  {
+    "year": "1919",
+    "authors": "Strecker, E.A.",
+    "title": "Experiences in the immediate treatment of war neuroses",
+    "raw": "Strecker, E.A. (1919). Experiences in the immediate treatment of war neuroses. American Journal of Insanity, 76, 45–69."
+  },
+  {
+    "year": "1945",
+    "authors": "Strecker, E.A. and Appel, K.E.",
+    "title": "Psychiatry and modern warfare",
+    "raw": "Strecker, E.A. and Appel, K.E. (1945). Psychiatry and modern warfare. New York: Macmillan."
+  },
+  {
+    "year": "1998",
+    "authors": "Sturdy, S.",
+    "title": "War as an experiment: Physiology, innovation and administration in Britain 1914–18: The case of chemical warfare",
+    "raw": "Sturdy, S. (1998). War as an experiment: Physiology, innovation and administration in Britain 1914–18: The case of chemical warfare. In R.Cooter, M.Harrison and S.Sturdy (Eds.), War, medicine and modernity, pp. 65–84. Stroud: Sutton."
+  },
+  {
+    "year": "1999",
+    "authors": "Summerfield, D.",
+    "title": "A critique of seven assumptions behind psychological trauma programmes in war affected areas",
+    "raw": "Summerfield, D. (1999). A critique of seven assumptions behind psychological trauma programmes in war affected areas. Social Science and Medicine, 48, 1449–1462."
+  },
+  {
+    "year": "2001",
+    "authors": "Summerfield, D.",
+    "title": "The invention of post traumatic stress disorder and the social usefulness of a psychiatric category",
+    "raw": "Summerfield, D. (2001). The invention of post traumatic stress disorder and the social usefulness of a psychiatric category. British Medical Journal, 322, 95–98."
+  },
+  {
+    "year": "1989",
+    "authors": "Sutherland, J.D.",
+    "title": "Fairbairn’s journey into the interior",
+    "raw": "Sutherland, J.D. (1989). Fairbairn’s journey into the interior. London: Free Association Books. https://www.ebsco.com/terms-of-use. References 232"
+  },
+  {
+    "year": "1939",
+    "authors": "Sutton, D.",
+    "title": "The utilisation of psychiatry in the armed forces",
+    "raw": "Sutton, D. (1939). The utilisation of psychiatry in the armed forces. Psychiatry, 2, 133."
+  },
+  {
+    "year": "1943a",
+    "authors": "Symonds, C.P.",
+    "title": "Anxiety neurosis in combatants",
+    "raw": "Symonds, C.P. (1943a). Anxiety neurosis in combatants. Lancet, 2, 785–789."
+  },
+  {
+    "year": "1943b",
+    "authors": "Symonds, C.P.",
+    "title": "The human response to flying stress",
+    "raw": "Symonds, C.P. (1943b). The human response to flying stress. British Medical Journal, 2, 703–706, 740–744."
+  },
+  {
+    "year": "1994",
+    "authors": "Taylor, A.H.",
+    "title": "Letters from the Crimea",
+    "raw": "Taylor, A.H. (1994). Letters from the Crimea. RUSI Journal, 139, 51–60."
+  },
+  {
+    "year": "1917",
+    "authors": "Thompson, H.N.",
+    "title": "War diary 1 September 1917 to 30 September 1917 (TNA, WO95/ 197, Appendices XIII, XXIX)",
+    "raw": "Thompson, H.N. (1917). War diary 1 September 1917 to 30 September 1917 (TNA, WO95/ 197, Appendices XIII, XXIX)."
+  },
+  {
+    "year": "1913",
+    "authors": "Thorburn, W.",
+    "title": "The traumatic neuroses",
+    "raw": "Thorburn, W. (1913). The traumatic neuroses. Proceedings of the Royal Society of Medicine, Neurological Section, 7, 4."
+  },
+  {
+    "year": "1941",
+    "authors": "Tidy, H.L.",
+    "title": "Discussion on dyspepsia in the armed forces",
+    "raw": "Tidy, H.L. (1941). Discussion on dyspepsia in the armed forces. Proceedings of the Royal Society of Medicine, 34, 413–414."
+  },
+  {
+    "year": "1943",
+    "authors": "Tidy, H.L.",
+    "title": "Peptic ulcer and dyspepsia in the army",
+    "raw": "Tidy, H.L. (1943). Peptic ulcer and dyspepsia in the army. British Medical Journal, 2, 473–477."
+  },
+  {
+    "year": "1967",
+    "authors": "Tiffany, W.",
+    "title": "The mental health of army troops in Vietnam",
+    "raw": "Tiffany, W. (1967). The mental health of army troops in Vietnam. American Journal of Psychiatry, 123, 1585–1586."
+  },
+  {
+    "year": "1950",
+    "authors": "Titmuss, R.M.",
+    "title": "Problems of social policy",
+    "raw": "Titmuss, R.M. (1950). Problems of social policy. London: HMSO."
+  },
+  {
+    "year": "1948",
+    "authors": "Torrie, A. and Ahrenfeldt, R.H.",
+    "title": "Psychiatry",
+    "raw": "Torrie, A. and Ahrenfeldt, R.H. (1948). Psychiatry. Journal of the Royal Army Medical Corps, 90, 327–333."
+  },
+  {
+    "year": "1918",
+    "authors": "Treves, F.",
+    "title": "Memorandum of the Headquarters Medical Board on a report of the subcommittee of the Council of Consultants (TNA, WO32/2791, 5)",
+    "raw": "Treves, F. (1918). Memorandum of the Headquarters Medical Board on a report of the subcommittee of the Council of Consultants (TNA, WO32/2791, 5)."
+  },
+  {
+    "year": "1981",
+    "authors": "Trimble, M.R.",
+    "title": "Post-traumatic neurosis: From railway spine to the whiplash",
+    "raw": "Trimble, M.R. (1981). Post-traumatic neurosis: From railway spine to the whiplash. Chichester: John Wiley & Sons."
+  },
+  {
+    "year": "1985",
+    "authors": "Trimble, M.R.",
+    "title": "Post-traumatic stress disorder: History of a concept",
+    "raw": "Trimble, M.R. (1985). Post-traumatic stress disorder: History of a concept. In C.R.Figley (Ed.), Trauma and its wake: The study and treatment of post-traumatic stress disorder, pp. 5–14. New York: Brunner/Mazel."
+  },
+  {
+    "year": "1932",
+    "authors": "Turner, W.A.",
+    "title": "The after-effects of war neuroses",
+    "raw": "Turner, W.A. (1932). The after-effects of war neuroses. Journal of the Royal Army Medical Corps, 58, 42–46. Unwin, C., Blatchley, N., Coker, W., Ferry, S., Hotopf, M., Hull, L., Ismail, K., Palmer, L, David., A and Wessely, S. (1999). Health of UK servicemen who served in the Persian Gulf War. Lancet, 353, 169–178."
+  },
+  {
+    "year": "2002",
+    "authors": "Ursano, R.J.",
+    "title": "Post-traumatic stress disorder",
+    "raw": "Ursano, R.J. (2002). Post-traumatic stress disorder. New England Journal of Medicine, 346, 130– 132. Ursano, R.J., McCaughey, B.G. and Fullerton, C.S. (1994). Individual and community responses to trauma and disaster: The structure of human chaos. Cambridge: Cambridge University Press. Van der Kolk, B.A., McFarlane, A.C. and Weisaeth, L. (1996). Traumatic stress: The effects of overwhelming experience on mind, body and society. New York: Guildford Press. Van Dyke, C., Zilberg, N. and McKinnon, J"
+  },
+  {
+    "year": "1965",
+    "authors": "Veith, I.",
+    "title": "Hysteria: The history of a disease",
+    "raw": "Veith, I. (1965). Hysteria: The history of a disease. Chicago: University of Chicago Press."
+  },
+  {
+    "year": "1919",
+    "authors": "Venning, J.A.",
+    "title": "The etiology of disordered action of the heart: A report on 7,803 cases",
+    "raw": "Venning, J.A. (1919). The etiology of disordered action of the heart: A report on 7,803 cases."
+  },
+  {
+    "year": "1954",
+    "authors": "Voth, H.M.",
+    "title": "Psychiatric screening in the armed forces",
+    "raw": "Voth, H.M. (1954). Psychiatric screening in the armed forces. American Journal of Psychiatry, 110, 748–753."
+  },
+  {
+    "year": "1946",
+    "authors": "Wagner, P.",
+    "title": "Psychiatric activities during the Normandy Offensive, June 20 to August 20, 1944",
+    "raw": "Wagner, P. (1946). Psychiatric activities during the Normandy Offensive, June 20 to August 20, 1944. Psychiatry, 9, 348–356."
+  },
+  {
+    "year": "1952",
+    "authors": "Walker, A.",
+    "title": "Clinical problems of war",
+    "raw": "Walker, A. (1952). Clinical problems of war. Canberra: Australian War Memorial."
+  },
+  {
+    "year": "1981",
+    "authors": "Walker, J.I. and Nash, J.L.",
+    "title": "Group therapy in the treatment of Vietnam combat veterans",
+    "raw": "Walker, J.I. and Nash, J.L. (1981). Group therapy in the treatment of Vietnam combat veterans. International Journal of Group Psychotherapy, 31, 379–389."
+  },
+  {
+    "year": "1944",
+    "authors": "Waller, W.",
+    "title": "The veteran comes back",
+    "raw": "Waller, W. (1944). The veteran comes back. New York: Dryden Press. Ward, S.R.E. (1975). The war generation: Veterans of the First World War. Port Washington, NY: Kennikat Press. https://www.ebsco.com/terms-of-use. References 233"
+  },
+  {
+    "year": "1951",
+    "authors": "War Office",
+    "title": "Psychiatric disorders of battle",
+    "raw": "War Office (1951). Psychiatric disorders of battle. London: HMSO."
+  },
+  {
+    "year": "1901",
+    "authors": "Washbourn, J.W.",
+    "title": "Some of the principal diseases met with among the troops in South Africa during the present war",
+    "raw": "Washbourn, J.W. (1901). Some of the principal diseases met with among the troops in South Africa during the present war. Lancet, 2, 394."
+  },
+  {
+    "year": "1952",
+    "authors": "Watts, J.C.",
+    "title": "Cold injury in Korea",
+    "raw": "Watts, J.C. (1952). Cold injury in Korea. Journal of the Royal Army Medical Corps, 98, 1–7."
+  },
+  {
+    "year": "2001",
+    "authors": "Weisaeth, L.",
+    "title": "Qualitative and quantitative aspects of the stressor, stress relationship",
+    "raw": "Weisaeth, L. (2001). Qualitative and quantitative aspects of the stressor, stress relationship. In A.Brailsford (Ed.), Psychological injury: Understanding and supporting, pp. 49–71. London: HMSO."
+  },
+  {
+    "year": "1995",
+    "authors": "Wells, M.K.",
+    "title": "Courage and air warfare: The Allied aircrew experience in the Second World War",
+    "raw": "Wells, M.K. (1995). Courage and air warfare: The Allied aircrew experience in the Second World War. London: Frank Cass."
+  },
+  {
+    "year": "1991",
+    "authors": "Wessely, S.",
+    "title": "History of postviral fatigue syndrome",
+    "raw": "Wessely, S. (1991). History of postviral fatigue syndrome. British Medical Bulletin, 47, 919–941."
+  },
+  {
+    "year": "1995",
+    "authors": "Wessely, S.",
+    "title": "Neurasthenia and fatigue syndromes",
+    "raw": "Wessely, S. (1995). Neurasthenia and fatigue syndromes. In G.Berrios and R.Porter (Eds.), A history of clinical psychiatry: The origin and history of psychiatric disorders, pp. 509–532. London: Athlone."
+  },
+  {
+    "year": "2001",
+    "authors": "Wessely, S.",
+    "title": "Ten years on, what do we know about the Gulf War Syndrome? Clinical Medicine (JRCPL), 1, 28–37",
+    "raw": "Wessely, S. (2001). Ten years on, what do we know about the Gulf War Syndrome? Clinical Medicine (JRCPL), 1, 28–37."
+  },
+  {
+    "year": "2004",
+    "authors": "Wessely, S. and Jones, E.",
+    "title": "Psychiatry and the ‘lessons of Vietnam’: What were they, and are they still relevant? War and Society, 22, 89–103",
+    "raw": "Wessely, S. and Jones, E. (2004). Psychiatry and the ‘lessons of Vietnam’: What were they, and are they still relevant? War and Society, 22, 89–103. Wessely, S., Nimnuan, C. and Sharpe, M. (1999). Functional somatic syndromes: One or many? Lancet, 354, 936–939. Wessely, S., Rose, S. and Bisson, J. (1999). Brief psychological interventions (‘debriefing’) for immediate trauma-related symptoms and the prevention of post-traumatic stress disorder. Cochrane Library, 4, 1–18."
+  },
+  {
+    "year": "1917",
+    "authors": "Wetman, W.A.",
+    "title": "War diary of no",
+    "raw": "Wetman, W.A. (1917). War diary of no. 622 CCS (TNA, WO95/245, 20 July 1917, 27 July 1917)."
+  },
+  {
+    "year": "2001",
+    "authors": "Wheelwright, J.",
+    "title": "The irritable heart: The medical mystery of the Gulf War",
+    "raw": "Wheelwright, J. (2001). The irritable heart: The medical mystery of the Gulf War. New York: W.W.Norton & Co."
+  },
+  {
+    "year": "1999a",
+    "authors": "Whitehead, I.R.",
+    "title": "The British medical officer on the Western Front: The training of doctors for war",
+    "raw": "Whitehead, I.R. (1999a). The British medical officer on the Western Front: The training of doctors for war. In R.Cooter, M.Harrison and S.Sturdy (Eds.), Medicine and modern warfare, pp. 163– 184. Amsterdam: Rodopi."
+  },
+  {
+    "year": "1999b",
+    "authors": "Whitehead, I.R.",
+    "title": "Doctors in the Great War",
+    "raw": "Whitehead, I.R. (1999b). Doctors in the Great War. Barnsley: Leo Cooper. Will, G.W. (1941–44). Medical quarterly reports of No. 41 General Hospital (TNA, WO222/ 759, April 1941 to December 1944, 31 December 1943, 2–3)."
+  },
+  {
+    "year": "1914",
+    "authors": "Wilson, A.",
+    "title": "Notes on 150 cases of wounded French, Belgians and Germans",
+    "raw": "Wilson, A. (1914). Notes on 150 cases of wounded French, Belgians and Germans. British Medical Journal, 2, 807."
+  },
+  {
+    "year": "1904",
+    "authors": "Wilson, W.D.",
+    "title": "Report on the medical arrangements in the South African War",
+    "raw": "Wilson, W.D. (1904). Report on the medical arrangements in the South African War. London: HMSO."
+  },
+  {
+    "year": "1915",
+    "authors": "Wiltshire, H.",
+    "title": "War diary no",
+    "raw": "Wiltshire, H. (1915). War diary no. 12 General Hospital (PRO, WO95/4081, 13 August 1915)."
+  },
+  {
+    "year": "1916",
+    "authors": "Wiltshire, H.",
+    "title": "A contribution to the etiology of shell shock",
+    "raw": "Wiltshire, H. (1916). A contribution to the etiology of shell shock. Lancet, 1, 1212."
+  },
+  {
+    "year": "2000",
+    "authors": "Winter, J.",
+    "title": "Shell-shock in the cultural history of the Great War",
+    "raw": "Winter, J. (2000). Shell-shock in the cultural history of the Great War. Journal of Contemporary History, 35, 7–11. Wittson, C.L., Harris, H.I., Hunt, W.A. and Solomon, P. (1942). Neuropsychiatric examination of recruits. War Medicine, 2, 944–951."
+  },
+  {
+    "year": "1918",
+    "authors": "Wolfsohn, J.",
+    "title": "The predisposing factors of war in psycho-neurosis",
+    "raw": "Wolfsohn, J. (1918). The predisposing factors of war in psycho-neurosis. Lancet, 1, 177–180."
+  },
+  {
+    "year": "1941a",
+    "authors": "Wood, P.",
+    "title": "Da Costa’s syndrome (or effort syndrome)",
+    "raw": "Wood, P. (1941a). Da Costa’s syndrome (or effort syndrome). British Medical Journal, 1, 767–772."
+  },
+  {
+    "year": "1941b",
+    "authors": "Wood, P.",
+    "title": "Da Costa’s syndrome (or effort syndrome), The mechanism of the somatic manifestation",
+    "raw": "Wood, P. (1941b). Da Costa’s syndrome (or effort syndrome), The mechanism of the somatic manifestation. British Medical Journal, 1, 805–811."
+  },
+  {
+    "year": "1941c",
+    "authors": "Wood, P.",
+    "title": "Aetiology of Da Costa’s syndrome",
+    "raw": "Wood, P. (1941c). Aetiology of Da Costa’s syndrome. British Medical Journal, 1, 845–851."
+  },
+  {
+    "year": "1976",
+    "authors": "Wooley, C.F.",
+    "title": "Where are the diseases of yesteryear? Da Costa’s syndrome, soldier’s heart, neurocirculatory asthenia—and the mitral valve prolapse syndrome",
+    "raw": "Wooley, C.F. (1976). Where are the diseases of yesteryear? Da Costa’s syndrome, soldier’s heart, neurocirculatory asthenia—and the mitral valve prolapse syndrome. Circulation, 53, 749–751."
+  },
+  {
+    "year": "1982",
+    "authors": "Wooley, C.F.",
+    "title": "Jacob Mendez DaCosta: Medical teacher, clinician and clinical investigator",
+    "raw": "Wooley, C.F. (1982). Jacob Mendez DaCosta: Medical teacher, clinician and clinical investigator. American Journal of Cardiology, 50, 1145–1148."
+  },
+  {
+    "year": "1984",
+    "authors": "Wooley, C.F.",
+    "title": "From irritable heart to mitral valve prolapse: The Osler connection",
+    "raw": "Wooley, C.F. (1984). From irritable heart to mitral valve prolapse: The Osler connection. American Journal of Cardiology, 53, 870–874. https://www.ebsco.com/terms-of-use. References 234"
+  },
+  {
+    "year": "1985",
+    "authors": "Wooley, C.F.",
+    "title": "From irritable heart to mitral valve prolapse: British Army medical reports, 1860–1870",
+    "raw": "Wooley, C.F. (1985). From irritable heart to mitral valve prolapse: British Army medical reports, 1860–1870. American Journal of Cardiology, 55, 1107–1109."
+  },
+  {
+    "year": "1986a",
+    "authors": "Wooley, C.F.",
+    "title": "From irritable heart to mitral valve prolapse: World War One, the British experience and James Mackenzie",
+    "raw": "Wooley, C.F. (1986a). From irritable heart to mitral valve prolapse: World War One, the British experience and James Mackenzie. American Journal of Cardiology, 57, 463–466."
+  },
+  {
+    "year": "1986b",
+    "authors": "Wooley, C.F.",
+    "title": "From irritable heart to mitral valve prolapse: World War One, the British experience and Thomas Lewis",
+    "raw": "Wooley, C.F. (1986b). From irritable heart to mitral valve prolapse: World War One, the British experience and Thomas Lewis. American Journal of Cardiology, 58, 844–849."
+  },
+  {
+    "year": "1987",
+    "authors": "Wooley, C.F.",
+    "title": "From irritable heart to mitral valve collapse: World War One, the US experience and the origin of neurocirculatory asthenia",
+    "raw": "Wooley, C.F. (1987). From irritable heart to mitral valve collapse: World War One, the US experience and the origin of neurocirculatory asthenia. American Journal of Cardiology, 59, 1183–1186. Wootton G. (1956). The official history of the British Legion. London: Macdonald & Evans."
+  },
+  {
+    "year": "1963",
+    "authors": "Wootton, G.",
+    "title": "The politics of influence: British ex-servicemen, Cabinet decisions and cultural change (1917–57)",
+    "raw": "Wootton, G. (1963). The politics of influence: British ex-servicemen, Cabinet decisions and cultural change (1917–57). London: Routledge."
+  },
+  {
+    "year": "1918",
+    "authors": "Yealland, L.R.",
+    "title": "Hysterical disorders of warfare",
+    "raw": "Yealland, L.R. (1918). Hysterical disorders of warfare. London: Macmillan."
+  },
+  {
+    "year": "1957",
+    "authors": "Yellowlees, H.",
+    "title": "Frames of mind",
+    "raw": "Yellowlees, H. (1957). Frames of mind. London: William Kimber."
+  },
+  {
+    "year": "1941",
+    "authors": "Yerkes, R.M.",
+    "title": "Man-power and military effectiveness: The case for human engineering",
+    "raw": "Yerkes, R.M. (1941). Man-power and military effectiveness: The case for human engineering. Journal of Consulting Psychology, 5, 205–208."
+  },
+  {
+    "year": "1995",
+    "authors": "Young, A.",
+    "title": "The harmony of illusions: Inventing post-traumatic stress disorder",
+    "raw": "Young, A. (1995). The harmony of illusions: Inventing post-traumatic stress disorder. Princeton, NJ: Princeton University Press. Zabriskie, E.G., Rhein, J.H.W., Strecker, E.A., Leopold, S., Raynor, M.W. and Steckel, H.A. (1929). Division, corps and army neuropsychiatric consultants. In T.W.Salmon and N.Fenton (Eds.), The Medical Department of the United States Army in the World War, Vol X, Neuropsychiatry, pp. 303–320. Washington: US Government Printing Office. https://www.ebsco.com/terms-of-use"
+  }
+]

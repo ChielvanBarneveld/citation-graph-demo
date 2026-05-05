@@ -1,0 +1,43 @@
+{
+  "total_book_refs": 576,
+  "matched_in_openalex": 337,
+  "with_abstract": 163,
+  "jones_ids_count": 331,
+  "in_foras_any": 3,
+  "in_foras_tiab": 0,
+  "in_foras_ft": 0,
+  "in_hist_candidates": 48,
+  "novel_jones_only": 280,
+  "era_breakdown": {
+    "<1900": {
+      "total": 13,
+      "matched": 8,
+      "abstract": 3
+    },
+    "1900-1919": {
+      "total": 81,
+      "matched": 33,
+      "abstract": 6
+    },
+    "1920-1944": {
+      "total": 129,
+      "matched": 59,
+      "abstract": 15
+    },
+    "1945-1979": {
+      "total": 127,
+      "matched": 83,
+      "abstract": 29
+    },
+    "1980-1999": {
+      "total": 165,
+      "matched": 115,
+      "abstract": 74
+    },
+    "2000+": {
+      "total": 61,
+      "matched": 39,
+      "abstract": 36
+    }
+  }
+}

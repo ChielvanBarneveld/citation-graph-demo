@@ -3141,6 +3141,257 @@ def render_compare_tab(papers: pd.DataFrame, cand: pd.DataFrame,
     )
 
 
+
+# ============================================================
+# TAB 6 - Jones canon (NEW; Optie 3 internal validation)
+# ============================================================
+JONES_DIR = ROOT / "outputs" / "optie3_jones_book"
+
+
+@st.cache_data(show_spinner=False)
+def _load_jones_artifacts():
+    """Load the Jones-canon JSON files. Returns dict of dataframes/dicts."""
+    out = {}
+    if not JONES_DIR.exists():
+        return out
+    for fn in ("jones_classification.json", "jones_network_analysis.json"):
+        p = JONES_DIR / fn
+        if p.exists():
+            try:
+                out[fn.replace(".json","")] = json.loads(p.read_text(encoding="utf-8"))
+            except Exception:
+                pass
+    return out
+
+
+def render_jones_tab(papers: pd.DataFrame, cand: pd.DataFrame,
+                     cross: pd.DataFrame):
+    """Tab 6 - Jones-canon (Optie 3, optionele aanvulling)."""
+    st.markdown(
+        "<div class='foras-title'>Jones-canon - Shell Shock to PTSD (2005)</div>"
+        "<div class='foras-sub'>Edgar Jones &amp; Simon Wessely, Maudsley "
+        "Monograph 47. 576 referenties uit een militair-psychiatrie-canon "
+        "die niet via FORAS' Boolean-search te vinden zijn. Optionele "
+        "aanvulling op Optie 1 (sentinel) - een onafhankelijk testbed.</div>",
+        unsafe_allow_html=True,
+    )
+    art = _load_jones_artifacts()
+    if not art:
+        st.warning(
+            "`outputs/optie3_jones_book/` ontbreekt. Run de Jones-PDF-parser "
+            "eerst (zie outputs/optie3_jones_book/ documentation)."
+        )
+        return
+    classif = art.get("jones_classification", {})
+    netw = art.get("jones_network_analysis", {})
+
+    if not _in_demo_mode():
+        st.markdown(
+            "<div class='explainer'><h4>Waarom dit canon-experiment?</h4>"
+            "Jones &amp; Wessely's 2005 boek heeft 576 expert-gecureerde "
+            "referenties over militair-psychiatrische literatuur 1900-2005. "
+            "Slechts 14% overlapt met onze 29-termen-zoektocht (T-012); 88 "
+            "papers (26.6%) worden door FORAS-papers geciteerd via 590 "
+            "edges - dat is een 2x denser bridge-netwerk dan de 2.288-pool. "
+            "Een GCN getraind op 70% Jones-papers + hun edges, getest op "
+            "30% hold-out, beantwoordt de generaliseerbaarheid-vraag (RQ6 "
+            "in onderzoeksvraag.md): werkt de methode ook op een "
+            "onafhankelijk expert-corpus?</div>",
+            unsafe_allow_html=True,
+        )
+
+    _section_6_1_intro(classif, netw)
+    st.markdown("---")
+    _section_6_2_era_breakdown(classif)
+    st.markdown("---")
+    _section_6_3_bridge_network(classif, netw, papers)
+    st.markdown("---")
+    _section_6_4_seventy_thirty(classif, netw)
+    st.markdown("---")
+    _section_6_5_glossary()
+
+
+def _section_6_1_intro(classif: dict, netw: dict):
+    st.markdown("### 6.1 - Het canon in cijfers")
+    st.caption(
+        "PDF-literatuurlijst geparseerd op 1 mei 2026; OpenAlex-match "
+        "geverifieerd via author + year + title-similarity."
+    )
+    cols = st.columns(5)
+    items = [
+        (classif.get("total_book_refs", 576), "Refs in boek", False),
+        (classif.get("matched_in_openalex", 337), "Gematcht in OpenAlex", True),
+        (classif.get("with_abstract", 163), "Met abstract", False),
+        (classif.get("in_hist_candidates", 48),
+         "Overlap met 2.288-pool", False),
+        (classif.get("novel_jones_only", 280), "Alleen-via-Jones", True),
+    ]
+    for col, (num, lab, cyan) in zip(cols, items):
+        klass = "num num-cyan" if cyan else "num"
+        col.markdown(
+            f"<div class='foras-kpi'><div class='{klass}'>{num}</div>"
+            f"<div class='lab'>{lab}</div></div>",
+            unsafe_allow_html=True,
+        )
+    st.caption(
+        f"Cross-reference: **{classif.get('in_foras_any', 3)} in FORAS-any** "
+        f"(0 FT-included, 0 TIAB-included). Deze 3 papers zitten in het "
+        f"FORAS-corpus maar zijn er bij screening uitgegooid. **{classif.get('novel_jones_only', 280)} "
+        f"papers zijn alleen via expert-curatie ontdekbaar** - die fractie "
+        f"laat zien hoe groot de gap is die een term-search alléén niet "
+        f"dekt."
+    )
+
+
+def _section_6_2_era_breakdown(classif: dict):
+    st.markdown("### 6.2 - Era-verdeling (waar zit de canon?)")
+    st.caption(
+        "Stacked bar: per era de totaal-, gematcht- en met-abstract-counts. "
+        "Pre-1945 abstract-armoede is een kernrisico voor methode-evaluatie."
+    )
+    era = classif.get("era_breakdown", {})
+    if not era:
+        st.info("Geen era-data.")
+        return
+    rows = []
+    for label, d in era.items():
+        rows.append({"era": label, "kind": "Total", "count": d.get("total", 0)})
+        rows.append({"era": label, "kind": "Matched in OpenAlex",
+                     "count": d.get("matched", 0)})
+        rows.append({"era": label, "kind": "With abstract",
+                     "count": d.get("abstract", 0)})
+    df_era = pd.DataFrame(rows)
+    fig = px.bar(
+        df_era, x="era", y="count", color="kind", barmode="group",
+        category_orders={"era": ["<1900", "1900-1919", "1920-1944",
+                                  "1945-1979", "1980-1999", "2000+"]},
+        color_discrete_map={
+            "Total":               PALETTE["slate"],
+            "Matched in OpenAlex": PALETTE["navy"],
+            "With abstract":       PALETTE["cyan"],
+        },
+        title="Jones-canon per era: totaal vs OpenAlex-match vs met abstract",
+    )
+    fig.update_layout(
+        height=380, margin=dict(l=10, r=10, t=40, b=10),
+        paper_bgcolor=PALETTE["bg"], plot_bgcolor=PALETTE["bg"],
+        font=dict(family="Inter", color=PALETTE["navy"]),
+        xaxis_title="era", yaxis_title="aantal papers",
+    )
+    st.plotly_chart(fig, width="stretch", config={"displaylogo": False})
+    st.caption(
+        "Pre-1945: 7-12% abstract-availability. Post-1980: 45-59%. "
+        "Implicatie: tekst-features (TF-IDF/embedding) zijn voor de "
+        "vroege canon vrijwel onbruikbaar. Citation-edges zijn daar het "
+        "enige signaal dat overblijft - exacte case voor een GCN."
+    )
+
+
+def _section_6_3_bridge_network(classif: dict, netw: dict,
+                                 papers: pd.DataFrame):
+    st.markdown("### 6.3 - Bridge-netwerk: 88 Jones-papers x 472 FORAS-papers")
+    st.caption(
+        "590 edges (FORAS-paper -> Jones-paper). 26.6% van de Jones-canon "
+        "wordt door tenminste 1 FORAS-paper geciteerd; 3.2% van FORAS "
+        "(472 / 14.764) citeert minstens 1 Jones-paper. Bijna 2x denser "
+        "dan de 2.288-pool."
+    )
+    cols_kpi = st.columns(4)
+    with cols_kpi[0]:
+        st.metric("Edges (FORAS->Jones)",
+                  netw.get("foras_to_jones_edges", 590))
+    with cols_kpi[1]:
+        st.metric("Distinct FORAS papers",
+                  netw.get("distinct_foras_papers_linking", 472))
+    with cols_kpi[2]:
+        st.metric("Distinct Jones cited",
+                  netw.get("distinct_jones_cited_by_foras", 88))
+    with cols_kpi[3]:
+        st.metric("Intra-Jones edges (canon-cohesion)",
+                  netw.get("intra_edges_total", 148))
+
+    # Top-cited Jones-papers
+    top = netw.get("top_foras_cited", [])
+    if top:
+        st.markdown("**Top-10 Jones-papers gecited door FORAS:**")
+        df_top = pd.DataFrame(top[:10])
+        df_top["title"] = df_top["title"].astype(str).str[:80]
+        st.dataframe(
+            df_top[["foras_cites", "year", "title", "id"]].rename(
+                columns={"foras_cites": "FORAS cites", "id": "OpenAlex"}
+            ),
+            width="stretch", hide_index=True,
+        )
+    isolated = netw.get("isolated_nodes", 0)
+    if isolated:
+        st.caption(
+            f"**{isolated} Jones-papers zijn isolated** (geen intra-Jones "
+            f"edges en geen FORAS-edges). Voor die nodes zal een "
+            f"GCN-only-aanpak per definitie blanco scoren - tekst-features "
+            f"zijn dan het enige signaal. Bekend P2-bovengrens-effect."
+        )
+
+
+def _section_6_4_seventy_thirty(classif: dict, netw: dict):
+    st.markdown("### 6.4 - 70/30 hold-out experiment (placeholder)")
+    st.caption(
+        "Voor een echte GCN-train op de Jones-subgraph (331 nodes met "
+        "148 intra-edges + 590 FORAS-bridge-edges) is een aparte run "
+        "van `code/train_gnn_jones.py` nodig (nog te schrijven). Hieronder "
+        "de geplande opzet en verwachte placeholder-cijfers."
+    )
+    plan = pd.DataFrame([
+        {"Step": "1. Sub-graph bouwen",
+         "Wat": "331 Jones-papers + 88 die FORAS citeren als bridge",
+         "Status": "data klaar"},
+        {"Step": "2. 70/30 stratified split",
+         "Wat": "stratified op era; 232 train / 99 test",
+         "Status": "te scripten"},
+        {"Step": "3. Features",
+         "Wat": "TF-IDF op title+abstract (waar beschikbaar) + degree",
+         "Status": "163/331 hebben abstract; rest title-only"},
+        {"Step": "4. Train GCN 2-layer + class-weighted BCE",
+         "Wat": "label = 'in Jones-canon' (positive); negatives uit FORAS",
+         "Status": "te scripten"},
+        {"Step": "5. Eval recall@k op 30% hold-out",
+         "Wat": "vergelijk met TF-IDF-only baseline + Boolean expansion",
+         "Status": "te scripten"},
+        {"Step": "6. Schrijf naar outputs/optie3_jones_book/jones_70_30.json",
+         "Wat": "result + per-paper rank",
+         "Status": "te scripten"},
+    ])
+    st.dataframe(plan, width="stretch", hide_index=True)
+    st.caption(
+        "**Verwachte uitkomst:** als de GCN op de 30% hold-out 50-70% "
+        "recall@10% haalt en de TF-IDF-baseline op 20-30%, is dat "
+        "generaliseerbaarheid-bewijs (RQ6). Pre-1945 papers zonder "
+        "abstract zijn de hard cases - voor die zal de GCN moeten "
+        "leunen op pure graph-structure (analoog aan Southard-sentinel "
+        "in Optie 1)."
+    )
+
+
+def _section_6_5_glossary():
+    if _in_demo_mode():
+        return
+    with st.expander("Glossary - Jones-canon"):
+        st.markdown(
+            "- **Jones &amp; Wessely (2005)** - Maudsley Monograph 47 "
+            "*Shell Shock to PTSD: Military Psychiatry from 1900 to the "
+            "Gulf War*. KCL/IoPPN expert-canon.\n"
+            "- **Canon** - expert-gecureerde referentie-lijst, geen "
+            "systematic review (geen PRISMA / Boolean / criteria).\n"
+            "- **Bridge-edge** - citation van FORAS-paper -> Jones-paper. "
+            "Maakt het cross-corpus signaal voor een GCN.\n"
+            "- **Intra-Jones edge** - citation tussen twee Jones-papers "
+            "onderling. 148 edges over 331 papers.\n"
+            "- **Isolated node** - Jones-paper zonder intra- of "
+            "bridge-edges. 197 / 331 (60%) zijn isolated.\n"
+            "- **70/30 hold-out** - train op 70% Jones-papers + alle "
+            "edges; meet recall op de 30% test-set."
+        )
+
+
 # ============================================================
 # main
 # ============================================================
@@ -3167,12 +3418,13 @@ def main():
         unsafe_allow_html=True,
     )
 
-    tab1, tab2, tab3, tab4, tab5 = st.tabs([
+    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
         "FORAS",
         "ASReview",
         "GNN",
         "Candidates",
         "Compare",
+        "Jones canon",
     ])
     with tab1:
         render_citation_graph_tab(papers, G)
@@ -3184,6 +3436,8 @@ def main():
         render_candidate_tab(cand, cross)
     with tab5:
         render_compare_tab(papers, cand, cross)
+    with tab6:
+        render_jones_tab(papers, cand, cross)
 
 
 if __name__ == "__main__":
