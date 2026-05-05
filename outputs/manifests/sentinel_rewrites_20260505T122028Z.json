@@ -1,0 +1,34 @@
+{
+  "manifest_id": "sentinel_rewrites_20260505T122028Z",
+  "kind": "sentinel_rewrites",
+  "generated_at": "2026-05-05T12:20:28+00:00",
+  "git_commit": "no-git",
+  "branch_label": "feat/sentinel-rewrites",
+  "params": {
+    "sentinels": [
+      "solomon_1993",
+      "kardiner_1941",
+      "southard_1920"
+    ],
+    "engine": "Claude opus-4.7 inline (no separate API call)",
+    "criteria_check": "back-prompt on rewrite text only",
+    "max_iterations": 3
+  },
+  "input_hashes": {
+    "candidates_csv": "sha256:b3fa0314c0ee754a",
+    "edge_check": "sha256:dc093a596fb16a91"
+  },
+  "metrics": {
+    "criteria_pass_rate": "3/3 (4/4 each)",
+    "banned_token_hits": 0,
+    "iterations_per_sentinel": 1,
+    "anachronisms": {
+      "solomon": 2,
+      "kardiner": 4,
+      "southard": 4
+    }
+  },
+  "output_path": "outputs/sentinel_rewrites/",
+  "runtime_seconds": null,
+  "notes": "LLM-rewrite van 3 sentinels naar historische terminologie + behoud van LGMM-criterium-tekens. Prompt-templates in outputs/sentinel_rewrites/prompt_templates.md."
+}

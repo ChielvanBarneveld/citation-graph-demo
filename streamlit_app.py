@@ -2984,6 +2984,54 @@ def _render_global_sidebar():
             f"Focus: **{st.session_state['focus_sentinel']}**"
         )
 
+        # ---- Run-history panel (improvement #9) ----
+        with st.expander("Run history (manifests)", expanded=False):
+            manifest_dir = ROOT / "outputs" / "manifests"
+            if not manifest_dir.exists():
+                st.caption(
+                    "Geen manifests in `outputs/manifests/`. Train/sim "
+                    "scripts schrijven hier zodra ze `code/manifest.py` "
+                    "gebruiken."
+                )
+            else:
+                files = sorted(manifest_dir.glob("*.json"), reverse=True)
+                if not files:
+                    st.caption("Map bestaat maar is leeg.")
+                else:
+                    rows = []
+                    for p in files[:25]:
+                        try:
+                            d = json.loads(p.read_text(encoding="utf-8"))
+                        except Exception:
+                            continue
+                        rows.append({
+                            "when": d.get("generated_at", "?")[:19],
+                            "kind": d.get("kind", "?"),
+                            "git": d.get("git_commit", "?"),
+                            "manifest_id": d.get("manifest_id", p.stem),
+                        })
+                    if rows:
+                        st.dataframe(pd.DataFrame(rows), width="stretch",
+                                     hide_index=True)
+                        # Detail-view of selected manifest
+                        ids = [r["manifest_id"] for r in rows]
+                        pick = st.selectbox(
+                            "Bekijk manifest", options=["-"] + ids,
+                            key="manifest_detail_pick",
+                        )
+                        if pick != "-":
+                            m_path = manifest_dir / f"{pick}.json"
+                            if m_path.exists():
+                                st.code(
+                                    m_path.read_text(encoding="utf-8"),
+                                    language="json",
+                                )
+                    st.caption(
+                        f"{len(files)} manifest(s) totaal. Schrijf nieuwe via "
+                        "`from manifest import write_manifest` in je train/sim "
+                        "scripts."
+                    )
+
 
 # ============================================================
 # TAB 5 - Compare (NEW; cross-experiment dashboard, improvement #8)
@@ -3376,19 +3424,13 @@ def _section_6_5_glossary():
         return
     with st.expander("Glossary - Jones-canon"):
         st.markdown(
-            "- **Jones &amp; Wessely (2005)** - Maudsley Monograph 47 "
-            "*Shell Shock to PTSD: Military Psychiatry from 1900 to the "
-            "Gulf War*. KCL/IoPPN expert-canon.\n"
-            "- **Canon** - expert-gecureerde referentie-lijst, geen "
-            "systematic review (geen PRISMA / Boolean / criteria).\n"
-            "- **Bridge-edge** - citation van FORAS-paper -> Jones-paper. "
-            "Maakt het cross-corpus signaal voor een GCN.\n"
-            "- **Intra-Jones edge** - citation tussen twee Jones-papers "
-            "onderling. 148 edges over 331 papers.\n"
-            "- **Isolated node** - Jones-paper zonder intra- of "
-            "bridge-edges. 197 / 331 (60%) zijn isolated.\n"
-            "- **70/30 hold-out** - train op 70% Jones-papers + alle "
-            "edges; meet recall op de 30% test-set."
+            "- **Jones & Wessely (2005)** - Maudsley Monograph 47 "
+            "*Shell Shock to PTSD: Military Psychiatry from 1900 to the Gulf War*.\n"
+            "- **Canon** - expert-gecureerde referentie-lijst, geen systematic review.\n"
+            "- **Bridge-edge** - citation van FORAS-paper -> Jones-paper.\n"
+            "- **Intra-Jones edge** - citation tussen twee Jones-papers onderling.\n"
+            "- **Isolated node** - Jones-paper zonder enige edge (60 procent van 331).\n"
+            "- **70/30 hold-out** - train op 70 procent van Jones + edges; meet op 30 procent."
         )
 
 
@@ -3407,9 +3449,9 @@ def main():
     title_suffix = (" . DEMO mode" if _in_demo_mode() else "")
     focus = _focused_sentinel()
     sub = ("The 172 systematic-review-included papers as a cyan core inside "
-           "the FORAS corpus . five tabs: graph, ASReview baseline, GNN "
+           "the FORAS corpus . six tabs: graph, ASReview baseline, GNN "
            "learning lab, candidates with sentinel cards, compare across "
-           "options.")
+           "options, Jones canon.")
     if focus:
         sub += f" Focused: {focus}."
     st.markdown(

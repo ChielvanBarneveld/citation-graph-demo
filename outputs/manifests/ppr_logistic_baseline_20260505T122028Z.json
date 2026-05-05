@@ -1,0 +1,29 @@
+{
+  "manifest_id": "ppr_logistic_baseline_20260505T122028Z",
+  "kind": "ppr_logistic_baseline",
+  "generated_at": "2026-05-05T12:20:28+00:00",
+  "git_commit": "no-git",
+  "branch_label": "dispatch-2-gnn",
+  "params": {
+    "model_kind": "PPR + logistic-regression baseline (NOT a real GCN)",
+    "tfidf_max_features": 256,
+    "ppr_alpha": 0.85,
+    "ppr_iters": 20,
+    "label": "TIAB",
+    "split": "stratified 80/20 seed=42"
+  },
+  "input_hashes": {
+    "papers_parquet": "sha256:779610be79c7a307",
+    "edges_parquet": "sha256:691518c7e0a7158e",
+    "candidates_csv": "sha256:b3fa0314c0ee754a"
+  },
+  "metrics": {
+    "test_recall_at_10pct": 0.579,
+    "test_recall_at_20pct": 0.711,
+    "test_recall_at_50pct": 0.921,
+    "screened_recall_at_100pct": 1.0
+  },
+  "output_path": "outputs/gnn_leerlab/scores.parquet",
+  "runtime_seconds": null,
+  "notes": "Stand-in for real GCN; sandbox could not install torch+PyG (proxy 403). Replace with real GCN by running `python code/train_gnn_demo.py`."
+}

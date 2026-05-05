@@ -1,0 +1,17 @@
+{
+  "manifest_id": "self_test_20260505T122028Z",
+  "kind": "self_test",
+  "generated_at": "2026-05-05T12:20:28+00:00",
+  "git_commit": "no-git",
+  "branch_label": "",
+  "params": {
+    "hello": "world"
+  },
+  "input_hashes": {},
+  "metrics": {
+    "answer": 42
+  },
+  "output_path": "outputs/manifests/_self_test.txt",
+  "runtime_seconds": null,
+  "notes": "Demo manifest from `python code/manifest.py --demo`."
+}
