@@ -1,0 +1,52 @@
+{
+  "two_layer": {
+    "depth": 2,
+    "hidden": 64,
+    "epochs": 100,
+    "model_kind": "PPR_logistic_baseline_NOT_GCN",
+    "test_recall_at_10pct": 0.5789473684210527,
+    "test_recall_at_20pct": 0.7105263157894737,
+    "test_recall_at_50pct": 0.9210526315789473,
+    "pos_weight": 24.992957746478872,
+    "screened_recall_at_100pct": 1.0,
+    "headline_recall_at_10pct_screened": 0.5789473684210527
+  },
+  "depth_sweep": [
+    {
+      "depth": 1,
+      "model_kind": "PPR_alpha_sweep_stand_in",
+      "alpha": 0.6,
+      "test_recall_at_10pct": 0.5877192982456141,
+      "screened_recall_at_100pct": 1.0
+    },
+    {
+      "depth": 2,
+      "model_kind": "PPR_alpha_sweep_stand_in",
+      "alpha": 0.7,
+      "test_recall_at_10pct": 0.5789473684210527,
+      "screened_recall_at_100pct": 1.0
+    },
+    {
+      "depth": 3,
+      "model_kind": "PPR_alpha_sweep_stand_in",
+      "alpha": 0.8,
+      "test_recall_at_10pct": 0.5789473684210527,
+      "screened_recall_at_100pct": 1.0
+    },
+    {
+      "depth": 4,
+      "model_kind": "PPR_alpha_sweep_stand_in",
+      "alpha": 0.9,
+      "test_recall_at_10pct": 0.5789473684210527,
+      "screened_recall_at_100pct": 1.0
+    },
+    {
+      "depth": 5,
+      "model_kind": "PPR_alpha_sweep_stand_in",
+      "alpha": 0.99,
+      "test_recall_at_10pct": 0.5701754385964912,
+      "screened_recall_at_100pct": 1.0
+    }
+  ],
+  "_note": "These metrics come from a PPR + logistic-regression stand-in. The real 2-layer GCN will replace them when Chiel runs `python code/train_gnn_demo.py`. Schema matches train_gnn_demo's. (2026-05-05 cleanup: `final_test_recall` renamed to `screened_recall_at_100pct` because that's what the metric actually measures (recall after screening 100% of records, which is per definition 1.0). The headline number is `headline_recall_at_10pct_screened`.)"
+}

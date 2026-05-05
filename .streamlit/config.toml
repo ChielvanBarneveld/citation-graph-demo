@@ -1,10 +1,14 @@
+# Streamlit theme — cream + navy + cyan LED-accent (T-007 brand pivot).
 [theme]
-base = "light"
-primaryColor = "#22d3ee"
-backgroundColor = "#f6f4ef"
+primaryColor       = "#22d3ee"
+backgroundColor    = "#f6f4ef"
 secondaryBackgroundColor = "#eef1f4"
-textColor = "#1e2a44"
-font = "sans serif"
+textColor          = "#1e2a44"
+font               = "sans serif"
 
 [server]
 headless = true
+runOnSave = false
+
+[browser]
+gatherUsageStats = false

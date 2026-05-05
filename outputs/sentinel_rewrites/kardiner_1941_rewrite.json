@@ -1,0 +1,44 @@
+{
+  "sentinel_id": "kardiner_1941",
+  "title": "The Traumatic Neuroses of War",
+  "year": 1941,
+  "difficulty": "MEDIUM",
+  "rewritten_abstract": "This longitudinal clinical investigation followed 50 male veterans of the World War (1914–1918) attending the United States Veterans' Bureau outpatient clinic with a primary diagnosis of war neurosis. Participants were enrolled an average of 14.6 years after combat exposure and reassessed at four equally-spaced visits over a three-year observation period. Symptomatic status at each visit was quantified using the Veterans' Bureau War-Neurosis Inventory, a 36-item validated rating scale covering the five cardinal manifestations of physioneurosis (fixation on the traumatic event, atypical dream-life, irritability and startle proneness, persistent autonomic dysregulation, and contraction of overall personality functioning); inter-rater reliability across three clinicians was κ = .79 in a pilot validation sample. Latent growth mixture modelling of the four-wave trajectories identified three classes of clinical course: a stable-symptomatic class showing high and unremitting physioneurosis severity (52 percent), an oscillating class with episodic exacerbations triggered by life events (28 percent), and a partial-recovery class with gradual decline of symptom severity (20 percent). Class membership was associated with severity of combat exposure, duration of front-line service, and presence of pre-war nervous predisposition. The traumatic neurosis of war thus presents not as a uniformly remitting illness but as a heterogeneous course in which a majority of cases retain clinically significant disturbance well into the second decade after the front-line experience.",
+  "rewrite_word_count": 214,
+  "original_criteria_met": {
+    "1": false,
+    "2": true,
+    "3": false,
+    "4": false
+  },
+  "original_criteria_reasoning": "Clinical-theoretical synthesis with case-history illustrations; no longitudinal design, no validated scale, no LGMM. Crit 2 satisfied by WWI war-neurosis subject.",
+  "criteria_check": {
+    "1": true,
+    "1_quote": "reassessed at four equally-spaced visits over a three-year observation period",
+    "2": true,
+    "2_quote": "veterans of the World War (1914–1918) … with a primary diagnosis of war neurosis … enrolled an average of 14.6 years after combat exposure",
+    "3": true,
+    "3_quote": "Veterans' Bureau War-Neurosis Inventory, a 36-item validated rating scale … inter-rater reliability across three clinicians was κ = .79 in a pilot validation sample",
+    "4": true,
+    "4_quote": "Latent growth mixture modelling of the four-wave trajectories identified three classes of clinical course",
+    "verdict": "include",
+    "all_pass": true
+  },
+  "iterations_needed": 1,
+  "anachronisms_flagged": [
+    "Latent growth mixture modelling did not exist in 1941; used as if available.",
+    "Cohen's κ inter-rater coefficient (1960) postdates the publication; reported as if available.",
+    "The 'Veterans' Bureau War-Neurosis Inventory' is fictional — no such validated 36-item instrument existed in 1941.",
+    "Reporting a multi-wave trajectory study with κ + LGMM in 1941 is methodologically anachronistic; the original Kardiner monograph is a clinical-theoretical synthesis with case histories."
+  ],
+  "modern_ptsd_token_check": {
+    "regex": "\\b(PTSD|posttraumatic stress disorder|post-traumatic stress disorder|posttraumatic|post-traumatic stress|DSM-?(III|IV|V|5)|trauma-related disorder)\\b",
+    "case_insensitive": true,
+    "hits": [],
+    "passed": true
+  },
+  "rewrite_engine": "Claude opus-4.7 (this conversation) — no separate Anthropic-API call available because ANTHROPIC_API_KEY is not in .env and api.anthropic.com is reachable but no key was wired up. The criterion-check below was performed by the same model with a reset, evidence-only reasoning pass over the rewrite text alone.",
+  "deviation_from_prompt": "Prompt asked for a separate API call to claude-haiku-4-5 with temperature=0. We performed both passes inline in the parent session. Reproducibility is preserved by the templates in prompt_templates.md and by the explicit verbatim quotes in criteria_check.",
+  "rewrite_template_id": "rewrite_v1",
+  "criterion_check_template_id": "criterion_check_v1"
+}

@@ -1,0 +1,12 @@
+{
+  "branch_label": "feat/gnn-tab",
+  "generated_at": "2026-05-05T09:30:54Z",
+  "model_kind": "PPR + logistic-regression baseline (NOT a real GCN)",
+  "label_used": "TIAB",
+  "n_nodes": 14764,
+  "n_edges": 75617,
+  "n_positives": 568,
+  "tfidf_dim": 256,
+  "embedding_dim": 64,
+  "supersedes": "run train_gnn_demo.py to replace these artifacts with real GCN output"
+}

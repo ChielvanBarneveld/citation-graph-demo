@@ -1,0 +1,23 @@
+{
+  "sentinel_id": "solomon_1993",
+  "difficulty": "EASY",
+  "openalex_id": "W1897891557",
+  "doi": null,
+  "title": "Combat Stress Reaction: The Enduring Toll of War",
+  "year": 1993,
+  "authors": [
+    "Zahava Solomon"
+  ],
+  "journal": null,
+  "type": "book",
+  "language": "en",
+  "abstract": "In the Shadow of War. Sisters in Sorrow. Psychological Breakdown on the Battlefield. Naked on Dizengoff. Does the War End When the Shooting Stops? PTSD: The Inner Landscape. From Front Line to Home Front. If At First You Don't Succeed: Military Functioning on the Battlefield. Body and Soul. The Imprint of Trauma. Yet Once More: The Effect of Repeated Wars. Reactivation: Trauma Deepens Trauma. Is Delayed PTSD for Real? Fathers and Sons: The Transgenerational Impact of the Holocaust. Why Don't They Seek Treatment? The Silver Platter. Index.",
+  "abstract_source": "openalex_via_local_candidates_csv",
+  "abstract_kind": "table_of_contents_chapters",
+  "found_via_terms": "combat stress reaction",
+  "cited_by_foras_any": 22,
+  "cited_by_foras_tiab": 7,
+  "cited_by_foras_ft": 1,
+  "fetched_at": "2026-05-05T10:36:00+02:00",
+  "notes": "OpenAlex 'abstract' for this monograph is the table-of-contents (chapter list), not a study abstract. Original is a 1993 Plenum book based on Solomon's longitudinal Israeli-veteran research program."
+}

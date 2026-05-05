@@ -1,0 +1,30 @@
+{
+  "sentinel_id": "kardiner_1941",
+  "difficulty": "MEDIUM",
+  "openalex_id": "W2496837584",
+  "doi": null,
+  "title": "The Traumatic Neuroses of War",
+  "year": 1941,
+  "authors": [
+    "Abram Kardiner"
+  ],
+  "journal": "Psychosomatic Medicine Monographs II–III",
+  "publisher": "National Research Council, Washington",
+  "type": "book",
+  "language": "en",
+  "abstract": "Monograph synthesizing clinical observations on the war neurosis as encountered in veterans of the World War (1914-1918) seen at the United States Veterans' Bureau over a fifteen-year follow-up period. The author proposes the concept of physioneurosis — a chronic disturbance comprising fixation on the trauma, atypical dream-life centred on the war experience, irritability and proneness to startle reactions, persistent autonomic dysregulation, and a contraction of the general level of functioning of the personality. Five core features are elaborated through case histories drawn from a clinical case-series. The discussion situates the war neurosis in relation to civilian traumatic neuroses and to peacetime nervous illness, and outlines therapeutic principles. Published as Psychosomatic Medicine Monographs II–III by the National Research Council, Washington.",
+  "abstract_source": "manual",
+  "abstract_kind": "synthesised_descriptive_summary",
+  "abstract_provenance": [
+    "OpenAlex W2496837584 has no abstract_inverted_index for this record",
+    "Sandbox cannot reach api.openalex.org (cowork-egress-blocked)",
+    "Bibliographic facts confirmed via WebSearch: archive.org/details/kardiner-1941-war, openlibrary.org/books/OL15358129M, pep-web.org reviews",
+    "Content summary written from established scholarly knowledge of Kardiner's monograph (physioneurosis, 5 features, 15-yr VA follow-up)"
+  ],
+  "found_via_terms": null,
+  "cited_by_foras_any": 17,
+  "cited_by_foras_tiab": 1,
+  "cited_by_foras_ft": 0,
+  "fetched_at": "2026-05-05T10:36:00+02:00",
+  "notes": "Manual abstract — original 258-page monograph has no formal abstract. Description distills the book's well-known argument (physioneurosis + 5 cardinal features). Should NOT be used as the basis for a 'rewrite that preserves original wording'; the rewrite is by definition synthetic."
+}

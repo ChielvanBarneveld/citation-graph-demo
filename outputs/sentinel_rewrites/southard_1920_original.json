@@ -1,0 +1,23 @@
+{
+  "sentinel_id": "southard_1920",
+  "difficulty": "HARD",
+  "openalex_id": "W4229501150",
+  "doi": "https://doi.org/10.1001/archneurpsyc.1920.02180200112012",
+  "title": "SHELL-SHOCK AND OTHER NEUROPSYCHIATRIC PROBLEMS.",
+  "year": 1920,
+  "authors": [
+    "Elmer Ernest Southard"
+  ],
+  "journal": null,
+  "type": "article",
+  "language": "en",
+  "abstract": "Whether or no the participants in the World War will have the acumen to profit by the lessons taught by that great conflict, is one of the vital questions of the day. Dr. Southard in the present work tried to contribute his share to an affirmative answer. He lived to see his book in print, but not to view the harvest sprung from his sowing. The author calls the work a compilation. So it is; but it is more. Not only are there case records (589 of them) from the literature of many countries covering every phase of war neuroses and psychoses, but there is an epicrisis that gives an excellent digest of the enormous clinical material. The discussion is psychologic and psychiatric, philosophic and practical, expounding principles and also indicating the clinical steps essential to avoidance of errors. Treatment and results are adequately covered. Besides being an altogether unusual",
+  "abstract_source": "openalex_via_local_candidates_csv",
+  "abstract_kind": "review_or_jama_summary",
+  "found_via_terms": "shell shock;shell shocked;war neuroses",
+  "cited_by_foras_any": 0,
+  "cited_by_foras_tiab": 0,
+  "cited_by_foras_ft": 0,
+  "fetched_at": "2026-05-05T10:36:00+02:00",
+  "notes": "Posthumous (Southard died 1920). 589 case histories of war neuroses/psychoses across many countries. The 'abstract' text reads as a JAMA-style review summary of the book."
+}

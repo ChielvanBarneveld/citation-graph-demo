@@ -1,29 +1,42 @@
 """FORAS citation graph - v5.
 
-v5 adds two new tabs on top of the v4 graph view:
+v5 (post-restructure, 5 May 2026, branch-label feat/asreview-tab):
 
-  Tab 1 - "Citation graph"      (unchanged: 11.873 nodes, FT/TIAB/screened/external)
-  Tab 2 - "Candidate explorer"  (new: 2.288 historical-terminology candidates,
-                                 their cross-edges to FORAS, filters to build a
-                                 test set for GNN evaluation)
-  Tab 3 - "Method & metrics"    (new: compact FORAS pipeline explainer,
-                                 candidate-injection logic, GNN role,
-                                 ASReview-insights metrics)
+  Tab 1 - "FORAS"        (the citation-graph view, formerly "Citation graph")
+  Tab 2 - "ASReview"     (NEW - active-learning baseline + 70/30 vs GNN)
+  Tab 3 - "GNN"          (NEW - placeholder; populated by feat/gnn-tab)
+  Tab 4 - "Candidates"   (the candidate explorer, formerly "Candidate explorer";
+                          gets sentinel cards + cross-tab table from
+                          feat/candidates-tab)
+
+The legacy "Method & metrics" tab is removed; relevant pipeline-explainer text
+moved into tab 2 (ASReview, section 2.1 / 2.8).
 
 Design unchanged: cream + navy + cyan LED accent.
 """
-from __future__ import annotations
 
+import json
 import math
+import sqlite3
+import subprocess
+import zipfile
+from datetime import datetime
 from pathlib import Path
 
 import networkx as nx
+import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
 import plotly.express as px
 import streamlit as st
 
-DATA = Path(__file__).parent / "data"
+ROOT = Path(__file__).parent.parent  # thesis-folder root
+DATA = ROOT / "data"  # cloud-deploy
+THESIS_DATA = ROOT / "data"
+SENTINEL_DIR = ROOT / "outputs" / "sentinel_rewrites"
+ASREVIEW_RUNS = ROOT / "outputs" / "asreview_runs"
+COMPARISON_DIR = ROOT / "outputs" / "comparison"
+SENTINEL_RANKS = COMPARISON_DIR / "sentinel_ranks.parquet"
 
 # ---------- palette ----------
 PALETTE = {
@@ -482,46 +495,93 @@ def render_citation_graph_tab(papers, G):
 
 
 # ============================================================
-# TAB 2 - Candidate explorer (NEW)
+# TAB 4 - Candidates v2 (sentinel cards + 70/30 + legacy explorer)
 # ============================================================
 def render_candidate_tab(cand: pd.DataFrame, cross: pd.DataFrame):
+    """Tab 4 - Candidates v2.
+
+    Six sub-sections:
+      4.1 Banner / what-you-see-here
+      4.2 KPIs (incl. sentinel count)
+      4.3 Sentinel cards (Solomon / Kardiner / Southard)
+      4.4 70/30 rank table (ASReview vs GCN)
+      4.5 Existing candidate-explorer (filters + plots + browse + export)
+      4.6 Glossary
+    """
     st.markdown(
         "<div class='foras-title'>Historical-terminology candidates</div>"
-        "<div class='foras-sub'>2.288 papers found via 29 historical PTSD-terms "
-        "in OpenAlex - explore them, then build a test set for GNN evaluation.</div>",
+        "<div class='foras-sub'>2.288 papers found via 29 historical "
+        "PTSD-terms in OpenAlex - sentinels op kop, dan de full explorer.</div>",
         unsafe_allow_html=True,
     )
+    sentinel_bundles = _load_sentinel_bundles()
+    _section_4_1_intro(cand)
+    st.markdown("---")
+    _section_4_2_kpis(cand, sentinel_bundles)
+    st.markdown("---")
+    _section_4_3_sentinels(sentinel_bundles)
+    st.markdown("---")
+    _section_4_4_seventy_thirty()
+    st.markdown("---")
+    _section_4_5_explorer(cand, cross)
+    st.markdown("---")
+    _section_4_6_glossary()
 
+
+# ----- Tab 4 helpers -----
+
+def _section_4_1_intro(cand: pd.DataFrame):
+    st.markdown("### 4.1 - Wat zie je hier?")
     st.markdown(
         "<div class='explainer'>"
-        "<b>What you're looking at.</b> Each row is a paper that uses one of "
-        "29 historical names for PTSD (<i>shell shock, traumatic neurosis, war "
-        "neurosis, soldier's heart, effort syndrome, ...</i>) according to OpenAlex. "
-        "We ran two queries per term: (1) full-text search restricted to pre-1980 "
-        "publications, (2) title-only search for post-1980 publications. The 9 "
-        "candidates that already appear in FORAS were all <b>screened-and-excluded</b> "
-        "by FORAS - none of them passed TI/AB. That's a strong signal: FORAS "
-        "screening tends to drop these historical-term papers."
+        "<b>The candidate set.</b> Each row is a paper that uses one of "
+        "29 historical names for PTSD (<i>shell shock, traumatic neurosis, "
+        "war neurosis, soldier's heart, effort syndrome, ...</i>) according "
+        "to OpenAlex. We ran two queries per term: (1) full-text search "
+        "restricted to pre-1980 publications, (2) title-only search for "
+        "post-1980. The 9 candidates that already appear in FORAS were all "
+        "<b>screened-and-excluded</b> - none passed TI/AB. Strong signal that "
+        "FORAS screening drops these historical-term papers."
         "</div>",
         unsafe_allow_html=True,
     )
+    with st.expander("Hoe is deze set gemaakt?"):
+        st.markdown(
+            "Build-script: `code/find_historical_candidates.py`. Per term "
+            "twee OpenAlex-queries (pre1980 full-text + post1980 title-only), "
+            "dedup op OpenAlex ID, daarna join met FORAS via "
+            "`referenced_works` om de cross-edges te berekenen. De resulterende "
+            "set staat in `data/historical-terminology/candidates.csv` "
+            "(2.288 unieke kandidaten) en wordt voor deze tab geserveerd via "
+            "`code/data/candidates.parquet` (build_candidates_data.py)."
+        )
 
-    # KPIs
+
+def _section_4_2_kpis(cand: pd.DataFrame, sentinel_bundles: dict):
+    st.markdown("### 4.2 - KPIs")
     n_total = len(cand)
     n_in_foras = int(cand["in_foras"].sum())
     n_with_edge = int((cand["edges_total"] > 0).sum())
-    n_with_ft_edge = int(((cand["edges_to_foras_ft"] > 0) | (cand["edges_from_foras_ft"] > 0)).sum())
-    n_with_tiab_edge = int(((cand["edges_to_foras_tiab"] > 0) | (cand["edges_from_foras_tiab"] > 0)).sum())
+    n_with_ft_edge = int(((cand["edges_to_foras_ft"] > 0)
+                          | (cand["edges_from_foras_ft"] > 0)).sum())
+    n_with_tiab_edge = int(((cand["edges_to_foras_tiab"] > 0)
+                            | (cand["edges_from_foras_tiab"] > 0)).sum())
     total_edges = int(cand["edges_total"].sum())
+    n_sentinels = len(sentinel_bundles)
+    n_sentinels_with_rewrite = sum(
+        1 for d in sentinel_bundles.values() if "rewrite" in d
+    )
 
-    cols = st.columns(6)
+    cols = st.columns(7)
     items = [
         (f"{n_total:,}", "Candidates total", False, False),
         (f"{n_in_foras}", "Already in FORAS", False, True),
-        (f"{n_with_edge:,}", "with >=1 FORAS edge", False, False),
-        (f"{n_with_tiab_edge}", "edge to TIAB-incl", True, False),
-        (f"{n_with_ft_edge}", "edge to FT-incl", True, False),
+        (f"{n_with_edge:,}", ">=1 FORAS edge", False, False),
+        (f"{n_with_tiab_edge}", "edge to TIAB", True, False),
+        (f"{n_with_ft_edge}", "edge to FT", True, False),
         (f"{total_edges}", "Total cross-edges", False, False),
+        (f"{n_sentinels_with_rewrite}/{n_sentinels}",
+         "Sentinels (rewritten)", True, False),
     ]
     for col, (num, lab, cyan, rose) in zip(cols, items):
         klass = "num"
@@ -534,41 +594,301 @@ def render_candidate_tab(cand: pd.DataFrame, cross: pd.DataFrame):
         )
     st.markdown("")
 
-    # Filters in sidebar (when this tab is active)
+
+def _word_diff_html(a: str, b: str) -> tuple[str, str]:
+    """Return two HTML snippets: a-vs-b with deletions/insertions highlighted.
+
+    Cyan-tinted backgrounds mark words present in only one of the two strings.
+    Used in 4.3 to visualise where the rewrite landed."""
+    import difflib
+    aw = a.split()
+    bw = b.split()
+    sm = difflib.SequenceMatcher(a=aw, b=bw, autojunk=False)
+    a_html, b_html = [], []
+    for tag, i1, i2, j1, j2 in sm.get_opcodes():
+        if tag == "equal":
+            a_html.append(" ".join(aw[i1:i2]))
+            b_html.append(" ".join(bw[j1:j2]))
+        elif tag == "delete":
+            a_html.append(
+                f"<span style='background:#fde68a;border-radius:3px;"
+                f"padding:1px 3px'>{' '.join(aw[i1:i2])}</span>"
+            )
+        elif tag == "insert":
+            b_html.append(
+                f"<span style='background:#a5f3fc;border-radius:3px;"
+                f"padding:1px 3px'>{' '.join(bw[j1:j2])}</span>"
+            )
+        elif tag == "replace":
+            a_html.append(
+                f"<span style='background:#fde68a;border-radius:3px;"
+                f"padding:1px 3px'>{' '.join(aw[i1:i2])}</span>"
+            )
+            b_html.append(
+                f"<span style='background:#a5f3fc;border-radius:3px;"
+                f"padding:1px 3px'>{' '.join(bw[j1:j2])}</span>"
+            )
+    return " ".join(a_html), " ".join(b_html)
+
+
+def _section_4_3_sentinels(sentinel_bundles: dict):
+    st.markdown("### 4.3 - Drie sentinels - Solomon (EASY), Kardiner (MEDIUM), "
+                "Southard (HARD)")
+    st.caption(
+        "Doelbewust toegevoegd aan de FORAS hold-out om te testen of "
+        "ASReview en GCN ze kunnen vinden ondanks dat de originelen "
+        "geen moderne PTSD-tokens gebruiken. De rewrites maken ze "
+        "plausibel-include - niet ontdekt door FORAS' originele "
+        "screening."
+    )
+    if not sentinel_bundles:
+        st.warning(
+            "`outputs/sentinel_rewrites/` ontbreekt. Run dispatch-prompt 3 "
+            "(`feat/sentinel-rewrites`) eerst."
+        )
+        return
+    with st.expander("Waarom deze drie? (samengevat uit edge_check_rapport)"):
+        st.markdown(
+            "**Solomon 1993** *(EASY)* - 22 cited-by-FORAS / 7 TIAB / "
+            "1 FT. Mooi cluster voor de citation-graph - garandeert "
+            "1-hop label-propagation signaal.\n\n"
+            "**Kardiner 1941** *(MEDIUM)* - 17 cited-by-FORAS / 1 TIAB / "
+            "0 FT. Klassieke seminale werk dat Spitzer expliciet noemde "
+            "toen DSM-III in 1980 PTSD formaliseerde. Test of GCN "
+            "signaal in 2-hop neighbourhood kan benutten.\n\n"
+            "**Southard 1920** *(HARD)* - 0 cited-by-FORAS. Klassieke "
+            "WO-I monografie (589 case histories). Bewijst de "
+            "bovengrens van de methode (P2 in `context/hypothesis.md`)."
+        )
+
+    focus = _focused_sentinel()
+    sentinel_iter = ("solomon_1993", "kardiner_1941", "southard_1920")
+    if focus:
+        sentinel_iter = (focus,) if focus in sentinel_iter else sentinel_iter
+    for sid in sentinel_iter:
+        if sid not in sentinel_bundles:
+            continue
+        bundle = sentinel_bundles[sid]
+        orig = bundle.get("original", {})
+        rewr = bundle.get("rewrite", {})
+        if not orig or not rewr:
+            continue
+        difficulty = rewr.get("difficulty") or orig.get("difficulty") or "?"
+        title = orig.get("title", sid)
+        year = orig.get("year") or rewr.get("year")
+        authors = orig.get("authors") or []
+        if isinstance(authors, list):
+            authors_str = "; ".join(str(a) for a in authors if a)
+        else:
+            authors_str = str(authors)
+        oa_id = orig.get("openalex_id", "")
+        oa_link = (f"https://openalex.org/{oa_id}" if oa_id else "")
+        cited_any = orig.get("cited_by_foras_any", 0)
+        cited_tiab = orig.get("cited_by_foras_tiab", 0)
+        cited_ft = orig.get("cited_by_foras_ft", 0)
+
+        st.markdown(
+            f"#### {sid.replace('_', ' ').title()}  "
+            f"<span style='color:{PALETTE['navy_mid']};font-size:0.85rem'>"
+            f"({difficulty})</span>",
+            unsafe_allow_html=True,
+        )
+        info_cols = st.columns([4, 1, 1, 1])
+        with info_cols[0]:
+            st.markdown(
+                f"**{title}** ({year})  "
+                f"\n*{authors_str or 'unknown authors'}*  "
+                + (f"\n[`{oa_id}`]({oa_link})" if oa_link else "")
+            )
+        with info_cols[1]:
+            st.metric("Cited by FORAS (any)", cited_any,
+                      help="Aantal FORAS-papers dat deze sentinel citeert")
+        with info_cols[2]:
+            st.metric("by TIAB-incl", cited_tiab,
+                      help="Citaties uit TIAB-included subset")
+        with info_cols[3]:
+            st.metric("by FT-incl", cited_ft,
+                      help="Citaties uit FT-included subset")
+
+        # Tabbed Original / Rewrite / Diff view
+        t_orig, t_rew, t_diff = st.tabs(
+            ["Original abstract", "LLM-rewrite", "Side-by-side diff"]
+        )
+        orig_abs = orig.get("abstract", "") or ""
+        rew_abs = rewr.get("rewritten_abstract", "") or ""
+        with t_orig:
+            kind = orig.get("abstract_kind", "")
+            source = orig.get("abstract_source", "")
+            if orig.get("notes"):
+                st.caption(orig["notes"])
+            st.markdown(orig_abs or "*(empty)*")
+            st.caption(
+                f"Source: `{source}` | kind: `{kind}` | "
+                f"{len(orig_abs)} chars"
+            )
+        with t_rew:
+            check = rewr.get("criteria_check", {}) or {}
+            badge = lambda b: ("OK" if b else "MISS")
+            badge_color = lambda b: ("#10b981" if b else "#f43f5e")
+            st.markdown(
+                "Criterium-check (LLM-back-prompt op rewrite-tekst alleen):  "
+                + "  ".join(
+                    f"<span style='color:{badge_color(check.get(str(k), False))}'>"
+                    f"<b>{k}</b> {badge(check.get(str(k), False))}</span>"
+                    for k in (1, 2, 3, 4)
+                ),
+                unsafe_allow_html=True,
+            )
+            st.markdown(rew_abs or "*(empty)*")
+            wc = rewr.get("rewrite_word_count")
+            iters = rewr.get("iterations_needed", "?")
+            st.caption(
+                f"{wc} words | iterations: {iters} | "
+                f"banned-token check: "
+                f"{'pass' if (rewr.get('modern_ptsd_token_check') or {}).get('passed', True) else 'FAIL'}"
+            )
+            ana = rewr.get("anachronisms_flagged") or []
+            if ana:
+                with st.expander(f"Anachronismen ({len(ana)})"):
+                    for a in ana:
+                        st.markdown(f"- {a}")
+        with t_diff:
+            if not orig_abs.strip() or not rew_abs.strip():
+                st.caption("Diff vereist beide abstracts; een van beide is leeg.")
+            else:
+                a_html, b_html = _word_diff_html(orig_abs, rew_abs)
+                st.markdown("**Original**", unsafe_allow_html=True)
+                st.markdown(
+                    f"<div style='background:{PALETTE['bg_soft']};"
+                    f"padding:0.6rem 0.9rem;border-radius:6px;"
+                    f"line-height:1.55'>{a_html}</div>",
+                    unsafe_allow_html=True,
+                )
+                st.markdown("&nbsp;", unsafe_allow_html=True)
+                st.markdown("**Rewrite**", unsafe_allow_html=True)
+                st.markdown(
+                    f"<div style='background:{PALETTE['bg_soft']};"
+                    f"padding:0.6rem 0.9rem;border-radius:6px;"
+                    f"line-height:1.55'>{b_html}</div>",
+                    unsafe_allow_html=True,
+                )
+                st.caption(
+                    "Geel = woorden alleen in original; cyaan = alleen "
+                    "in rewrite. Geen kleur = onveranderd. Voor Kardiner "
+                    "en Southard is het origineel grotendeels niet-"
+                    "studie-tekst, dus het diff-overzicht is groot."
+                )
+        st.markdown("---")
+
+
+def _section_4_4_seventy_thirty():
+    st.markdown("### 4.4 - 70/30 rang-tabel (ASReview vs GCN)")
+    st.caption(
+        "Gedeelde tabel met `outputs/comparison/sentinel_ranks.parquet`. "
+        "Tab 2 (ASReview) vult `asreview_rank` + `asreview_recall_at_rank`; "
+        "tab 3 (GNN, via `code/train_gnn_demo.py`) vult `gnn_rank` + "
+        "`gnn_score`. Hier zie je beide naast elkaar."
+    )
+    sentinel_ranks = ROOT / "outputs" / "comparison" / "sentinel_ranks.parquet"
+    if not sentinel_ranks.exists():
+        st.info(
+            "70/30-vergelijking nog niet gedraaid. Run dispatch 1 "
+            "(ASReview) en 2 (GNN) eerst."
+        )
+        return
+    df = pd.read_parquet(sentinel_ranks)
+    if df["asreview_rank"].isna().all() and df["gnn_rank"].isna().all():
+        st.info(
+            "Bestand bestaat maar beide ASReview- en GNN-kolommen zijn "
+            "nog leeg. Run de tab 2 simulation runner + "
+            "`python code/train_gnn_demo.py`."
+        )
+        return
+    df = df.copy()
+    focus = _focused_sentinel()
+    if focus:
+        df = df[df["sentinel_id"] == focus]
+        if len(df) == 0:
+            st.info(f"Geen rijen voor focus-sentinel `{focus}`.")
+            return
+    df["delta_rank"] = (df["asreview_rank"].astype("float")
+                        - df["gnn_rank"].astype("float"))
+    label_map = {
+        "modus_a_asreview_order": "Modus A (ASReview-volgorde)",
+        "modus_b_random_stratified": "Modus B (random)",
+    }
+    df["split_label"] = df["split_mode"].map(label_map).fillna(df["split_mode"])
+    show = df[[
+        "sentinel_id", "split_label", "asreview_rank",
+        "asreview_recall_at_rank", "gnn_rank", "gnn_score",
+        "delta_rank", "bundle", "seed", "updated_at",
+    ]].rename(columns={
+        "sentinel_id": "Sentinel",
+        "split_label": "Split-modus",
+        "asreview_rank": "ASReview-rang",
+        "asreview_recall_at_rank": "ASReview recall@rank",
+        "gnn_rank": "GCN-rang",
+        "gnn_score": "GCN-score",
+        "delta_rank": "Delta (AS-GCN)",
+        "bundle": "ASReview-bundle",
+        "seed": "Seed",
+        "updated_at": "Updated",
+    })
+    st.dataframe(show, width="stretch", hide_index=True)
+    st.caption(
+        "**Lezing.** Lager rang = sneller gevonden. `Delta > 0` betekent "
+        "GCN-rang lager dan ASReview-rang = GCN vond het sentinel sneller. "
+        "Voor Southard verwacht ik geen verschil - die heeft 0 citations "
+        "en is dus de bovengrens van wat citatie-structuur kan."
+    )
+    if df["asreview_rank"].isna().all():
+        st.warning(
+            "`asreview_rank` is overal NaN. Run de ASReview-tab simulation "
+            "runner met dataset = 'FORAS + 2.288 candidates' om die "
+            "kolom te vullen."
+        )
+    if df["gnn_rank"].isna().all():
+        st.warning(
+            "`gnn_rank` is overal NaN. Run `python code/train_gnn_demo.py` "
+            "om die kolom te vullen."
+        )
+
+
+def _section_4_5_explorer(cand: pd.DataFrame, cross: pd.DataFrame):
+    """The legacy candidate-explorer view (filters + plots + tables + export)."""
+    st.markdown("### 4.5 - Candidate explorer (filters & browse)")
+
+    # Sidebar filters
     with st.sidebar:
         st.markdown("---")
         st.markdown("### Candidate filters")
-
-        # Pool filter
         all_pools = ["pre1980", "post1980_title", "pre1980;post1980_title"]
         pool_sel = st.multiselect(
             "Pool", options=all_pools, default=all_pools,
-            help="pre1980 = full-text search restricted to <1980. "
-                 "post1980_title = title-only search for >=1980. "
-                 "pre1980;post1980_title = found in both."
+            help=("pre1980 = full-text search restricted to <1980. "
+                  "post1980_title = title-only search for >=1980. "
+                  "pre1980;post1980_title = found in both."),
         )
-        # Era
         era_options = ["<1920", "1920-44", "1945-79", "1980-99", "2000+", "nan"]
         era_sel = st.multiselect("Era", options=era_options, default=era_options)
-        # Language
-        all_langs = sorted([x for x in cand["language"].dropna().astype(str).unique()])
+        all_langs = sorted(
+            [x for x in cand["language"].dropna().astype(str).unique()]
+        )
         if not all_langs:
             all_langs = ["en"]
-        lang_sel = st.multiselect("Language", options=all_langs, default=all_langs)
-        # Edge requirement
+        lang_sel = st.multiselect("Language", options=all_langs,
+                                  default=all_langs)
         edge_filter = st.radio(
             "Edge-density requirement",
             options=["any", "edge to any FORAS", "edge to TIAB-incl",
                      "edge to FT-incl", "no edges (pure isolates)"],
             index=0,
         )
-        # In-FORAS toggle
         in_foras_filter = st.radio(
             "FORAS overlap",
             options=["any", "only in-FORAS (n=9)", "exclude in-FORAS"],
             index=0,
         )
-        # Term filter (top-N)
         all_terms = set()
         for s in cand["found_via_terms"].fillna(""):
             for t in str(s).split(";"):
@@ -578,7 +898,7 @@ def render_candidate_tab(cand: pd.DataFrame, cross: pd.DataFrame):
         term_sel = st.multiselect(
             "Found via term (any of)", options=term_options,
             default=[],
-            help="Empty = include all terms. Pick one or more to subset."
+            help="Empty = include all terms. Pick one or more to subset.",
         )
 
     # Apply filters
@@ -592,9 +912,11 @@ def render_candidate_tab(cand: pd.DataFrame, cross: pd.DataFrame):
     if edge_filter == "edge to any FORAS":
         f = f[f["edges_total"] > 0]
     elif edge_filter == "edge to TIAB-incl":
-        f = f[(f["edges_to_foras_tiab"] > 0) | (f["edges_from_foras_tiab"] > 0)]
+        f = f[(f["edges_to_foras_tiab"] > 0)
+              | (f["edges_from_foras_tiab"] > 0)]
     elif edge_filter == "edge to FT-incl":
-        f = f[(f["edges_to_foras_ft"] > 0) | (f["edges_from_foras_ft"] > 0)]
+        f = f[(f["edges_to_foras_ft"] > 0)
+              | (f["edges_from_foras_ft"] > 0)]
     elif edge_filter == "no edges (pure isolates)":
         f = f[f["edges_total"] == 0]
     if in_foras_filter == "only in-FORAS (n=9)":
@@ -611,9 +933,7 @@ def render_candidate_tab(cand: pd.DataFrame, cross: pd.DataFrame):
 
     # Summary plots
     c1, c2 = st.columns(2)
-
     with c1:
-        # Era distribution stacked by FORAS-overlap
         era_df = f.copy()
         era_df["FORAS overlap"] = era_df["in_foras"].map(
             {True: "in FORAS", False: "external"}
@@ -625,7 +945,7 @@ def render_candidate_tab(cand: pd.DataFrame, cross: pd.DataFrame):
             color_discrete_map={"in FORAS": PALETTE["cyan"],
                                 "external": PALETTE["rose"]},
             category_orders={"era": ["<1920", "1920-44", "1945-79",
-                                      "1980-99", "2000+", "nan"]},
+                                     "1980-99", "2000+", "nan"]},
             title="By era (stacked: in FORAS vs external)",
         )
         fig_era.update_layout(
@@ -634,9 +954,7 @@ def render_candidate_tab(cand: pd.DataFrame, cross: pd.DataFrame):
             height=320, margin=dict(l=10, r=10, t=40, b=10),
         )
         st.plotly_chart(fig_era, width="stretch", config={"displaylogo": False})
-
     with c2:
-        # Per-term breakdown (top 15)
         term_counts = {}
         for s in f["found_via_terms"].fillna(""):
             for t in str(s).split(";"):
@@ -659,8 +977,10 @@ def render_candidate_tab(cand: pd.DataFrame, cross: pd.DataFrame):
             st.plotly_chart(fig_term, width="stretch",
                             config={"displaylogo": False})
 
-    # Edge-density summary table
-    st.markdown("##### Edge density of current filter (citation links to FORAS)")
+    # Edge-density summary
+    st.markdown(
+        "##### Edge density of current filter (citation links to FORAS)"
+    )
     edge_summary = pd.DataFrame([
         {"Direction": "Candidate -> FORAS-FT-included",
          "Edges": int(f["edges_to_foras_ft"].sum()),
@@ -683,37 +1003,40 @@ def render_candidate_tab(cand: pd.DataFrame, cross: pd.DataFrame):
     ])
     st.dataframe(edge_summary, hide_index=True, width="stretch")
 
-    # In-FORAS overlap detail
     if int(f["in_foras"].sum()) > 0:
-        st.markdown("##### In-FORAS overlap (these 9 are FORAS-screened-and-excluded)")
-        cols_show = ["openalex_id", "title", "year", "language", "foras_stage",
-                      "foras_label_FT", "foras_label_TIAB", "found_via_terms",
-                      "edges_total"]
+        st.markdown(
+            "##### In-FORAS overlap (these 9 are "
+            "FORAS-screened-and-excluded)"
+        )
+        cols_show = ["openalex_id", "title", "year", "language",
+                     "foras_stage", "foras_label_FT", "foras_label_TIAB",
+                     "found_via_terms", "edges_total"]
         st.dataframe(
             f[f["in_foras"]][cols_show].sort_values("year", ascending=False),
             hide_index=True, width="stretch",
         )
 
-    # Candidate browsing table
     st.markdown("##### Browse candidates (sortable, top 200)")
-    cols_show = ["openalex_id", "title", "year", "language", "found_via_terms",
+    cols_show = ["openalex_id", "title", "year", "language",
+                 "found_via_terms",
                  "edges_to_foras_ft", "edges_from_foras_ft",
                  "edges_to_foras_tiab", "edges_from_foras_tiab",
                  "edges_total", "in_foras"]
     st.dataframe(
-        f[cols_show].sort_values(["edges_total", "year"], ascending=[False, False]).head(200),
+        f[cols_show].sort_values(["edges_total", "year"],
+                                 ascending=[False, False]).head(200),
         hide_index=True, width="stretch",
     )
 
-    # Export current filter as test set
     st.markdown("##### Export current filter as a test set")
     st.write(
         "Pick a name for this candidate-subset and download as CSV. "
-        "This is the file you can later inject into the FORAS graph for GNN training/eval."
+        "This is the file you can later inject into the FORAS graph "
+        "for GNN training/eval."
     )
     csv = f.to_csv(index=False).encode("utf-8")
     label = st.text_input("Filename (without .csv)",
-                           value="candidates_testset_v1")
+                          value="candidates_testset_v1")
     st.download_button(
         label=f"Download {len(f):,}-row test set as CSV",
         data=csv,
@@ -722,8 +1045,41 @@ def render_candidate_tab(cand: pd.DataFrame, cross: pd.DataFrame):
     )
 
 
+def _section_4_6_glossary():
+    if _in_demo_mode():
+        return
+    with st.expander("Glossary"):
+        st.markdown(
+            "- **Sentinel** - een van Solomon 1993 / Kardiner 1941 / "
+            "Southard 1920; voorgeselecteerde anchor voor de ASReview-vs-"
+            "GCN vergelijking.\n"
+            "- **EASY / MEDIUM / HARD** - difficulty-label per sentinel; "
+            "EASY heeft de meeste FORAS-edges, HARD heeft er 0.\n"
+            "- **Hold-out** - de 30% FORAS-records die niet meedoen in "
+            "de trainings-fase.\n"
+            "- **Citation-edge** - een directe verwijzing van paper A "
+            "naar paper B in de citatie-graaf.\n"
+            "- **Bibliographic coupling** - twee papers delen een "
+            "referentie -> waarschijnlijk gerelateerd onderwerp.\n"
+            "- **Co-citation** - twee papers worden samen geciteerd "
+            "door een derde paper -> waarschijnlijk gerelateerd.\n"
+            "- **OpenAlex** - open scholarly database (450M+ works); "
+            "bron van onze candidate-set.\n"
+            "- **W-id** - OpenAlex' interne paper-identifier "
+            "(`W1897891557` voor Solomon 1993).\n"
+            "- **Pool** - een van de twee zoekstrategieen "
+            "(`pre1980` full-text vs `post1980_title` title-only).\n"
+            "- **found_via_terms** - lijst van historische PTSD-namen "
+            "waarmee dit paper gevonden is (semicolon-separated).\n"
+            "- **Criterium-check** - LLM-back-prompt die het rewrite-"
+            "abstract scoort tegen FORAS' 4 inclusion-criteria; ✓ per "
+            "criterium betekent het abstract bevat plausible bewijs voor "
+            "PTSS-meting / post-trauma / validated scale / LGMM."
+        )
+
 # ============================================================
-# TAB 3 - Method & metrics (NEW)
+# LEGACY - render_method_tab (no longer wired; kept for archival reference;
+# pipeline-explainer prose is lifted into render_asreview_tab section 2.1/2.8)
 # ============================================================
 def render_method_tab(papers: pd.DataFrame, cand: pd.DataFrame, cross: pd.DataFrame):
     st.markdown(
@@ -926,35 +1282,1664 @@ def render_method_tab(papers: pd.DataFrame, cand: pd.DataFrame, cross: pd.DataFr
     )
 
 
+
+# ============================================================
+# TAB 3 - GNN learning lab (NEW; reads outputs/gnn_leerlab/)
+# ============================================================
+
+LEERLAB = ROOT / "outputs" / "gnn_leerlab"
+
+
+@st.cache_data(show_spinner=False)
+def _load_leerlab_artifacts():
+    """Load the pre-computed GNN-leerlab artifacts as a dict.
+
+    The artifacts come from either `code/train_gnn_demo.py` (real GCN) or the
+    sandbox stand-in script (PPR + logistic). Schema is identical so the tab
+    code does not branch."""
+    art = {}
+    if not LEERLAB.exists():
+        return art
+    cfg = LEERLAB / "config.json"
+    if cfg.exists():
+        art["config"] = json.loads(cfg.read_text(encoding="utf-8"))
+    met = LEERLAB / "metrics.json"
+    if met.exists():
+        art["metrics"] = json.loads(met.read_text(encoding="utf-8"))
+    emb = LEERLAB / "embeddings.npy"
+    if emb.exists():
+        art["embeddings"] = np.load(emb)
+    sc = LEERLAB / "scores.parquet"
+    if sc.exists():
+        art["scores"] = pd.read_parquet(sc)
+    cs = LEERLAB / "candidate_scores.parquet"
+    if cs.exists():
+        art["candidate_scores"] = pd.read_parquet(cs)
+    return art
+
+
+def render_gnn_tab(papers: pd.DataFrame, cand: pd.DataFrame,
+                   cross: pd.DataFrame):
+    """Tab 3 - GNN learning lab + 70/30 vs ASReview."""
+    st.markdown(
+        "<div class='foras-title'>GNN learning lab</div>"
+        "<div class='foras-sub'>Wat is een graph, wat doet message-passing, "
+        "hoe ziet de GCN MIJN data, en hoe verhoudt de GCN-rangschikking zich "
+        "tot ASReview op de 70/30 hold-out.</div>",
+        unsafe_allow_html=True,
+    )
+    art = _load_leerlab_artifacts()
+    if not art:
+        st.warning(
+            "Geen leerlab-artifacts gevonden in `outputs/gnn_leerlab/`. "
+            "Run `python code/train_gnn_demo.py` (vereist `pip install torch "
+            "torch-geometric scikit-learn pandas pyarrow`)."
+        )
+    else:
+        cfg = art.get("config", {})
+        kind = cfg.get("model_kind", "unknown")
+        if "stand_in" in str(kind).lower() or "stand-in" in str(kind).lower() \
+                or "NOT_GCN" in str(kind) or "NOT a real GCN" in str(kind):
+            st.info(
+                "**Hint:** je kijkt naar een PPR + logistic-regression "
+                "stand-in voor de GCN (de sandbox waarin deze tab gebouwd "
+                "is kon torch+PyG niet installeren). Run "
+                "`python code/train_gnn_demo.py` op je laptop om deze "
+                "artifacten te vervangen door echte GCN-output."
+            )
+
+    st.markdown(
+        "<div class='explainer'><h4>Wat zie je hier?</h4>"
+        "Zeven sub-secties: graph-intro (3.1), message-passing-animatie (3.2), "
+        "GCN-laag-uitleg (3.3), 'hoe ziet de GCN MIJN data' (3.4), 70/30 "
+        "vergelijking met ASReview (3.5), alternatieve GNN-toepassingen (3.6), "
+        "glossary (3.7). Doel: na deze tab snap je wat een GNN doet, en "
+        "waarom hij wel of niet helpt voor het sentinel-experiment.</div>",
+        unsafe_allow_html=True,
+    )
+
+    _section_3_1_what_is_graph(papers)
+    st.markdown("---")
+    _section_3_2_message_passing(papers)
+    st.markdown("---")
+    _section_3_3_gcn_layer(art)
+    st.markdown("---")
+    _section_3_4_gcn_on_my_data(art, papers)
+    st.markdown("---")
+    _section_3_5_seventy_thirty(art)
+    st.markdown("---")
+    _section_3_6_alternatives()
+    st.markdown("---")
+    _section_3_7_glossary()
+
+
+# ----- 3.1 What is a graph? -----
+def _section_3_1_what_is_graph(papers):
+    st.markdown("### 3.1 - Wat is een graph?")
+    st.caption(
+        "Een graph = nodes + edges. In FORAS: elke paper is een node, "
+        "elke citatie tussen twee FORAS-papers is een directed edge. "
+        "Hover hieronder over een node om titel, jaar en label te zien; "
+        "schuif de slider om steeds meer hops vanaf de centrale node mee "
+        "te nemen."
+    )
+    with st.expander("Waarom is een citation-graph nuttig?"):
+        st.markdown(
+            "De hypothese is: **papers die dezelfde dingen citeren delen "
+            "vaak een onderwerp**, ook al gebruiken ze andere woorden. "
+            "Voor onze thesis: een paper over 'shell shock' uit 1920 "
+            "wordt mogelijk geciteerd door dezelfde latere papers als "
+            "een modern PTSD-paper - de citatie-structuur 'overbrugt' "
+            "het terminologie-verschil. Dat is het hele theoretische "
+            "argument achter Optie 1 in `context/opties/"
+            "optie_1_foras_insert.md`."
+        )
+    n_hops = st.slider(
+        "Hoeveel hops vanaf een centraal FT-included paper?",
+        min_value=1, max_value=3, value=1, step=1,
+        help="1-hop = directe buren; 2-hop = buren-van-buren; etc.",
+        key="gnn_hops",
+    )
+    # Pick a deterministic FT-included paper as center
+    ft = papers[papers["stage"] == "ft_included"]
+    if len(ft) == 0:
+        st.warning("Geen FT-included papers gevonden in de graph-data.")
+        return
+    center_pid = ft.iloc[0]["pid"]
+    edges_path = DATA / "edges.parquet"
+    if not edges_path.exists():
+        # try the parent location
+        edges_path = ROOT / "outputs" / "citation-graph" / "edges.parquet"
+    try:
+        edges = pd.read_parquet(edges_path)
+    except Exception:
+        st.caption("(Edges niet beschikbaar in deze omgeving; sub-graph plot "
+                   "overgeslagen.)")
+        return
+    # BFS up to n_hops
+    frontier = {center_pid}
+    visited = {center_pid}
+    sub_edges = []
+    for _ in range(n_hops):
+        new_front = set()
+        out = edges[edges["src"].isin(frontier)]
+        in_ = edges[edges["tgt"].isin(frontier)]
+        for _, r in pd.concat([out, in_]).iterrows():
+            sub_edges.append((r["src"], r["tgt"]))
+            for n in (r["src"], r["tgt"]):
+                if n not in visited:
+                    new_front.add(n)
+                    visited.add(n)
+        frontier = new_front
+        # cap at 60 nodes to keep the plot readable
+        if len(visited) > 60:
+            break
+    sub_edges = list(set(sub_edges))
+    sub_papers = papers[papers["pid"].isin(visited)].copy()
+    if len(sub_papers) <= 1:
+        st.caption("(Geen edges gevonden vanuit dit center.)")
+        return
+    G = nx.Graph()
+    G.add_nodes_from(sub_papers["pid"])
+    G.add_edges_from(sub_edges)
+    pos = nx.spring_layout(G, seed=7)
+    edge_x, edge_y = [], []
+    for s, t in sub_edges:
+        if s in pos and t in pos:
+            edge_x.extend([pos[s][0], pos[t][0], None])
+            edge_y.extend([pos[s][1], pos[t][1], None])
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(
+        x=edge_x, y=edge_y, mode="lines",
+        line=dict(color=PALETTE["edge"], width=0.6), hoverinfo="skip",
+    ))
+    node_x = [pos[p][0] for p in sub_papers["pid"] if p in pos]
+    node_y = [pos[p][1] for p in sub_papers["pid"] if p in pos]
+    visible = sub_papers[sub_papers["pid"].isin(pos)].copy()
+    colors = [STAGE_COLORS.get(s, PALETTE["mist"]) for s in visible["stage"]]
+    sizes = [STAGE_SIZES.get(s, 3.0) * 1.6 for s in visible["stage"]]
+    sizes = [s * 1.5 if pid == center_pid else s
+             for s, pid in zip(sizes, visible["pid"])]
+    text = [f"{_s(t)[:80]}<br>{int(y) if pd.notna(y) else '?'}<br>{stage}"
+            for t, y, stage in zip(visible["title"],
+                                   visible["publication_year"],
+                                   visible["stage"])]
+    fig.add_trace(go.Scatter(
+        x=node_x, y=node_y, mode="markers",
+        marker=dict(color=colors, size=sizes,
+                    line=dict(color=PALETTE["navy"], width=0.4)),
+        text=text, hoverinfo="text",
+    ))
+    fig.update_layout(showlegend=False, height=380,
+                      margin=dict(l=0, r=0, t=20, b=0),
+                      xaxis=dict(visible=False), yaxis=dict(visible=False))
+    st.plotly_chart(fig, width="stretch")
+    st.caption(f"Sub-graph rond **{center_pid}** | {len(visible)} nodes, "
+               f"{len(sub_edges)} edges getoond. Center-node is groter.")
+
+
+# ----- 3.2 Message passing -----
+def _section_3_2_message_passing(papers):
+    st.markdown("### 3.2 - Wat doet message-passing?")
+    st.caption(
+        "Message-passing = bij elke laag krijgt elke node informatie van "
+        "zijn directe buren. Na 2 lagen weet een node iets over zijn "
+        "2-hop omgeving. Animeer hieronder de propagatie."
+    )
+    depth = st.slider(
+        "Animatie-stap (= aantal layers diep)",
+        min_value=0, max_value=4, value=1, step=1,
+        help="0 = alleen de start-node oranje. 1-4 = meer hops mee.",
+        key="gnn_msg_depth",
+    )
+    with st.expander("Wat zegt de wiskunde?"):
+        st.markdown(
+            "Eén GCN-laag in formule:\n\n"
+            "`H^(l+1) = sigma( D^(-1/2) A^hat D^(-1/2) H^(l) W^(l) )`\n\n"
+            "- `H^(l)`: node-features op laag l\n"
+            "- `A^hat = A + I`: adjacency-matrix met self-loops\n"
+            "- `D`: degree-matrix van A^hat\n"
+            "- `W^(l)`: leerbare weight-matrix\n"
+            "- `sigma`: activation (typisch ReLU)\n\n"
+            "Intuitief: node krijgt het gemiddelde van zijn buren-features, "
+            "schaalt dat met een geleerde matrix W, en past een non-"
+            "lineaire activation toe."
+        )
+    # Build a fixed mini-graph of 18 random FT-neighborhoods
+    edges_path = DATA / "edges.parquet"
+    if not edges_path.exists():
+        edges_path = ROOT / "outputs" / "citation-graph" / "edges.parquet"
+    try:
+        edges = pd.read_parquet(edges_path)
+    except Exception:
+        st.caption("(Edges niet beschikbaar; animatie-plot overgeslagen.)")
+        return
+    rng = np.random.default_rng(7)
+    ft = papers[papers["stage"] == "ft_included"]
+    if len(ft) == 0:
+        return
+    center_pid = ft.iloc[3]["pid"]  # different center than 3.1
+    # BFS 4 hops capped at 25 nodes
+    frontier = {center_pid}; visited = {center_pid}
+    levels = {center_pid: 0}
+    for d in range(1, 5):
+        new_front = set()
+        out = edges[edges["src"].isin(frontier)]
+        in_ = edges[edges["tgt"].isin(frontier)]
+        for _, r in pd.concat([out, in_]).iterrows():
+            for n in (r["src"], r["tgt"]):
+                if n not in visited:
+                    new_front.add(n); visited.add(n); levels[n] = d
+        frontier = new_front
+        if len(visited) > 25:
+            break
+    sub_papers = papers[papers["pid"].isin(visited)].copy()
+    G = nx.Graph()
+    G.add_nodes_from(sub_papers["pid"])
+    sub_edges = [(s, t) for s, t in zip(edges["src"], edges["tgt"])
+                 if s in visited and t in visited]
+    G.add_edges_from(sub_edges)
+    pos = nx.spring_layout(G, seed=11)
+
+    def color_for(level: int) -> str:
+        if depth == 0:
+            return "#fbbf24" if level == 0 else PALETTE["mist"]
+        # propagate orange up to `depth` hops, fade with distance
+        if level <= depth:
+            t = level / max(depth, 1)
+            # orange -> light orange -> mist
+            return _blend(PALETTE["accent_warm"], "#fde68a", t)
+        return PALETTE["mist"]
+
+    edge_x, edge_y = [], []
+    for s, t in sub_edges:
+        if s in pos and t in pos:
+            edge_x.extend([pos[s][0], pos[t][0], None])
+            edge_y.extend([pos[s][1], pos[t][1], None])
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=edge_x, y=edge_y, mode="lines",
+                             line=dict(color=PALETTE["edge"], width=0.7),
+                             hoverinfo="skip"))
+    visible = sub_papers[sub_papers["pid"].isin(pos)].copy()
+    colors = [color_for(levels.get(p, 99)) for p in visible["pid"]]
+    sizes = [16 if levels.get(p, 99) == 0 else 9 for p in visible["pid"]]
+    text = [f"{_s(t)[:80]}<br>level: {levels.get(p, '?')}-hop"
+            for t, p in zip(visible["title"], visible["pid"])]
+    fig.add_trace(go.Scatter(
+        x=[pos[p][0] for p in visible["pid"]],
+        y=[pos[p][1] for p in visible["pid"]],
+        mode="markers",
+        marker=dict(color=colors, size=sizes,
+                    line=dict(color=PALETTE["navy"], width=0.4)),
+        text=text, hoverinfo="text",
+    ))
+    fig.update_layout(showlegend=False, height=380,
+                      margin=dict(l=0, r=0, t=20, b=0),
+                      xaxis=dict(visible=False), yaxis=dict(visible=False))
+    st.plotly_chart(fig, width="stretch")
+    st.caption(
+        f"Diepte = {depth}. Bij depth=0 weet de start-node alleen "
+        f"zichzelf. Bij depth=4 zijn bijna alle 2-hop buren bereikt - "
+        f"voorbij dat punt verdwijnt onderscheidingsvermogen "
+        f"(over-smoothing)."
+    )
+
+
+def _blend(hex_a: str, hex_b: str, t: float) -> str:
+    """Linear interp between two hex colours, t in [0,1]."""
+    a = hex_a.lstrip("#"); b = hex_b.lstrip("#")
+    ar, ag, ab = int(a[0:2], 16), int(a[2:4], 16), int(a[4:6], 16)
+    br, bg, bb = int(b[0:2], 16), int(b[2:4], 16), int(b[4:6], 16)
+    r = int(ar + (br - ar) * t)
+    g = int(ag + (bg - ag) * t)
+    bl = int(ab + (bb - ab) * t)
+    return f"#{r:02x}{g:02x}{bl:02x}"
+
+
+# ----- 3.3 GCN layer -----
+def _section_3_3_gcn_layer(art: dict):
+    st.markdown("### 3.3 - Wat is een GCN-laag?")
+    st.caption(
+        "Een Graph Convolutional Network (GCN) past dezelfde formule per "
+        "laag toe: feature-matrix x gewogen-adjacency x weight-matrix, "
+        "gevolgd door een ReLU. Stapelen we lagen, dan verspreidt "
+        "informatie verder door de graph - tot op het punt dat alles "
+        "te uniform wordt (over-smoothing)."
+    )
+    with st.expander("Welke andere architecturen bestaan?"):
+        st.markdown(
+            "- **GCN** (Kipf & Welling 2017) - de canonieke choice, "
+            "transductive, eenvoudig.\n"
+            "- **GraphSAGE** (Hamilton 2017) - inductive, sample buren ipv "
+            "alle te aggregeren. Schaalt naar grote graphs.\n"
+            "- **GAT** (Velickovic 2018) - attention-weighted aggregation. "
+            "Interpretabel maar duurder.\n"
+            "- **GIN** (Xu 2018) - maximaal discriminatief; overkill voor "
+            "deze schaal.\n\n"
+            "Voor onze leerlab is GCN primary. GraphSAGE is een logische "
+            "vervolg-stap als we naar grotere candidate-sets willen "
+            "schalen."
+        )
+    st.markdown("**Over-smoothing demo (1-5 layers).**")
+    metrics = art.get("metrics", {})
+    sweep = metrics.get("depth_sweep", [])
+    if not sweep:
+        st.info(
+            "Geen depth-sweep metrics gevonden. Run "
+            "`python code/train_gnn_demo.py --depth-sweep` om de 1-5 "
+            "layer recall-curve hier te plotten."
+        )
+        return
+    df = pd.DataFrame(sweep)
+    # Headline: recall@10% screened (the actually-meaningful metric).
+    # Back-compat with old key 'final_test_recall' (= recall@100% = always 1.0)
+    if "test_recall_at_10pct" in df.columns:
+        fig2 = px.line(df, x="depth", y="test_recall_at_10pct",
+                       markers=True,
+                       title="Recall@10% screened vs. GCN depth (headline)")
+        fig2.update_layout(xaxis_title="aantal layers",
+                           yaxis_title="recall@10%", yaxis_range=[0, 1.05])
+        st.plotly_chart(fig2, width="stretch")
+    y_full = "screened_recall_at_100pct" if "screened_recall_at_100pct" in df.columns \
+        else ("final_test_recall" if "final_test_recall" in df.columns else None)
+    if y_full:
+        fig = px.line(df, x="depth", y=y_full, markers=True,
+                      title="Recall after 100% screened (= 1.0 by definition; "
+                            "shown for completeness)")
+        fig.update_layout(xaxis_title="aantal layers",
+                          yaxis_title="recall (full screen)",
+                          yaxis_range=[0, 1.05])
+        st.plotly_chart(fig, width="stretch")
+    st.caption(
+        "Lezing: een verschil tussen depth 2 en depth 5 is het signaal "
+        "dat we over-smoothing zien. Verwacht: 2-3 layers optimaal voor "
+        "FORAS-grootte, daarna stagnatie of lichte daling."
+    )
+
+
+# ----- 3.4 GCN on MY data -----
+def _section_3_4_gcn_on_my_data(art: dict, papers: pd.DataFrame):
+    st.markdown("### 3.4 - Hoe ziet de GCN MIJN data?")
+    st.caption(
+        "Drie mini-secties: 2D-projection van de embeddings (UMAP/SVD), "
+        "een willekeurige test-paper met zijn buren-bijdragen, en een "
+        "'raad de score'-quiz."
+    )
+    embeddings = art.get("embeddings")
+    scores = art.get("scores")
+    if embeddings is None or scores is None:
+        st.info(
+            "Geen embeddings/scores. Run `python code/train_gnn_demo.py` "
+            "om deze visualisaties te activeren."
+        )
+        return
+    # 2D-projection (PCA op de 64-dim embeddings)
+    from sklearn.decomposition import PCA
+    pca = PCA(n_components=2, random_state=42)
+    proj = pca.fit_transform(embeddings)
+    plot_df = pd.DataFrame({
+        "x": proj[:, 0], "y": proj[:, 1],
+        "score": scores["score"].values,
+        "y_true": scores["y_true"].values,
+        "title": scores["title"].astype(str).str[:80].values,
+        "year": scores["year"].values,
+    })
+    plot_df["label"] = plot_df["y_true"].map({1: "include", 0: "exclude"})
+    sample_df = plot_df.sample(min(3000, len(plot_df)), random_state=42)
+    fig = px.scatter(
+        sample_df, x="x", y="y", color="label", opacity=0.55,
+        hover_data=["title", "year", "score"],
+        color_discrete_map={"include": PALETTE["cyan"],
+                            "exclude": PALETTE["slate"]},
+        title="2D-projection van de GCN-embeddings (PCA)",
+    )
+    fig.update_traces(marker=dict(size=4))
+    fig.update_layout(height=420, xaxis_title="PC1", yaxis_title="PC2")
+    st.plotly_chart(fig, width="stretch")
+    st.caption(
+        "Aha: zie of includes (cyaan) en excludes (grijs) clusteren. "
+        "Volledige scheiding niet verwacht, maar gradient zou zichtbaar "
+        "moeten zijn in een goed-getrainde GCN."
+    )
+
+    # Pick-a-paper inspector
+    st.markdown("**Pak een willekeurige test-paper, zie waar de score "
+                "vandaan komt.**")
+    cols = st.columns([1, 3])
+    with cols[0]:
+        if st.button("Random test-paper", key="gnn_random_paper"):
+            st.session_state["gnn_paper_idx"] = int(np.random.randint(
+                0, len(scores)
+            ))
+    with cols[1]:
+        idx = st.session_state.get("gnn_paper_idx")
+        if idx is None:
+            st.caption("Klik 'Random test-paper' om een paper te selecteren.")
+        else:
+            row = scores.iloc[idx]
+            st.markdown(
+                f"**{row['title']}** ({int(row['year']) if pd.notna(row['year']) else '?'})"
+                f" - score = `{float(row['score']):.3f}`, "
+                f"y_true = `{int(row['y_true'])}`"
+            )
+
+    # Score-quiz
+    st.markdown("**'Raad de score'-quiz.**")
+    if st.button("Toon een random paper voor de quiz", key="gnn_quiz_btn"):
+        ridx = int(np.random.randint(0, len(scores)))
+        st.session_state["gnn_quiz_idx"] = ridx
+    qidx = st.session_state.get("gnn_quiz_idx")
+    if qidx is not None:
+        row = scores.iloc[qidx]
+        st.markdown(
+            f"> *{row['title']}* ({int(row['year']) if pd.notna(row['year']) else '?'})"
+        )
+        guess = st.slider("Jouw gok voor de GCN-score (0=exclude, 1=include)",
+                          min_value=0.0, max_value=1.0, value=0.5, step=0.05,
+                          key="gnn_quiz_guess")
+        if st.button("Onthul echte score", key="gnn_quiz_reveal"):
+            st.success(
+                f"GCN-score: `{float(row['score']):.3f}` | "
+                f"echte label: `{int(row['y_true'])}` | "
+                f"jouw gok: `{guess:.2f}` "
+                f"(verschil: {abs(float(row['score']) - guess):.2f})"
+            )
+
+
+# ----- 3.5 70/30 vs ASReview -----
+def _section_3_5_seventy_thirty(art: dict):
+    st.markdown("### 3.5 - 70/30 vergelijking met ASReview")
+    st.caption(
+        "Pendant van sectie 2.7 in de ASReview-tab. Deze tab schrijft de "
+        "GNN-kolommen naar `outputs/comparison/sentinel_ranks.parquet` "
+        "(via `train_gnn_demo.py`); tab 2 schrijft de ASReview-kolommen. "
+        "Hieronder de huidige stand van zaken."
+    )
+    sentinel_ranks = ROOT / "outputs" / "comparison" / "sentinel_ranks.parquet"
+    if not sentinel_ranks.exists():
+        st.warning("`sentinel_ranks.parquet` bestaat nog niet. Run de "
+                   "ASReview-tab eerst.")
+        return
+    df = pd.read_parquet(sentinel_ranks)
+    split = st.radio(
+        "Split-modus",
+        options=["Modus A: ASReview-volgorde dicteert",
+                 "Modus B: Random stratified 70/30"],
+        key="gnn_split_mode",
+    )
+    split_key = ("modus_a_asreview_order" if split.startswith("Modus A")
+                 else "modus_b_random_stratified")
+    sub = df[df["split_mode"] == split_key].copy()
+    focus = _focused_sentinel()
+    if focus:
+        sub = sub[sub["sentinel_id"] == focus]
+        if len(sub) == 0:
+            st.info(f"Geen rijen voor focus-sentinel `{focus}`.")
+            return
+    sub["delta_rank"] = (sub["asreview_rank"].astype("float") -
+                         sub["gnn_rank"].astype("float"))
+    show = sub[["sentinel_id", "asreview_rank", "asreview_recall_at_rank",
+                "gnn_rank", "gnn_score", "delta_rank", "updated_at"]]
+    st.dataframe(show, width="stretch", hide_index=True)
+    st.caption(
+        "**Lezing:** `delta_rank > 0` betekent GCN-rang lager dan "
+        "ASReview-rang = GCN vond het sentinel sneller. `delta_rank` is "
+        "alleen geldig zodra beide kolommen ingevuld zijn (eerst de "
+        "ASReview-tab runnen, dan deze tab)."
+    )
+    with st.expander("Methodologische noot"):
+        st.markdown(
+            "Wat we hier meten: voor elk van de 3 sentinels (Solomon, "
+            "Kardiner, Southard) berekenen we hun rang in de candidates-"
+            "pool nadat het model getraind is op de eerste 70% FORAS-"
+            "labels. Modus A dicteert die 70% via ASReview's active-"
+            "learning-volgorde; modus B kiest random-stratified.\n\n"
+            "Waarom dit het sentinel-experiment uit Optie 1 ondersteunt: "
+            "als de GCN-rang significant lager is dan de ASReview-rang "
+            "voor sentinels die wel cross-edges hebben (Solomon = 22, "
+            "Kardiner = 17), dan voegt citatie-structuur iets toe boven "
+            "tekst-similarity alleen. Voor Southard (0 cites) verwachten "
+            "we *geen* verschil - dat is de bovengrens (P2 in "
+            "`context/hypothesis.md`)."
+        )
+
+
+# ----- 3.6 Alternative GNN applications -----
+def _section_3_6_alternatives():
+    st.markdown("### 3.6 - Alternatieve GNN-toepassingen")
+    st.caption(
+        "Zes manieren waarop GNNs in een literatuur-review nog meer "
+        "kunnen doen. Geen experiment, wel materiaal voor brainstorm "
+        "met begeleiders."
+    )
+    with st.expander("a) Link prediction - missende citaties vinden"):
+        st.markdown(
+            "Voorspel welke papers ELKAAR zouden moeten citeren maar "
+            "dat niet doen. Train een GNN op de bestaande edges, dan "
+            "score elk niet-bestaand pair. Top-K niet-bestaande edges "
+            "= kandidaten voor missende citaties.\n\n"
+            "```python\n"
+            "from torch_geometric.nn import GCNConv\n"
+            "# encoder produces node embeddings; decoder is "
+            "dot-product\n"
+            "score = (z[src] * z[tgt]).sum(dim=-1)\n"
+            "```\n\n"
+            "Voor de thesis: zou onthullen welke 'shell shock'-papers "
+            "thematisch met FORAS-includes verbonden zijn maar geen "
+            "directe citatie hebben."
+        )
+    with st.expander("b) Embedding-based retrieval"):
+        st.markdown(
+            "Train de GNN, gebruik node-embeddings als paper-vectoren, "
+            "doe k-NN search door alle 14K papers. Geeft een 'find me "
+            "papers similar to this one'-functie die zowel tekst als "
+            "graph-context meeweegt.\n\n"
+            "```python\n"
+            "from sklearn.neighbors import NearestNeighbors\n"
+            "nn = NearestNeighbors(n_neighbors=20).fit(embeddings)\n"
+            "dist, idx = nn.kneighbors(embeddings[query_id:query_id+1])\n"
+            "```"
+        )
+    with st.expander("c) Graph-explainability (PyG `torch_geometric.explain`)"):
+        st.markdown(
+            "Welke buren beïnvloedden deze prediction? PyG's "
+            "`Explainer`-API genereert subgraph-explanations per node. "
+            "Voor de thesis: laat zien dat een sentinel-paper hoog "
+            "gerangschikt wordt vanwege specifieke FORAS-buren - "
+            "tastbaarder bewijs van het citation-bridge-mechanisme.\n\n"
+            "```python\n"
+            "from torch_geometric.explain import Explainer\n"
+            "exp = Explainer(model=model, algorithm=GNNExplainer())\n"
+            "exp(x, edge_index, index=node_id)\n"
+            "```"
+        )
+    with st.expander("d) Heterogeneous GNN (papers + authors + topics)"):
+        st.markdown(
+            "Nodes hoeven niet allemaal van hetzelfde type te zijn. "
+            "Maak nodes voor papers, auteurs, topics, journals; "
+            "edges met verschillende typen (paper-cites-paper, "
+            "paper-by-author, paper-in-topic). Heterogene GNNs (HAN, "
+            "RGCN) leren type-specifieke transformations.\n\n"
+            "Voor onze thesis: zou auteurs als 'historische-PTSD-"
+            "experts' in beeld brengen (Kardiner, Southard, "
+            "Solomon zelf) als hub-nodes."
+        )
+    with st.expander("e) Temporal GNN - concept-drift over tijd"):
+        st.markdown(
+            "Voeg tijd toe als dimensie aan de graph. Train een Temporal "
+            "GNN (e.g., TGN, JODIE) die per jaar de paper-embeddings "
+            "update. Voor PTSD-historiografie ideaal: zie hoe de "
+            "embedding van 'shell shock'-papers verschuift naarmate "
+            "DSM-III in 1980 PTSD formaliseert.\n\n"
+            "Niet voor 5-mei-dispatch, maar mooie follow-up-vraag voor "
+            "begeleiders."
+        )
+    with st.expander("f) GCN als ASReview-classifier (hybride)"):
+        st.markdown(
+            "Plug de GCN als feature-extractor in ASReview's "
+            "active-learning-loop: bij elke iteratie gebruikt ASReview "
+            "GCN-scores in plaats van TF-IDF. Vereist "
+            "`asreview-makita`-aanpassing of een custom classifier-"
+            "plug-in. Belangrijk voor de hybride-baseline-claim van "
+            "de thesis: text-baseline (ASReview) plus structuur "
+            "(GCN) in één pipeline."
+        )
+
+
+# ----- 3.7 Glossary -----
+def _section_3_7_glossary():
+    if _in_demo_mode():
+        return
+    with st.expander("Glossary"):
+        st.markdown(
+            "- **GNN** - Graph Neural Network: neural net dat op graph-"
+            "structured data werkt.\n"
+            "- **GCN** - Graph Convolutional Network (Kipf & Welling 2017); "
+            "transductive, eenvoudig, primary choice.\n"
+            "- **GraphSAGE** - inductive, neighbor-sampling-based GNN.\n"
+            "- **GAT** - Graph Attention Network; weighted aggregation.\n"
+            "- **Node** - een paper in de citation-graph.\n"
+            "- **Edge** - een citatie tussen twee papers.\n"
+            "- **Undirected/Directed** - citaties zijn directed (A cites B); "
+            "voor GCN convert je naar undirected (information flows beide kanten op).\n"
+            "- **Message-passing** - per laag aggregeert een node "
+            "informatie van zijn buren.\n"
+            "- **Embedding** - vector-representatie per node die de model leert.\n"
+            "- **Layer** - één GCN-conv-stap; 2 lagen = node ziet 2-hop omgeving.\n"
+            "- **Depth** - aantal layers; meer != beter (over-smoothing).\n"
+            "- **Over-smoothing** - bij te veel lagen worden alle node-embeddings "
+            "te uniform, model verliest discriminatie.\n"
+            "- **Transductive** - hele graph (incl. test-nodes) zichtbaar tijdens "
+            "training; alleen labels gemaskt.\n"
+            "- **Inductive** - test-nodes ongezien; model moet generaliseren.\n"
+            "- **BCE-loss** - binary cross-entropy; standaard voor binaire "
+            "classificatie.\n"
+            "- **Class-weight** - mitigeert class-imbalance door minderheid "
+            "zwaarder te wegen in loss.\n"
+            "- **Recall** - fractie van echte includes die het model voorspelt "
+            "als include.\n"
+            "- **F1** - harmonisch gemiddelde van precision en recall.\n"
+            "- **ROC-AUC** - area under receiver-operating-characteristic curve.\n"
+            "- **TF-IDF** - term-frequentie weighted by inverse document frequency; "
+            "klassieke text-feature.\n"
+            "- **Bibliographic coupling** - twee papers delen een referentie -> "
+            "gerelateerd.\n"
+            "- **Co-citation** - twee papers worden samen geciteerd door een "
+            "derde -> gerelateerd.\n"
+            "- **Candidate** - paper uit 2.288-pool met historische PTSD-"
+            "terminologie.\n"
+            "- **FORAS** - de focal corpus van 14.764 papers (van de Schoot "
+            "et al. 2025).\n"
+            "- **FT-included** - paper inclusief na full-text-screening (172).\n"
+            "- **TIAB-included** - paper inclusief na title+abstract-screening "
+            "(568 in label_abstract_included).\n"
+            "- **Sentinel** - één van Solomon 1993, Kardiner 1941, Southard 1920; "
+            "anker voor de ASReview-vs-GCN-vergelijking.\n"
+            "- **Hold-out** - 30% van FORAS dat niet meedoet in training.\n"
+            "- **Link prediction** - voorspel of een edge bestaat tussen "
+            "twee nodes.\n"
+        )
+
+
+# ============================================================
+# TAB 2 - ASReview (NEW)
+# ============================================================
+
+# ----- module-level constants for ASReview -----
+ELAS_BUNDLES = {
+    "elas_u4": {
+        "label": "elas_u4 (default; SVM + TF-IDF)",
+        "needs_dory": False,
+        "blurb": "Default ultra bundle. Fast. Good baseline. SVM classifier on TF-IDF features.",
+    },
+    "elas_u3": {
+        "label": "elas_u3 (NB + TF-IDF)",
+        "needs_dory": False,
+        "blurb": "Classical Naive-Bayes ultra bundle. Robust on small/imbalanced sets.",
+    },
+    "elas_l2": {
+        "label": "elas_l2 (multilingual-e5-large + SVM, needs asreview-dory)",
+        "needs_dory": True,
+        "blurb": "Multilingual transformer embeddings. Slow first run on CPU (10-30 min).",
+    },
+    "elas_h3": {
+        "label": "elas_h3 (mxbai + SVM, needs asreview-dory)",
+        "needs_dory": True,
+        "blurb": "Heavy transformer-based bundle (mxbai). Slow on CPU; cache embeddings.",
+    },
+}
+
+PRIOR_STRATEGIES = {
+    "1+1 (default)": {"n_prior_included": 1, "n_prior_excluded": 1},
+    "2+2": {"n_prior_included": 2, "n_prior_excluded": 2},
+    "5+5": {"n_prior_included": 5, "n_prior_excluded": 5},
+    "10+0 (only positives)": {"n_prior_included": 10, "n_prior_excluded": 0},
+}
+
+
+# ----- helpers: dataset prep -----
+@st.cache_data(show_spinner=False)
+def _foras_dataset_kpis():
+    """Read raw FORAS CSV (semicolon-separated) and return KPI counts."""
+    candidates_paths = [
+        THESIS_DATA / "focas" / "PTSS_Data_Foras_2025-02-05.csv",
+        THESIS_DATA / "PTSS_Data_Foras_2025-02-05.csv",
+        THESIS_DATA / "foras" / "PTSS_Data_Foras_2025-02-05.csv",
+    ]
+    src = next((p for p in candidates_paths if p.exists()), None)
+    if src is None:
+        return {"src": None, "rows": None, "n_pos_tiab": None, "n_pos_ft": None}
+    try:
+        df = pd.read_csv(src, sep=";", low_memory=False, encoding="utf-8-sig")
+        return {
+            "src": str(src),
+            "rows": len(df),
+            "n_pos_tiab": int(df["label_included_TIAB"].fillna(0).astype(int).sum())
+                if "label_included_TIAB" in df.columns else None,
+            "n_pos_ft": int(df["label_included_FT"].fillna(0).astype(int).sum())
+                if "label_included_FT" in df.columns else None,
+        }
+    except Exception as exc:
+        return {"src": str(src), "rows": None, "n_pos_tiab": None,
+                "n_pos_ft": None, "error": str(exc)}
+
+
+def _asreview_available():
+    try:
+        out = subprocess.run(
+            ["asreview", "--version"], capture_output=True, text=True, timeout=10
+        )
+        if out.returncode == 0:
+            return True, out.stdout.strip() or out.stderr.strip()
+        return False, f"non-zero exit: {out.returncode}"
+    except FileNotFoundError:
+        return False, "not on PATH"
+    except Exception as exc:
+        return False, str(exc)
+
+
+@st.cache_data(show_spinner="Inspecting .asreview project ...")
+def _read_asreview_results(asreview_path: str) -> dict:
+    """Read a .asreview ZIP and pull out per-record discovery order."""
+    p = Path(asreview_path)
+    if not p.exists():
+        return {"error": f"not found: {asreview_path}"}
+    try:
+        with zipfile.ZipFile(p, "r") as z:
+            names = z.namelist()
+            project_meta = {}
+            for n in names:
+                if n.endswith("project.json"):
+                    project_meta = json.loads(z.read(n).decode("utf-8"))
+                    break
+            sql_names = [n for n in names if n.endswith("results.sql")]
+            if not sql_names:
+                return {"error": "no results.sql in project zip", "names": names[:20]}
+            tmp = ROOT / ".cache_asreview_results.sql"
+            tmp.write_bytes(z.read(sql_names[0]))
+            con = sqlite3.connect(tmp)
+            try:
+                tables = pd.read_sql_query(
+                    "SELECT name FROM sqlite_master WHERE type='table'", con
+                )["name"].tolist()
+                results_df = None
+                for tbl in ("results", "record_results", "labels"):
+                    if tbl in tables:
+                        results_df = pd.read_sql_query(f"SELECT * FROM {tbl}", con)
+                        break
+                if results_df is None and tables:
+                    results_df = pd.read_sql_query(f"SELECT * FROM {tables[0]}", con)
+            finally:
+                con.close()
+                try:
+                    tmp.unlink()
+                except OSError:
+                    pass
+            return {
+                "project": project_meta,
+                "tables": tables,
+                "records": results_df,
+                "n_records": int(len(results_df)) if results_df is not None else None,
+            }
+    except Exception as exc:
+        return {"error": str(exc)}
+
+
+def _list_asreview_files():
+    if not ASREVIEW_RUNS.exists():
+        return []
+    return sorted(ASREVIEW_RUNS.glob("*.asreview"))
+
+
+def _compute_recall_curve(records):
+    """Compute (n_screened, recall) curve from a results-table DataFrame."""
+    if records is None or len(records) == 0:
+        return None
+    df = records.copy()
+    cols = {c.lower(): c for c in df.columns}
+    label_col = next((cols[c] for c in cols if c in
+                      {"label", "included", "labels", "is_relevant", "relevant"}),
+                     None)
+    order_col = next((cols[c] for c in cols if c in
+                      {"query_i", "query", "step", "order", "sort_order",
+                       "review_step"}),
+                     None)
+    if label_col is None:
+        return None
+    if order_col is not None:
+        df = df.sort_values(order_col)
+    df = df.reset_index(drop=True)
+    df["_label_int"] = pd.to_numeric(df[label_col], errors="coerce").fillna(0).astype(int)
+    df["_n_screened"] = np.arange(1, len(df) + 1)
+    total_pos = int(df["_label_int"].sum())
+    if total_pos == 0:
+        return None
+    df["_recall"] = df["_label_int"].cumsum() / total_pos
+    return df[["_n_screened", "_recall", "_label_int"]].rename(
+        columns={"_n_screened": "n_screened", "_recall": "recall",
+                 "_label_int": "is_relevant"}
+    )
+
+
+def _wss_at_recall(curve, target_recall: float):
+    """Work Saved over Sampling at a given recall level."""
+    if curve is None or len(curve) == 0:
+        return None
+    hits = curve[curve["recall"] >= target_recall]
+    if len(hits) == 0:
+        return None
+    n_at = hits.iloc[0]["n_screened"]
+    N = len(curve)
+    return float((1 - n_at / N) - (1 - target_recall))
+
+
+# ----- helpers: sentinel-ranks parquet (shared with GNN tab) -----
+
+SENTINEL_RANKS_SCHEMA = {
+    "sentinel_id": "object",
+    "split_mode": "object",
+    "dataset": "object",
+    "bundle": "object",
+    "seed": "Int64",
+    "asreview_rank": "Int64",
+    "asreview_recall_at_rank": "float64",
+    "gnn_rank": "Int64",
+    "gnn_score": "float64",
+    "rewrite_used": "boolean",
+    "updated_at": "object",
+}
+
+
+def _ensure_sentinel_ranks_skeleton():
+    COMPARISON_DIR.mkdir(parents=True, exist_ok=True)
+    if SENTINEL_RANKS.exists():
+        try:
+            return pd.read_parquet(SENTINEL_RANKS)
+        except Exception:
+            pass
+    rows = []
+    sentinels = ["solomon_1993", "kardiner_1941", "southard_1920"]
+    for sid in sentinels:
+        for split in ("modus_a_asreview_order", "modus_b_random_stratified"):
+            rows.append({
+                "sentinel_id": sid,
+                "split_mode": split,
+                "dataset": "FORAS+candidates",
+                "bundle": None,
+                "seed": pd.NA,
+                "asreview_rank": pd.NA,
+                "asreview_recall_at_rank": np.nan,
+                "gnn_rank": pd.NA,
+                "gnn_score": np.nan,
+                "rewrite_used": True,
+                "updated_at": None,
+            })
+    df = pd.DataFrame(rows)
+    for col, dtype in SENTINEL_RANKS_SCHEMA.items():
+        if col in df.columns:
+            try:
+                df[col] = df[col].astype(dtype)
+            except Exception:
+                pass
+    df.to_parquet(SENTINEL_RANKS, index=False)
+    return df
+
+
+def _upsert_asreview_rank(sentinel_id, split_mode, *, dataset, bundle, seed,
+                          rank, recall_at_rank):
+    df = _ensure_sentinel_ranks_skeleton()
+    mask = (df["sentinel_id"] == sentinel_id) & (df["split_mode"] == split_mode)
+    if not mask.any():
+        df = pd.concat([df, pd.DataFrame([{
+            "sentinel_id": sentinel_id, "split_mode": split_mode,
+            "dataset": dataset, "bundle": bundle, "seed": seed,
+            "asreview_rank": rank, "asreview_recall_at_rank": recall_at_rank,
+            "gnn_rank": pd.NA, "gnn_score": np.nan,
+            "rewrite_used": True,
+            "updated_at": datetime.utcnow().isoformat(timespec="seconds") + "Z",
+        }])], ignore_index=True)
+    else:
+        df.loc[mask, "dataset"] = dataset
+        df.loc[mask, "bundle"] = bundle
+        df.loc[mask, "seed"] = seed
+        df.loc[mask, "asreview_rank"] = rank
+        df.loc[mask, "asreview_recall_at_rank"] = recall_at_rank
+        df.loc[mask, "rewrite_used"] = True
+        df.loc[mask, "updated_at"] = datetime.utcnow().isoformat(timespec="seconds") + "Z"
+    df.to_parquet(SENTINEL_RANKS, index=False)
+
+
+# ----- helpers: sentinel rewrites loader -----
+@st.cache_data(show_spinner=False)
+def _load_sentinel_bundles():
+    out = {}
+    if not SENTINEL_DIR.exists():
+        return out
+    for sid in ("solomon_1993", "kardiner_1941", "southard_1920"):
+        bundle = {}
+        for kind in ("original", "rewrite"):
+            p = SENTINEL_DIR / f"{sid}_{kind}.json"
+            if p.exists():
+                try:
+                    bundle[kind] = json.loads(p.read_text(encoding="utf-8"))
+                except Exception as exc:
+                    bundle[kind] = {"error": str(exc)}
+        if bundle:
+            out[sid] = bundle
+    return out
+
+
+# ----- top-level renderer -----
+def render_asreview_tab(papers, cand, cross):
+    """Tab 2 - ASReview learning tool + baseline."""
+    st.markdown(
+        "<div class='foras-title'>ASReview - active learning tool + baseline</div>"
+        "<div class='foras-sub'>Hoe ASReview FORAS in versneld tempo screent, "
+        "wat dat oplevert op de candidate-pool met historische terminologie, en "
+        "hoe het zich verhoudt tot de GNN op de 70/30 split.</div>",
+        unsafe_allow_html=True,
+    )
+    st.markdown(
+        "<div class='explainer'><h4>Wat zie je hier?</h4>"
+        "Negen sub-secties die ASReview uitleggen (2.1) en concreet toepassen "
+        "op FORAS (2.2-2.7), plus alternatieve toepassingen (2.8) en glossary "
+        "(2.9). Doel: een leertool die op zichzelf staat - na deze tab weet je "
+        "wat active learning is en wat het op MIJN dataset doet.</div>",
+        unsafe_allow_html=True,
+    )
+
+    _section_2_1_what_is_asreview()
+    st.markdown("---")
+    _section_2_2_dataset_overview()
+    st.markdown("---")
+    _section_2_3_simulation_runner()
+    st.markdown("---")
+    _section_2_4_plot_explorer()
+    st.markdown("---")
+    _section_2_5_compare_mode()
+    st.markdown("---")
+    _section_2_6_discovery_scatter(cand, cross)
+    st.markdown("---")
+    _section_2_7_seventy_thirty_split()
+    st.markdown("---")
+    _section_2_8_alternative_applications()
+    st.markdown("---")
+    _section_2_9_glossary()
+
+
+# ----- 2.1 What is ASReview? -----
+def _section_2_1_what_is_asreview():
+    st.markdown("### 2.1 - Wat is ASReview?")
+    st.caption(
+        "ASReview = Active learning for Systematic Reviews. Een open-source "
+        "tool die menselijke screenings versnelt door iteratief het "
+        "meest-waarschijnlijk-relevante record als volgende voor te leggen."
+    )
+    with st.expander("Hoe werkt active learning? (de cyclus in 5 stappen)",
+                     expanded=False):
+        st.markdown(
+            "1. **Prior knowledge.** Je labelt een paar records met de hand "
+            "als 'relevant' of 'niet relevant' (bijvoorbeeld 1 + 1).\n"
+            "2. **Train.** ASReview traint een classifier (bijv. SVM op "
+            "TF-IDF) op die paar records.\n"
+            "3. **Query.** De classifier kijkt naar alle ongelabelde records "
+            "en selecteert er een - meestal de meest-zekere include "
+            "(`max`-querier) of de meest-onzekere (`uncertainty`).\n"
+            "4. **Label.** Je labelt dat record (of in een simulatie: het "
+            "echte label uit de CSV wordt 'gerevealed').\n"
+            "5. **Herhaal.** Stap 2-4 totdat je stop-criterium bereikt is "
+            "(meestal: 'alle relevante records gevonden' of een vast "
+            "fractie-gescreend).\n\n"
+            "Door deze loop hoef je in de praktijk niet alle records te "
+            "lezen - vaak vind je 95% van de includes na 30-50% screening. "
+            "Dat verschil heet **Work Saved over Sampling** (WSS)."
+        )
+    with st.expander("ELAS-bundels - welke modellen?", expanded=False):
+        for k, v in ELAS_BUNDLES.items():
+            st.markdown(f"- **`{k}`** - {v['label']}. {v['blurb']}")
+        st.markdown(
+            "Een bundle is een vaste combinatie van feature-extractor + "
+            "classifier + querier + balancer. Selecteer met "
+            "`asreview simulate ... --ai elas_h3`."
+        )
+    with st.expander("Waarom is ASReview interessant voor mijn thesis?",
+                     expanded=False):
+        st.markdown(
+            "FORAS gebruikt ASReview als 9e quality-check laag in haar "
+            "search-strategie (zie van de Schoot et al. 2025, sec. 2.2). "
+            "Voor mijn thesis is ASReview de **tekst-baseline** waar de "
+            "GNN tegen wordt afgezet: als de GNN op de 30%-hold-out geen "
+            "verbetering geeft over ASReview's ranking, dan voegt "
+            "citatie-structuur niets toe boven tekst-similarity."
+        )
+
+
+# ----- 2.2 Dataset overview -----
+def _section_2_2_dataset_overview():
+    st.markdown("### 2.2 - Dataset-overzicht (FORAS)")
+    st.caption(
+        "FORAS-csv is 10.595 records. Twee label-niveaus: **TIAB** (na "
+        "title+abstract-screening) en **FT** (na full-text-screening). "
+        "TIAB is grover maar heeft meer signaal (260 vs 131 includes)."
+    )
+    kpis = _foras_dataset_kpis()
+    if kpis.get("src") is None:
+        st.warning(
+            "Kan FORAS-CSV niet vinden. Verwacht in `data/focas/"
+            "PTSS_Data_Foras_2025-02-05.csv` (relatief tov de thesis-folder)."
+        )
+        return
+    if kpis.get("rows") is None:
+        st.error(f"Kan FORAS-CSV niet inlezen: {kpis.get('error')}")
+        return
+    label_choice = st.radio(
+        "Welk label-niveau gebruiken we als 'relevant'?",
+        options=["TIAB (primary)", "FT (robustness check)"],
+        horizontal=True,
+        help="TIAB is aanbevolen voor de 70/30 vergelijking - meer power.",
+        key="asreview_label_choice",
+    )
+    label_key = "n_pos_tiab" if label_choice.startswith("TIAB") else "n_pos_ft"
+    n_pos = kpis.get(label_key)
+    cols = st.columns(4)
+    with cols[0]:
+        st.metric("Records", f"{kpis['rows']:,}",
+                  help="Aantal rijen in de FORAS-CSV.")
+    with cols[1]:
+        st.metric("TIAB-includes", f"{kpis.get('n_pos_tiab') or '-'}",
+                  help="Records met `label_included_TIAB == 1`.")
+    with cols[2]:
+        st.metric("FT-includes", f"{kpis.get('n_pos_ft') or '-'}",
+                  help="Records met `label_included_FT == 1`.")
+    with cols[3]:
+        base = (n_pos / kpis['rows']) if (n_pos and kpis['rows']) else 0
+        st.metric("Base-rate", f"{base*100:.2f}%",
+                  help="Includes / records voor het gekozen label.")
+    st.caption(f"Source: `{kpis['src']}`")
+
+
+# ----- 2.3 Simulation runner -----
+def _section_2_3_simulation_runner():
+    st.markdown("### 2.3 - Simulation runner")
+    st.caption(
+        "Draai een ASReview-simulatie op FORAS (of op FORAS + 2.288 "
+        "candidates). Output: `.asreview`-projectbestand in "
+        "`outputs/asreview_runs/`."
+    )
+    available, version = _asreview_available()
+    if not available:
+        st.warning(
+            f"De `asreview` CLI is niet bereikbaar in deze omgeving "
+            f"(`{version}`). Installeer met:\n\n"
+            "```bash\n"
+            "pip install asreview asreview-insights asreview-makita "
+            "asreview-datatools asreview-dory\n"
+            "```\n"
+        )
+    else:
+        st.success(f"ASReview CLI gevonden: `{version}`")
+
+    with st.form("asreview_sim_form"):
+        col1, col2 = st.columns(2)
+        with col1:
+            dataset = st.selectbox(
+                "Dataset",
+                options=["FORAS", "FORAS + 2.288 candidates"],
+                help=("FORAS+candidates: voegt 2.288 historische-terminologie "
+                      "kandidaten toe; sentinels (3) krijgen "
+                      "`is_candidate=True` en `included=1` om recall@k te "
+                      "kunnen meten."),
+            )
+            bundle = st.selectbox(
+                "AI bundle",
+                options=list(ELAS_BUNDLES.keys()),
+                format_func=lambda k: ELAS_BUNDLES[k]["label"],
+                help="elas_l2 / elas_h3 vereisen `asreview-dory`. "
+                     "Eerste run met transformer is 10-30 min op CPU.",
+            )
+        with col2:
+            seed = st.number_input(
+                "Seed", min_value=0, max_value=2**31 - 1, value=42, step=1,
+                help="Same `--seed` value -> reproduceerbare run.",
+            )
+            prior_strategy = st.selectbox(
+                "Prior records",
+                options=list(PRIOR_STRATEGIES.keys()),
+                help="Hoeveel records geef je ASReview als startpunt?",
+            )
+        n_stop = st.checkbox(
+            "Door simuleren tot 100% (`--n-stop -1`)", value=True,
+            help=("Belangrijk voor recall@k op kandidaten: default stopt "
+                  "ASReview zodra alle includes gevonden zijn."),
+        )
+        submitted = st.form_submit_button(
+            "Draai simulatie", disabled=not available
+        )
+    if submitted and available:
+        priors = PRIOR_STRATEGIES[prior_strategy]
+        ts = datetime.utcnow().strftime("%Y%m%dT%H%M%S")
+        ds_slug = "foras" if dataset == "FORAS" else "foras_plus_candidates"
+        out_path = ASREVIEW_RUNS / f"{ds_slug}_{bundle}_seed{seed}_{ts}.asreview"
+        ASREVIEW_RUNS.mkdir(parents=True, exist_ok=True)
+        st.info(
+            f"Geplande run: `{out_path.name}`\n\n"
+            f"Bundle: `{bundle}` | Seed: {seed} | "
+            f"Priors: {priors['n_prior_included']}+"
+            f"{priors['n_prior_excluded']} | "
+            f"n-stop: {'-1' if n_stop else 'default'}"
+        )
+        st.warning(
+            "**Implementatie-noot.** De `asreview simulate` subprocess-call "
+            "is geparametriseerd, maar de input-CSV "
+            f"(`outputs/asreview_runs/{ds_slug}.csv`) moet eerst gebouwd "
+            "zijn. Voor de eerste run: zie de reproduce-commando's in "
+            "`outputs/asreview_runs/README.md`. Daarna kan deze knop er "
+            "incrementele runs op zetten."
+        )
+
+    runs = _list_asreview_files()
+    st.markdown(f"**Bestaande runs in `outputs/asreview_runs/`** ({len(runs)})")
+    if not runs:
+        st.caption(
+            "Nog geen `.asreview`-bestanden. Eerste run: zie reproduce-"
+            "commando's in `outputs/asreview_runs/README.md`."
+        )
+    else:
+        run_meta = []
+        for p in runs:
+            stat = p.stat()
+            run_meta.append({
+                "filename": p.name,
+                "size_kb": round(stat.st_size / 1024, 1),
+                "modified": datetime.utcfromtimestamp(stat.st_mtime)
+                            .isoformat(timespec="seconds") + "Z",
+            })
+        st.dataframe(pd.DataFrame(run_meta), width="stretch",
+                     hide_index=True)
+
+
+# ----- 2.4 Plot explorer -----
+def _section_2_4_plot_explorer():
+    st.markdown("### 2.4 - Plot-explorer (recall + WSS)")
+    st.caption(
+        "Selecteer een `.asreview`-bestand en bekijk de recall-curve. "
+        "X = aantal records gescreend, Y = fractie van de includes gevonden."
+    )
+    runs = _list_asreview_files()
+    if not runs:
+        st.info("Geen `.asreview`-bestanden gevonden. Draai eerst een "
+                "simulatie in sectie 2.3 of via de CLI.")
+        return
+    run_choice = st.selectbox(
+        "Run", options=[p.name for p in runs],
+        help="Kies een .asreview-bestand uit `outputs/asreview_runs/`.",
+        key="asreview_plot_run",
+    )
+    sel = next(p for p in runs if p.name == run_choice)
+    info = _read_asreview_results(str(sel))
+    if "error" in info:
+        st.error(f"Kan dit bestand niet lezen: {info['error']}")
+        return
+    curve = _compute_recall_curve(info.get("records"))
+    if curve is None:
+        st.warning(
+            "Kon geen recall-curve afleiden uit de results-tabel. "
+            f"Tabellen gevonden: {info.get('tables')}. "
+            "Run `asreview plot recall <file>.asreview` als CLI-fallback."
+        )
+        return
+    fig = px.line(curve, x="n_screened", y="recall",
+                  title=f"Recall curve - {sel.name}")
+    fig.update_layout(yaxis_range=[0, 1.02], xaxis_title="# records gescreend",
+                      yaxis_title="recall (fractie includes gevonden)")
+    st.plotly_chart(fig, width="stretch")
+    cols = st.columns(3)
+    with cols[0]:
+        wss95 = _wss_at_recall(curve, 0.95)
+        st.metric("WSS@95",
+                  f"{wss95:.3f}" if wss95 is not None else "n/a",
+                  help="Work Saved over Sampling op 95% recall. Hoger = beter.")
+    with cols[1]:
+        recall_10 = float(curve[curve["n_screened"] / len(curve) >= 0.10]
+                          ["recall"].iloc[0]) if len(curve) > 0 else 0
+        st.metric("recall@10%", f"{recall_10*100:.1f}%",
+                  help="Welk percentage includes is gevonden na 10% gescreend.")
+    with cols[2]:
+        recall_50 = float(curve[curve["n_screened"] / len(curve) >= 0.50]
+                          ["recall"].iloc[0]) if len(curve) > 0 else 0
+        st.metric("recall@50%", f"{recall_50*100:.1f}%",
+                  help="Welk percentage includes is gevonden na 50% gescreend.")
+    st.caption(
+        "Lezing: een steile curve in het eerste 10-20% screening = veel "
+        "early discovery. Een vlakke curve = model selecteert random."
+    )
+
+
+# ----- 2.5 Compare mode -----
+def _section_2_5_compare_mode():
+    st.markdown("### 2.5 - Compare-modus")
+    st.caption(
+        "Vergelijk meerdere `.asreview`-runs over elkaar. Bedoeld om "
+        "bundels (`elas_u4` vs `elas_h3`) of seeds (5x dezelfde bundle "
+        "met seed 42-46) te benchmarken."
+    )
+    runs = _list_asreview_files()
+    if len(runs) < 2:
+        st.info(f"Heb je minstens 2 runs nodig. Gevonden: {len(runs)}.")
+        return
+    selected = st.multiselect(
+        "Runs om te vergelijken (max 6)",
+        options=[p.name for p in runs],
+        default=[p.name for p in runs[:2]],
+        help="Tip: groepeer per bundle om gemiddelde curves te plotten.",
+        key="asreview_compare_runs",
+    )
+    selected = selected[:6]
+    if len(selected) < 2:
+        return
+    fig = go.Figure()
+    metric_rows = []
+    for name in selected:
+        path = next(p for p in runs if p.name == name)
+        info = _read_asreview_results(str(path))
+        curve = _compute_recall_curve(info.get("records"))
+        if curve is None:
+            continue
+        fig.add_trace(go.Scatter(
+            x=curve["n_screened"], y=curve["recall"],
+            mode="lines", name=name,
+        ))
+        metric_rows.append({
+            "run": name,
+            "WSS@95": _wss_at_recall(curve, 0.95),
+            "WSS@99": _wss_at_recall(curve, 0.99),
+        })
+    fig.update_layout(yaxis_range=[0, 1.02], title="Recall curves (compare)",
+                      xaxis_title="# records gescreend", yaxis_title="recall")
+    st.plotly_chart(fig, width="stretch")
+    if metric_rows:
+        st.dataframe(pd.DataFrame(metric_rows), width="stretch",
+                     hide_index=True)
+
+
+# ----- 2.6 Candidate discovery scatter -----
+def _section_2_6_discovery_scatter(cand, cross):
+    st.markdown("### 2.6 - Candidate discovery-scatter")
+    st.caption(
+        "Voor de FORAS+candidates-runs: per gevonden record een punt op een "
+        "scatter. X = % gescreend toen gevonden; Y = ranked positie binnen "
+        "de positives; kleur = `is_candidate=False/True/sentinel`. Vraag: "
+        "zitten de sentinels rechts (laat gevonden) -> dan complementeert "
+        "de GNN potentieel via citatie-structuur."
+    )
+    runs = [p for p in _list_asreview_files()
+            if "candidates" in p.name.lower() or "plus" in p.name.lower()]
+    if not runs:
+        st.info(
+            "Nog geen FORAS+candidates-run aanwezig. Run sectie 2.3 met "
+            "dataset = 'FORAS + 2.288 candidates' of zie reproduce-"
+            "commando's in `outputs/asreview_runs/README.md`."
+        )
+        st.markdown(
+            "**Wat verwachten we?** Sentinels die in de candidates-pool "
+            "zitten met `cited_by_foras_any > 0` (Solomon 1993 = 22; "
+            "Kardiner 1941 = 17) zijn via tekst-similarity moeilijk maar "
+            "via citation-graph wel vindbaar. Southard 1920 (0 cites) "
+            "demonstreert de bovengrens van citatie-structuur "
+            "(P2 in `context/hypothesis.md`)."
+        )
+        return
+    run_choice = st.selectbox(
+        "Welke FORAS+candidates run?",
+        options=[p.name for p in runs],
+        key="asreview_discovery_run",
+    )
+    sel = next(p for p in runs if p.name == run_choice)
+    info = _read_asreview_results(str(sel))
+    curve = _compute_recall_curve(info.get("records"))
+    if curve is None:
+        st.warning("Kan recall-curve niet afleiden voor deze run.")
+        return
+    st.warning(
+        "**Per-record discovery-scatter** vereist een join van de "
+        "results-table op de input-CSV (om `is_candidate` en sentinel-"
+        "markeringen op te halen). Die join wordt opgebouwd in een "
+        "vervolg-iteratie zodra echte FORAS+candidates-runs aanwezig zijn."
+    )
+    cols = st.columns(3)
+    with cols[0]:
+        st.metric("WSS@95", f"{_wss_at_recall(curve, 0.95):.3f}"
+                  if _wss_at_recall(curve, 0.95) is not None else "n/a")
+    with cols[1]:
+        n_includes = int(curve["is_relevant"].sum())
+        st.metric("Includes in run", f"{n_includes:,}")
+    with cols[2]:
+        st.metric("Records totaal", f"{len(curve):,}")
+
+
+# ----- 2.7 70/30 split + sentinel ranks -----
+def _section_2_7_seventy_thirty_split():
+    st.markdown("### 2.7 - 70/30 vergelijking met de GNN-tab")
+    st.caption(
+        "Sub-toggle voor split-modus. Schrijft naar de gedeelde parquet "
+        "`outputs/comparison/sentinel_ranks.parquet`. Tab 3 vult later de "
+        "GNN-kolommen aan."
+    )
+    split_mode = st.radio(
+        "Hoe verdelen we de 70/30 split?",
+        options=[
+            "Modus A: ASReview-volgorde dicteert",
+            "Modus B: Random stratified 70/30",
+        ],
+        help=(
+            "**Modus A**: run ASReview tot 70% gelabeld is via active "
+            "learning; resterende 30% (= records die ASReview nog niet "
+            "had geselecteerd) is hold-out.\n\n"
+            "**Modus B**: random split, gestratificeerd op label."
+        ),
+        key="asreview_split_mode",
+    )
+    bundles = _load_sentinel_bundles()
+    if not bundles:
+        st.warning(
+            "Geen sentinel-rewrites gevonden in "
+            "`outputs/sentinel_rewrites/`. Run dispatch-prompt 3 eerst."
+        )
+        return
+    df = _ensure_sentinel_ranks_skeleton()
+    split_key = ("modus_a_asreview_order" if split_mode.startswith("Modus A")
+                 else "modus_b_random_stratified")
+    sub = df[df["split_mode"] == split_key].copy()
+    focus = _focused_sentinel()
+    if focus:
+        sub = sub[sub["sentinel_id"] == focus]
+        if len(sub) == 0:
+            st.info(f"Geen rijen voor focus-sentinel `{focus}`.")
+            return
+    sub["sentinel_label"] = sub["sentinel_id"].map(
+        {sid: f"{sid} ({d.get('rewrite', {}).get('difficulty', '?')})"
+         for sid, d in bundles.items()}
+    )
+    show = sub[[
+        "sentinel_label", "asreview_rank", "asreview_recall_at_rank",
+        "gnn_rank", "gnn_score", "bundle", "seed", "updated_at"
+    ]].rename(columns={"sentinel_label": "sentinel"})
+    st.dataframe(show, width="stretch", hide_index=True)
+    st.caption(
+        "**Hoe te lezen:** zodra een ASReview-run met dataset = "
+        "FORAS+candidates klaar is, vult deze tab `asreview_rank` (positie "
+        "van het sentinel-record in de active-learning-volgorde) en "
+        "`asreview_recall_at_rank` (recall behaald op het moment dat het "
+        "sentinel werd gevonden). Tab 3 (GNN) vult daarna `gnn_rank` en "
+        "`gnn_score`. Negative delta (`gnn_rank < asreview_rank`) = GNN "
+        "vond het sentinel sneller."
+    )
+
+    # --- Hook: extract sentinel ranks from a FORAS+candidates .asreview run ---
+    runs = [p for p in _list_asreview_files()
+            if "candidates" in p.name.lower() or "plus" in p.name.lower()]
+    if runs:
+        st.markdown("**Auto-fill ASReview-rangen uit een FORAS+candidates-run**")
+        cols_form = st.columns([3, 1, 1])
+        with cols_form[0]:
+            run_choice = st.selectbox(
+                "Welke run lezen?", options=[p.name for p in runs],
+                key="asreview_27_run_choice",
+            )
+        with cols_form[1]:
+            seed_in = st.number_input(
+                "Seed", min_value=0, max_value=2**31 - 1, value=42, step=1,
+                key="asreview_27_seed",
+            )
+        with cols_form[2]:
+            bundle_in = st.selectbox(
+                "Bundle", options=list(ELAS_BUNDLES.keys()),
+                key="asreview_27_bundle",
+            )
+        if st.button("Bereken & schrijf rangen", key="asreview_27_compute"):
+            sel = next(p for p in runs if p.name == run_choice)
+            info = _read_asreview_results(str(sel))
+            curve = _compute_recall_curve(info.get("records"))
+            if curve is None:
+                st.error("Kan recall-curve niet afleiden uit deze run.")
+            else:
+                # Best-effort: match sentinel-records by openalex_id or title
+                # in the results-table, then derive their rank-position.
+                rec = info.get("records")
+                bundles_local = _load_sentinel_bundles()
+                SENTINEL_OPENALEX = {
+                    "solomon_1993":  "W1897891557",
+                    "kardiner_1941": "W2496837584",
+                    "southard_1920": "W4229501150",
+                }
+                lower_cols = {c.lower(): c for c in rec.columns}
+                title_col = next((lower_cols[c] for c in lower_cols
+                                  if c in {"title", "primary_title"}), None)
+                id_col = next((lower_cols[c] for c in lower_cols
+                               if c in {"openalex_id", "record_id", "id"}), None)
+                wrote = 0
+                for sid, oa in SENTINEL_OPENALEX.items():
+                    bundle_data = bundles_local.get(sid, {})
+                    title = (bundle_data.get("rewrite") or {}).get("title", "")
+                    rank = None
+                    if id_col is not None:
+                        hit = rec[rec[id_col].astype(str).str.upper().str.contains(
+                            oa, na=False, regex=False)]
+                        if len(hit):
+                            rank = int(hit.index[0]) + 1  # 1-indexed
+                    if rank is None and title_col is not None and title:
+                        hit = rec[rec[title_col].astype(str).str.contains(
+                            title[:40], case=False, na=False, regex=False)]
+                        if len(hit):
+                            rank = int(hit.index[0]) + 1
+                    rec_at = (
+                        float(curve[curve["n_screened"] == rank]["recall"].iloc[0])
+                        if rank is not None and rank <= len(curve) else None
+                    )
+                    _upsert_asreview_rank(
+                        sid, split_key,
+                        dataset="FORAS+candidates",
+                        bundle=bundle_in, seed=int(seed_in),
+                        rank=rank, recall_at_rank=rec_at,
+                    )
+                    if rank is not None:
+                        wrote += 1
+                st.success(
+                    f"Wrote {wrote}/3 sentinel-rangen voor {split_key} "
+                    f"(bundle={bundle_in}, seed={seed_in}). Refresh om de "
+                    f"tabel hierboven bij te werken."
+                )
+    st.markdown(
+        "**Plan voor begeleiders:** als de GNN sentinels hoger rangschikt "
+        "dan ASReview, is dat een proof-of-concept voor het sentinel-"
+        "experiment uit `context/opties/optie_1_foras_insert.md`. Eerlijk "
+        "null result is ook OK - waardevol als bewijs dat citation-"
+        "structuur niets toevoegt boven tekst-similarity."
+    )
+
+
+# ----- 2.8 Alternative applications -----
+def _section_2_8_alternative_applications():
+    st.markdown("### 2.8 - Alternatieve toepassingen")
+    st.caption(
+        "Vijf manieren om ASReview verder in te zetten - geen experiment, "
+        "wel achtergrond voor brainstorm met begeleiders."
+    )
+    with st.expander("a) Live screening (human-in-the-loop)"):
+        st.markdown(
+            "Met `asreview lab` start je een Flask-server (default poort "
+            "5000) waarin een mens de query-records een voor een labelt. "
+            "Geschikt voor een pilot waarin Chiel en een begeleider 200 "
+            "FORAS-records co-screenen om de ASReview-baseline te "
+            "valideren.\n\n"
+            "```bash\nasreview lab\n```"
+        )
+    with st.expander("b) Custom features (sBERT / dory-embeddings)"):
+        st.markdown(
+            "Buiten de vier ELAS-bundels kan je via `asreview-dory` eigen "
+            "embedding-modellen kiezen (multilingual-e5-large, mxbai, "
+            "sbert). Voor de thesis interessant: pre-compute embeddings "
+            "een keer en hergebruik over alle simulation-runs.\n\n"
+            "```bash\nasreview simulate dataset.csv "
+            "--feature_extractor multilingual-e5-large "
+            "--classifier svm -o run.asreview\n```"
+        )
+    with st.expander("c) Multi-classifier ensemble"):
+        st.markdown(
+            "Bouw een ensemble met `--classifier nb` en `--classifier svm` "
+            "in twee runs, neem het maximum van de scores per record als "
+            "ensemble-score. Marginaal beter dan beste single classifier "
+            "op FORAS volgens makita-multimodel benchmarks."
+        )
+    with st.expander("d) Makita batch-experiments"):
+        st.markdown(
+            "`asreview makita template multimodel` genereert een Makefile "
+            "die N modellen x M datasets x R seeds in batch draait. Ideaal "
+            "voor robustness-checks (bv. 5 seeds per bundle om standaard-"
+            "deviatie van WSS@95 te schatten).\n\n"
+            "```bash\nmkdir benchmark && cd benchmark && mkdir data\n"
+            "cp ../outputs/asreview_runs/foras_asreview.csv data/\n"
+            "asreview makita template multimodel\n"
+            "make sim && make plot\n```"
+        )
+    with st.expander("e) Co-screening met begeleiders"):
+        st.markdown(
+            "ASReview LAB kan multiple users hosten via een lokaal "
+            "auth-tool (basic). Voor de thesis interessant als check: "
+            "vraag een begeleider 50-100 borderline-records dubbel te "
+            "screenen, gebruik de inter-rater agreement als externe "
+            "validatie van het ASReview-priorisatie-mechanisme."
+        )
+
+
+# ----- 2.9 Glossary -----
+def _section_2_9_glossary():
+    if _in_demo_mode():
+        return
+    with st.expander("Glossary"):
+        st.markdown(
+            "- **ASReview** - Active learning for Systematic Reviews; "
+            "open-source tool die menselijk screeningwerk versnelt.\n"
+            "- **Active learning** - iteratief proces waarin het model zelf "
+            "vraagt welk record het volgende gelabeld wil zien.\n"
+            "- **Simulation** - actieve-leer-loop met al-gelabelde data.\n"
+            "- **Prior records** - de paar records die je vooraf labelt om "
+            "de classifier te initialiseren.\n"
+            "- **Recall** - fractie van echte includes gevonden.\n"
+            "- **WSS** - Work Saved over Sampling.\n"
+            "- **ATD** - Average Time-to-Discovery.\n"
+            "- **ERF** - Extra Relevant Found.\n"
+            "- **TF-IDF** - klassieke woord-frequentie-vectorizatie.\n"
+            "- **SVM / NB** - Support Vector Machine / Naive Bayes.\n"
+            "- **ELAS-bundle** - vaste preset-combinatie.\n"
+            "- **Querier** - kiest welke record als volgende beoordeeld.\n"
+            "- **Balancer** - houdt class-balance in train-set.\n"
+            "- **Candidate** - paper uit de 2.288-pool.\n"
+            "- **Injection** - candidates toevoegen aan FORAS-CSV.\n"
+            "- **Sentinel** - Solomon 1993 / Kardiner 1941 / Southard 1920.\n"
+            "- **Hold-out** - de 30% test-set.\n"
+        )
+
+
+# ============================================================
+# Global control panel (view mode + sentinel focus + bookmarks)
+# ============================================================
+
+VIEW_MODES = {
+    "Leerlab": "All expanders, glossaries, methodology notes - read & learn.",
+    "Demo":    "Strakke kale view voor supervisor - geen glossaries, expanders default-collapsed.",
+}
+
+SENTINEL_CHOICES = ("All", "solomon_1993", "kardiner_1941", "southard_1920")
+
+
+def _in_demo_mode() -> bool:
+    """True when the user has switched the global view-mode to 'Demo'."""
+    return st.session_state.get("view_mode", "Leerlab") == "Demo"
+
+
+def _focused_sentinel():
+    """Currently focused sentinel id, or None for 'All'."""
+    s = st.session_state.get("focus_sentinel", "All")
+    return None if s == "All" else s
+
+
+def _render_global_sidebar():
+    """Sidebar block shown regardless of active tab.
+
+    Three controls: view mode, focus sentinel, bookmarks.
+    """
+    with st.sidebar:
+        st.markdown("### Control panel")
+        st.session_state.setdefault("view_mode", "Leerlab")
+        st.session_state.setdefault("focus_sentinel", "All")
+        st.session_state.setdefault("bookmarks", {})
+
+        st.radio(
+            "View mode",
+            options=list(VIEW_MODES.keys()),
+            help=" / ".join(f"{k}: {v}" for k, v in VIEW_MODES.items()),
+            key="view_mode",
+        )
+        st.selectbox(
+            "Focus sentinel",
+            options=SENTINEL_CHOICES,
+            help="Tabs filteren / highlighten op dit sentinel.",
+            key="focus_sentinel",
+        )
+
+        with st.expander("Bookmarks"):
+            new_name = st.text_input(
+                "Bookmark name", placeholder="bv. demo-solomon",
+                key="bookmark_name",
+            )
+            cols_bm = st.columns(2)
+            with cols_bm[0]:
+                if st.button("Save", key="bookmark_save"):
+                    if new_name.strip():
+                        st.session_state["bookmarks"][new_name.strip()] = {
+                            "view_mode": st.session_state["view_mode"],
+                            "focus_sentinel": st.session_state["focus_sentinel"],
+                        }
+                        st.success(f"Saved '{new_name}'")
+            with cols_bm[1]:
+                names = list(st.session_state["bookmarks"].keys())
+                if names:
+                    pick = st.selectbox(
+                        "Load", options=["-"] + names,
+                        key="bookmark_load_pick",
+                    )
+                    if pick != "-":
+                        if st.button("Apply", key="bookmark_apply"):
+                            bm = st.session_state["bookmarks"][pick]
+                            st.session_state["view_mode"] = bm["view_mode"]
+                            st.session_state["focus_sentinel"] = bm["focus_sentinel"]
+                            st.success(f"Applied '{pick}'")
+        st.caption(
+            f"Mode: **{st.session_state['view_mode']}** | "
+            f"Focus: **{st.session_state['focus_sentinel']}**"
+        )
+
+
 # ============================================================
 # main
 # ============================================================
 def main():
-    st.set_page_config(page_title="FORAS citation graph . v5",
+    st.set_page_config(page_title="FORAS . v5",
                        page_icon=":sparkles:", layout="wide")
     inject_css()
+    _render_global_sidebar()
     papers, edges = load_data()
     cand, cross = load_candidates()
     G = build_graph(len(papers), len(edges))
 
+    title_suffix = (" . DEMO mode" if _in_demo_mode() else "")
+    focus = _focused_sentinel()
+    sub = ("The 172 systematic-review-included papers as a cyan core inside "
+           "the FORAS corpus . four tabs: graph, ASReview baseline, GNN "
+           "learning lab, candidates with sentinel cards.")
+    if focus:
+        sub += f" Focused: {focus}."
     st.markdown(
-        "<div class='foras-title'>FORAS . citation graph</div>"
-        "<div class='foras-sub'>The 172 systematic-review-included papers "
-        "as a cyan core inside the FORAS corpus . v5 with candidate explorer</div>",
+        f"<div class='foras-title'>FORAS . citation graph . v5{title_suffix}</div>"
+        f"<div class='foras-sub'>{sub}</div>",
         unsafe_allow_html=True,
     )
 
-    tab1, tab2, tab3 = st.tabs([
-        "Citation graph",
-        "Candidate explorer",
-        "Method & metrics",
+    tab1, tab2, tab3, tab4 = st.tabs([
+        "FORAS",
+        "ASReview",
+        "GNN",
+        "Candidates",
     ])
     with tab1:
         render_citation_graph_tab(papers, G)
     with tab2:
-        render_candidate_tab(cand, cross)
+        render_asreview_tab(papers, cand, cross)
     with tab3:
-        render_method_tab(papers, cand, cross)
+        render_gnn_tab(papers, cand, cross)
+    with tab4:
+        render_candidate_tab(cand, cross)
 
 
 if __name__ == "__main__":
